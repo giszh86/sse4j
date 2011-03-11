@@ -1,0 +1,15 @@
+package org.sse.ws;
+
+import org.sse.ws.base.WSPointF;
+import org.sse.ws.base.WSResult;
+
+@javax.jws.WebService(targetNamespace = "http://ws.sse.org/", serviceName = "MatchingService", portName = "MatchingPort", wsdlLocation = "WEB-INF/wsdl/MatchingService.wsdl")
+public class MatchingDelegate {
+
+	org.sse.ws.Matching matching = new org.sse.ws.Matching();
+
+	public WSResult districtMatch(WSPointF point) {
+		return matching.districtMatch(point);
+	}
+
+}

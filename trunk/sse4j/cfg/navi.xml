@@ -1,0 +1,29 @@
+<navi>
+	<netes>
+		<net key="110000">
+			<junction name="" path="data/idx/110000/Junction" />
+			<pathline name="" path="data/idx/110000/Pathline" />
+		</net>
+		<!--net key="560000">
+			<junction name="" path="data/idx/560000/Junction" />
+			<pathline name="" path="data/idx/560000/Pathline" />
+		</net-->		
+	</netes>
+	<poies>
+		<poi key="110000">
+			<item name="" path="data/idx/110000/Poi" /><!-- support multipaths-->
+		</poi>
+	</poies>
+	<geoces>
+		<!--geoc key="560000">
+			<item name="110000" path="data/idx/geoc/110000" />
+		</geoc-->
+	</geoces>
+	<distes>
+		<dist key="560000">
+			<item name="" path="data/idx/dist" />
+		</dist>
+	</distes>
+	<buses>		
+	</buses>
+</navi>

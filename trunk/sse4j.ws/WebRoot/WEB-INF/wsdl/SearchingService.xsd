@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.sse.org/" targetNamespace="http://ws.sse.org/" version="1.0">
+
+  <xs:element name="poiInfo" type="tns:poiInfo"/>
+
+  <xs:element name="poiInfoResponse" type="tns:poiInfoResponse"/>
+
+  <xs:element name="search" type="tns:search"/>
+
+  <xs:element name="searchResponse" type="tns:searchResponse"/>
+
+  <xs:complexType name="poiInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:wsFilterPoi"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wsFilterPoi">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="id" type="xs:string"/>
+      <xs:element minOccurs="0" name="key" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="poiInfoResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:wsResult"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wsResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="faultString" type="xs:string"/>
+      <xs:element minOccurs="0" name="jsonString" type="xs:string"/>
+      <xs:element name="resultCode" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="search">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:wsFilter"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wsFilter">
+    <xs:sequence>
+      <xs:element name="count" type="xs:int"/>
+      <xs:element name="distance" type="xs:int"/>
+      <xs:element minOccurs="0" name="geometryWKT" type="xs:string"/>
+      <xs:element minOccurs="0" name="key" type="xs:string"/>
+      <xs:element minOccurs="0" name="keyword" type="xs:string"/>
+      <xs:element minOccurs="0" name="preference" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="searchResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:wsResult"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

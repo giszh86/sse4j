@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="sse4j.ws"
+  id="myeclipse.1296281906750"
+  context-root="/sse4j.ws"
+  j2ee-spec="5.0"
+  archive="sse4j.ws.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

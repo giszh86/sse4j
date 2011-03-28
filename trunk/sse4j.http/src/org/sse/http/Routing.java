@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 public class Routing extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	org.sse.ws.Routing routing = new org.sse.ws.Routing();
+	
 	public Routing() {
 		super();
 	}

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class Searching extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	org.sse.ws.Searching searching = new org.sse.ws.Searching();
 
 	public Searching() {
 		super();

@@ -20,6 +20,8 @@ public class GZipWriter {
 	//  </return>
 	public static void write(WSResult result, HttpServletResponse response)
 			throws IOException {
+		if (result == null)
+			return;
 		StringBuffer sb = new StringBuffer();
 		sb.append("<return><faultString>").append(result.getFaultString());
 		sb.append("</faultString><jsonString>").append(result.getJsonString());

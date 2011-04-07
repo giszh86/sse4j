@@ -13,20 +13,26 @@ public class GZipWriter {
 	private final static String charset = "UTF-8";
 	private final static String contentTypeZip = "application/zip";
 
-	//	<return>
-	//    	<faultString></faultString>
-	//    	<jsonString></jsonString>
-	//    	<resultCode></resultCode>
-	//  </return>
+	// <return>
+	// <faultString></faultString>
+	// <jsonString></jsonString>
+	// <resultCode></resultCode>
+	// </return>
 	public static void write(WSResult result, HttpServletResponse response)
 			throws IOException {
-		if (result == null)
-			return;
 		StringBuffer sb = new StringBuffer();
-		sb.append("<return><faultString>").append(result.getFaultString());
-		sb.append("</faultString><jsonString>").append(result.getJsonString());
-		sb.append("</jsonString><resultCode>").append(result.getResultCode());
-		sb.append("</resultCode></return>");
+		if (result == null) {
+			sb.append("<return><faultString>null</faultString>");
+			sb.append("<jsonString></jsonString>");
+			sb.append("<resultCode>0</resultCode></return>");
+		} else {
+			sb.append("<return><faultString>").append(result.getFaultString());
+			sb.append("</faultString><jsonString>").append(
+					result.getJsonString());
+			sb.append("</jsonString><resultCode>").append(
+					result.getResultCode());
+			sb.append("</resultCode></return>");
+		}
 
 		response.setCharacterEncoding(charset);
 		response.setHeader("Content-disposition", "attachment;filename="

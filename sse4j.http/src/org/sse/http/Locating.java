@@ -6,9 +6,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.sse.ws.base.WSFilterGeoc;
-import org.sse.ws.base.WSPointF;
 import org.sse.ws.base.WSResult;
+import org.w3c.dom.Document;
 
 public class Locating extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -33,23 +32,14 @@ public class Locating extends HttpServlet {
 	//	</ws:reverseGeocoding>
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		//TODO
 		// 1 get parameters
-		boolean isgeoc = false;		
+		String locate = request.getParameter("locating");
 
-		// 2 execute
-		WSResult result = null;
-		if (isgeoc) {
-			WSFilterGeoc geoc = new WSFilterGeoc();
-			
-			result = locating.geocoding(geoc);
-		} else {
-			WSPointF point = new WSPointF();
-			
-			result = locating.reverseGeocoding(point);
-		}
-
-		// 3 write
-		GZipWriter.write(result, response);
+		// 2 write
+		GZipWriter.write(this.excute(XmlParser.getDocument(locate)), response);
+	}
+	
+	private WSResult excute(Document doc) {
+		return null;
 	}
 }

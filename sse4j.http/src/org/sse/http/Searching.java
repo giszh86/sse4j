@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.sse.ws.base.WSResult;
+import org.w3c.dom.Document;
 
 public class Searching extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -16,32 +17,33 @@ public class Searching extends HttpServlet {
 		super();
 	}
 
-	//	<ws:poiInfo>
-	//	  <arg0>
-	//	    <id></id>
-	//	    <key></key>
-	//	  </arg0>
-	//	</ws:poiInfo>
+	// <ws:poiInfo>
+	// 	<arg0>
+	// 		<id></id>
+	// 		<key></key>
+	// 	</arg0>
+	// </ws:poiInfo>
 	//
-	//	<ws:search>
-	//	  <arg0>
-	//	    <count></count>
-	//	    <!--distance></distance>
-	//	    <geometryWKT></geometryWKT-->
-	//	    <key></key>
-	//	    <keyword></keyword>
-	//	    <preference></preference>
-	//	  </arg0>
-	//	</ws:search>
+	// <ws:search>
+	// 	<arg0>
+	// 		<count></count>
+	// 		<!--distance></distance>
+	// 		<geometryWKT></geometryWKT-->
+	// 		<key></key>
+	// 		<keyword></keyword>
+	// 		<preference></preference>
+	// 	</arg0>
+	// </ws:search>
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		//TODO
 		// 1 get parameters
+		String search = request.getParameter("searching");
 
-		// 2 execute
-		WSResult result = null;
+		// 2 write
+		GZipWriter.write(this.excute(XmlParser.getDocument(search)), response);
+	}
 
-		// 3 write
-		GZipWriter.write(result, response);
+	private WSResult excute(Document doc) {
+		return null;
 	}
 }

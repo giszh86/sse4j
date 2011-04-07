@@ -1,0 +1,32 @@
+package org.sse.http;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+
+public class XmlParser {
+	private final static String charset = "UTF-8";
+	private static DocumentBuilderFactory factory = DocumentBuilderFactory
+			.newInstance();
+
+	public static Document getDocument(String xml) {
+		try {
+			return factory.newDocumentBuilder().parse(
+					new BufferedInputStream(new ByteArrayInputStream(xml
+							.getBytes(charset))));
+		} catch (Exception ex) {
+			return null;
+		}
+	}
+
+	public static Document getDocument(InputStream is) {
+		try {
+			return factory.newDocumentBuilder().parse(is);
+		} catch (Exception ex) {
+			return null;
+		}
+	}
+}

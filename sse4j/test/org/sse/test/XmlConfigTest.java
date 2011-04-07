@@ -1,7 +1,9 @@
 package org.sse.test;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -12,8 +14,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
 public class XmlConfigTest {
-	public static void main(String[] args) throws XMLStreamException, FileNotFoundException {
-		getMap("routes", "route");
+	public static void main(String[] args) throws XMLStreamException,
+			FileNotFoundException {
+		System.out.println(getMap("netes", "net"));
 		getMap("poies", "poi");
 		getMap("buses", "bus");
 	}
@@ -25,7 +28,8 @@ public class XmlConfigTest {
 		XMLEventReader reader = null;
 		try {
 			reader = XMLInputFactory.newInstance().createXMLEventReader(
-					"GB2312", new FileReader("META-INF/navi.xml"));
+					new BufferedInputStream(new FileInputStream(new File(
+							"cfg/navi.xml"))), "UTF-8");
 			while (reader.hasNext()) {
 				XMLEvent e = reader.nextEvent();
 				String start = null;

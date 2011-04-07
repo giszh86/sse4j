@@ -57,7 +57,7 @@ public class Routing extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// 1 get parameters
-		String route = request.getParameter("routing");
+		String route = request.getParameter("xml");
 
 		// 2 write
 		GZipWriter.write(this.excute(XmlParser.getDocument(route)), response);

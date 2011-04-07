@@ -8,7 +8,7 @@
 	</head>
 	<body>
 		<form method="post" action="/sse4j/servlet/Searching">
-			<input type="text" name="searching" value="<ws:poiInfo><arg0><id>200</id><key>110000</key></arg0></ws:poiInfo>" />
+			<input type="text" name="xml" value="<ws:poiInfo><arg0><id>200</id><key>110000</key></arg0></ws:poiInfo>" />
 			<input type="submit" value="search" />
 		</form>
 	</body>

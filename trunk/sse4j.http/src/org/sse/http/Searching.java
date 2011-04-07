@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.sse.ws.base.WSFilter;
+import org.sse.ws.base.WSFilterPoi;
 import org.sse.ws.base.WSResult;
 import org.w3c.dom.Document;
 
@@ -37,13 +39,23 @@ public class Searching extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// 1 get parameters
-		String search = request.getParameter("searching");
+		String search = request.getParameter("xml");
 
 		// 2 write
 		GZipWriter.write(this.excute(XmlParser.getDocument(search)), response);
 	}
 
 	private WSResult excute(Document doc) {
+		String firstTag = doc.getDocumentElement().getTagName();
+		if (firstTag.equalsIgnoreCase("ws:poiInfo")) {
+			WSFilterPoi filter = new WSFilterPoi();
+			// filter.setId(id);
+			// filter.setKey(key);
+			return searching.poiInfo(filter);
+		} else if (firstTag.equalsIgnoreCase("ws:search")) {
+			WSFilter filter = new WSFilter();
+			return searching.search(filter);
+		}
 		return null;
 	}
 }

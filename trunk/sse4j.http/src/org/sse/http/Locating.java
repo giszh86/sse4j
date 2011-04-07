@@ -33,7 +33,7 @@ public class Locating extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// 1 get parameters
-		String locate = request.getParameter("locating");
+		String locate = request.getParameter("xml");
 
 		// 2 write
 		GZipWriter.write(this.excute(XmlParser.getDocument(locate)), response);

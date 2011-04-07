@@ -36,6 +36,7 @@ public class HttpTest {
 		while ((s = reader.readLine()) != null)
 			System.out.println(s);
 		reader.close();
+		
 		conn.disconnect();
 	}
 }

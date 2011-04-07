@@ -21,21 +21,21 @@ public class Searching extends HttpServlet {
 	}
 
 	// <ws:poiInfo>
-	// <arg0>
-	// <id></id>
-	// <key></key>
-	// </arg0>
+	// 	<arg0>
+	// 		<id></id>
+	// 		<key></key>
+	// 	</arg0>
 	// </ws:poiInfo>
 	//
 	// <ws:search>
-	// <arg0>
-	// <count></count>
-	// <!--distance></distance>
-	// <geometryWKT></geometryWKT-->
-	// <key></key>
-	// <keyword></keyword>
-	// <preference></preference>
-	// </arg0>
+	// 	<arg0>
+	// 		<count></count>
+	// 		<!--distance></distance>
+	// 		<geometryWKT></geometryWKT-->
+	// 		<key></key>
+	// 		<keyword></keyword>
+	// 		<preference></preference>
+	// 	</arg0>
 	// </ws:search>
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

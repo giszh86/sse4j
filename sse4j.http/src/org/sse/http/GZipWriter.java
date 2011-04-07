@@ -14,9 +14,9 @@ public class GZipWriter {
 	private final static String contentTypeZip = "application/zip";
 
 	// <return>
-	// <faultString></faultString>
-	// <jsonString></jsonString>
-	// <resultCode></resultCode>
+	// 	<faultString></faultString>
+	// 	<jsonString></jsonString>
+	// 	<resultCode></resultCode>
 	// </return>
 	public static void write(WSResult result, HttpServletResponse response)
 			throws IOException {

@@ -39,7 +39,7 @@ public class Matching extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// 1 get parameters
-		String match = request.getParameter("matching");
+		String match = request.getParameter("xml");
 
 		// 2 write
 		GZipWriter.write(this.excute(XmlParser.getDocument(match)), response);

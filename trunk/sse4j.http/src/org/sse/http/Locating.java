@@ -33,12 +33,18 @@ public class Locating extends HttpServlet {
 	//	</ws:reverseGeocoding>
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// 1 get parameters
-		request.setCharacterEncoding(GZipWriter.charset);
-		String locate = request.getParameter("xml");
-
-		// 2 write
-		GZipWriter.write(this.excute(XmlParser.getDocument(locate)), response);
+		try {
+			// 1 get parameters
+			request.setCharacterEncoding(GZipWriter.charset);
+			String xml = request.getParameter("xml");
+			// 2 write
+			GZipWriter.write(this.excute(XmlParser.getDocument(xml)), response);
+		} catch (Exception ex) {
+			WSResult result = new WSResult();
+			result.setResultCode(0);
+			result.setFaultString(ex.getMessage());
+			GZipWriter.write(result, response);
+		}
 	}
 	
 	private WSResult excute(Document doc) {

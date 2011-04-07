@@ -57,12 +57,18 @@ public class Routing extends HttpServlet {
 	//	</ws:plan>
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// 1 get parameters
-		request.setCharacterEncoding(GZipWriter.charset);
-		String route = request.getParameter("xml");
-
-		// 2 write
-		GZipWriter.write(this.excute(XmlParser.getDocument(route)), response);
+		try {
+			// 1 get parameters
+			request.setCharacterEncoding(GZipWriter.charset);
+			String xml = request.getParameter("xml");
+			// 2 write
+			GZipWriter.write(this.excute(XmlParser.getDocument(xml)), response);
+		} catch (Exception ex) {
+			WSResult result = new WSResult();
+			result.setResultCode(0);
+			result.setFaultString(ex.getMessage());
+			GZipWriter.write(result, response);
+		}
 	}
 	
 	private WSResult excute(Document doc) {

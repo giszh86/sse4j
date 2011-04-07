@@ -21,33 +21,40 @@ public class Searching extends HttpServlet {
 	}
 
 	// <ws:poiInfo>
-	// 	<arg0>
-	// 		<id></id>
-	// 		<key></key>
-	// 	</arg0>
+	// <arg0>
+	// <id></id>
+	// <key></key>
+	// </arg0>
 	// </ws:poiInfo>
 	//
 	// <ws:search>
-	// 	<arg0>
-	// 		<count></count>
-	// 		<!--distance></distance>
-	// 		<geometryWKT></geometryWKT-->
-	// 		<key></key>
-	// 		<keyword></keyword>
-	// 		<preference></preference>
-	// 	</arg0>
+	// <arg0>
+	// <count></count>
+	// <!--distance></distance>
+	// <geometryWKT></geometryWKT-->
+	// <key></key>
+	// <keyword></keyword>
+	// <preference></preference>
+	// </arg0>
 	// </ws:search>
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// 1 get parameters
-		request.setCharacterEncoding(GZipWriter.charset);
-		String search = request.getParameter("xml");
-		// 2 write
-		GZipWriter.write(this.excute(XmlParser.getDocument(search)), response);
+		try {
+			// 1 get parameters
+			request.setCharacterEncoding(GZipWriter.charset);
+			String xml = request.getParameter("xml");
+			// 2 write
+			GZipWriter.write(this.excute(XmlParser.getDocument(xml)), response);
+		} catch (Exception ex) {
+			WSResult result = new WSResult();
+			result.setResultCode(0);
+			result.setFaultString(ex.getMessage());
+			GZipWriter.write(result, response);
+		}
 	}
 
 	private WSResult excute(Document doc) {
-		if(doc==null)
+		if (doc == null)
 			return null;
 		String firstTag = doc.getDocumentElement().getTagName();
 		NodeList list = doc.getDocumentElement().getFirstChild()

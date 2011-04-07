@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.sse.ws.base.WSResult;
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
 public class Matching extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -39,6 +40,7 @@ public class Matching extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// 1 get parameters
+		request.setCharacterEncoding(GZipWriter.charset);
 		String match = request.getParameter("xml");
 
 		// 2 write
@@ -46,6 +48,14 @@ public class Matching extends HttpServlet {
 	}
 	
 	private WSResult excute(Document doc) {
+		if(doc==null)
+			return null;
+		String firstTag = doc.getDocumentElement().getTagName();
+		NodeList list = doc.getDocumentElement().getFirstChild()
+				.getChildNodes();
+		if (firstTag == null || list == null || list.getLength() == 0)
+			return null;
+		
 		return null;
 	}
 }

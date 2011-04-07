@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.sse.ws.base.WSResult;
 
 public class GZipWriter {
-	private final static String charset = "UTF-8";
+	public final static String charset = "UTF-8";
 	private final static String contentTypeZip = "application/zip";
 
 	// <return>

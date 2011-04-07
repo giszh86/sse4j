@@ -49,7 +49,7 @@ public class NaviConfig {
 		XMLEventReader reader = null;
 		try {
 			reader = XMLInputFactory.newInstance().createXMLEventReader(
-					"UTF-8", new BufferedReader(new FileReader(path())));
+					new BufferedReader(new FileReader(path())));
 			while (reader.hasNext()) {
 				XMLEvent e = reader.nextEvent();
 				if (e.isStartElement()) {

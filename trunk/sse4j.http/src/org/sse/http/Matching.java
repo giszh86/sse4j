@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.sse.ws.base.WSResult;
+import org.w3c.dom.Document;
 
 public class Matching extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -37,13 +38,14 @@ public class Matching extends HttpServlet {
 	//	</ws:roadMatch>
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		//TODO
 		// 1 get parameters
+		String match = request.getParameter("matching");
 
-		// 2 execute
-		WSResult result = null;
-
-		// 3 write
-		GZipWriter.write(result, response);
+		// 2 write
+		GZipWriter.write(this.excute(XmlParser.getDocument(match)), response);
+	}
+	
+	private WSResult excute(Document doc) {
+		return null;
 	}
 }

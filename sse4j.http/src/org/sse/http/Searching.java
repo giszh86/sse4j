@@ -12,6 +12,11 @@ import org.sse.ws.base.WSResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
+/**
+ * 
+ * @author dux(duxionggis@126.com)
+ * 
+ */
 public class Searching extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	org.sse.ws.Searching searching = new org.sse.ws.Searching();

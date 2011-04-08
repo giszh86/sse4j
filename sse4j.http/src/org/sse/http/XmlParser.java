@@ -7,7 +7,12 @@ import java.io.InputStream;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 
-public class XmlParser {
+/**
+ * 
+ * @author dux(duxionggis@126.com)
+ * 
+ */
+class XmlParser {
 	private static DocumentBuilderFactory factory = DocumentBuilderFactory
 			.newInstance();
 

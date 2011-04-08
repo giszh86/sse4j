@@ -69,7 +69,7 @@ public class Searching extends HttpServlet {
 				name = list.item(i).getNodeName();
 				val = list.item(i).getTextContent();
 				if (!val.isEmpty())
-					if (name.equalsIgnoreCase("id") && !val.isEmpty())
+					if (name.equalsIgnoreCase("id"))
 						filter.setId(val);
 					else if (name.equalsIgnoreCase("key"))
 						filter.setKey(val);

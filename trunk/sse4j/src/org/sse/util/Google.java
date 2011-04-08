@@ -31,6 +31,10 @@ public class Google {
 		}
 	}
 
+	public static int getSize() {
+		return 256;
+	}
+
 	private static double minmax(double a, double b, double c) {
 		return Math.min(Math.max(a, b), c);
 	}

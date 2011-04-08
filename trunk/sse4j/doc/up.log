@@ -1,11 +1,12 @@
 2011-1-31
-sse4j opening
+open sse4j project
 
 --------------------------------------------------------------
 
 2011-4-8
 support http interface
-adding HotMapper class and roadMatch function
+add HotMapper class and roadMatch function
+add sse4j.exe project
 deploy v1.0
 
 --------------------------------------------------------------

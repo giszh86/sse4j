@@ -15,10 +15,6 @@
   </servlet>
   <servlet-mapping>
   	<servlet-name>RoutingService</servlet-name>
-  	<url-pattern>/MatchingPort</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>RoutingService</servlet-name>
   	<url-pattern>/LocatingPort</url-pattern>
   </servlet-mapping>
   <servlet-mapping>

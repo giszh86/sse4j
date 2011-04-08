@@ -11,7 +11,6 @@ import org.sse.util.EarthPos;
 import com.google.gson.Gson;
 
 public class Bdu {
-
 	public static void main(String[] arg) throws Exception {
 		double lon = 116.32;
 		double lat = 39.97;

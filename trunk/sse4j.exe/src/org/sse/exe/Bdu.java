@@ -11,32 +11,12 @@ import org.sse.util.EarthPos;
 import com.google.gson.Gson;
 
 public class Bdu {
-	// public static final String[] keys = { "西餐", "中餐", "快餐", "咖啡厅", "酒吧",
-	// "楼盘小区", "银行", "ATM", "超市", "药店", "加油站", "停车场", "公交车站", "星级宾馆",
-	// "快捷酒店", "招待所", "KTV", "网吧", "电影院", "健身中心" };
-	// public static final Map<String, Integer> cities = new HashMap<String,
-	// Integer>();
-	// static {
-	// cities.put("北京", 131);
-	// cities.put("上海", 289);
-	// cities.put("广州", 257);
-	// cities.put("深圳", 340);
-	// cities.put("成都", 75);
-	// cities.put("天津", 332);
-	// cities.put("南京", 315);
-	// cities.put("杭州", 179);
-	// cities.put("武汉", 218);
-	// cities.put("重庆", 132);
-	// cities.put("苏州", 224);
-	// cities.put("石家庄", 150);
-	// cities.put("济南", 288);
-	// }
 
 	public static void main(String[] arg) throws Exception {
 		double lon = 116.32;
 		double lat = 39.97;
 		int zoom = 14;
-		int city = 131;
+		int city = 131; // 北京
 		String key = "停车场";
 
 		EarthPos tile = Google.degreeToPixel(lon, lat, zoom);

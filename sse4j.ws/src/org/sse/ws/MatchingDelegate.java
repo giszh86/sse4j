@@ -1,11 +1,8 @@
 package org.sse.ws;
 
-import org.sse.geoc.Matcher;
-import org.sse.ws.base.WSBuilder;
 import org.sse.ws.base.WSFilterRM;
 import org.sse.ws.base.WSPointF;
 import org.sse.ws.base.WSResult;
-import com.google.gson.Gson;
 
 @javax.jws.WebService(targetNamespace = "http://ws.sse.org/", serviceName = "MatchingService", portName = "MatchingPort", wsdlLocation = "WEB-INF/wsdl/MatchingService.wsdl")
 public class MatchingDelegate {

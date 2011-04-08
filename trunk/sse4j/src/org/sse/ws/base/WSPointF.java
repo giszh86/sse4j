@@ -37,6 +37,10 @@ public class WSPointF implements Serializable {
 	public void setY(float y) {
 		this.y = y;
 	}
+	
+	public boolean isEmpty() {
+		return (this == null || (this.x == 0 && this.y == 0));
+	}
 
 	public String toString() {
 		return Math.round(x * 1.0e6) / 1.0e6 + "," + Math.round(y * 1.0e6)

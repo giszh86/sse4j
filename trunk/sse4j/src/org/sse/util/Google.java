@@ -48,6 +48,11 @@ public class Google {
 		return new EarthPos(e, g);
 	}
 
+	public static void pixelToTile(EarthPos pos) {
+		pos.xLon = (int) (pos.xLon / 256);
+		pos.yLat = (int) (pos.yLat / 256);
+	}
+
 	public static EarthPos pixelToDegree(int x, int y, int zoom) {
 		double e = Zc.get(zoom);
 		double f = (x - e) / Bc.get(zoom);

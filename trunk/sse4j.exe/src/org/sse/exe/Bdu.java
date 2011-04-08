@@ -10,6 +10,11 @@ import org.sse.util.Google;
 import org.sse.util.EarthPos;
 import com.google.gson.Gson;
 
+/**
+ * 
+ * @author dux(duxionggis@126.com)
+ * 
+ */
 public class Bdu {
 	public static void main(String[] arg) throws Exception {
 		double lon = 116.32;

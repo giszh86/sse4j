@@ -4,6 +4,11 @@ import java.util.LinkedList;
 
 import com.google.gson.Gson;
 
+/**
+ * 
+ * @author dux(duxionggis@126.com)
+ * 
+ */
 class BduTips {
 	private int uid_num;
 	private int err_no;
@@ -44,6 +49,11 @@ class BduTips {
 
 }
 
+/**
+ * 
+ * @author dux(duxionggis@126.com)
+ * 
+ */
 class BduTip {
 	private float x;
 	private float y;

@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.sse.ws.base.WSFilterRM;
+import org.sse.ws.base.WSPointF;
 import org.sse.ws.base.WSResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -61,7 +63,60 @@ public class Matching extends HttpServlet {
 				.getChildNodes();
 		if (firstTag == null || list == null || list.getLength() == 0)
 			return null;
-		
+		if (firstTag.equalsIgnoreCase("ws:districtMatch")) {
+			WSPointF pt = new WSPointF();
+			String name = null;
+			String val = null;
+			for (int i = 0; i < list.getLength(); i++) {
+				name = list.item(i).getNodeName();
+				val = list.item(i).getTextContent();
+				if (!val.isEmpty())
+					if (name.equalsIgnoreCase("x"))
+						pt.setX(Float.valueOf(val).floatValue());
+					else if (name.equalsIgnoreCase("y"))
+						pt.setY(Float.valueOf(val).floatValue());
+			}
+			return matching.districtMatch(pt);
+		} else if (firstTag.equalsIgnoreCase("ws:roadMatch")) {
+			WSFilterRM filter = new WSFilterRM();
+			String name = null;
+			String val = null;
+			for (int i = 0; i < list.getLength(); i++) {
+				name = list.item(i).getNodeName();
+				if (name.equalsIgnoreCase("endPoint")) {					
+					NodeList ends = list.item(i).getChildNodes();
+					if (ends != null && ends.getLength() > 0) {
+						WSPointF end = new WSPointF();
+						for (int j = 0; j < ends.getLength(); j++) {
+							name = ends.item(j).getNodeName();
+							val = ends.item(j).getTextContent();
+							if (!val.isEmpty())
+								if (name.equalsIgnoreCase("x"))
+									end.setX(Float.valueOf(val).floatValue());
+								else if (name.equalsIgnoreCase("y"))
+									end.setY(Float.valueOf(val).floatValue());
+						}
+						filter.setEndPoint(end);
+					}
+				} else if (name.equalsIgnoreCase("startPoint")) {				
+					NodeList starts = list.item(i).getChildNodes();
+					if (starts != null && starts.getLength() > 0) {
+						WSPointF start = new WSPointF();
+						for (int j = 0; j < starts.getLength(); j++) {
+							name = starts.item(j).getNodeName();
+							val = starts.item(j).getTextContent();
+							if (!val.isEmpty())
+								if (name.equalsIgnoreCase("x"))
+									start.setX(Float.valueOf(val).floatValue());
+								else if (name.equalsIgnoreCase("y"))
+									start.setY(Float.valueOf(val).floatValue());
+						}
+						filter.setStartPoint(start);
+					}
+				}
+			}
+			return matching.roadMatch(filter);
+		}
 		return null;
 	}
 }

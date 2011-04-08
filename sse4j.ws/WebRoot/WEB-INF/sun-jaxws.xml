@@ -13,4 +13,7 @@
 		implementation="org.sse.ws.LocatingDelegate"
 		url-pattern="/LocatingPort">
 	</endpoint>
-</endpoints>
+	<endpoint name="MatchingPort"
+		implementation="org.sse.ws.MatchingDelegate"
+		url-pattern="/MatchingPort">
+	</endpoint></endpoints>

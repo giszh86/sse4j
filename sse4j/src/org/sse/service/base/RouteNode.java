@@ -8,8 +8,8 @@ package org.sse.service.base;
  */
 public class RouteNode extends Node {
 	private static final long serialVersionUID = 1L;
-	private int nodeId; // 连接点编号
-	private short type;// 连接点类型
+	private int nodeId;
+	private short type;
 
 	public int getNodeId() {
 		return nodeId;
@@ -28,6 +28,11 @@ public class RouteNode extends Node {
 		return type;
 	}
 
+	/**
+	 * 
+	 * @param type
+	 *            连接点类型
+	 */
 	public void setType(short type) {
 		this.type = type;
 	}

@@ -12,8 +12,8 @@ import com.google.gson.Gson;
 public class WSRouteDataSet implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private int dis;// 总路程[米]
-	private int cost;// 总花费[分钟]
+	private int dis;
+	private int cost;
 	private int minx;
 	private int miny;
 	private int maxx;
@@ -25,6 +25,11 @@ public class WSRouteDataSet implements Serializable {
 		return dis;
 	}
 
+	/**
+	 * 
+	 * @param dis
+	 *            总路程[米]
+	 */
 	public void setDis(int dis) {
 		this.dis = dis;
 	}
@@ -33,6 +38,11 @@ public class WSRouteDataSet implements Serializable {
 		return cost;
 	}
 
+	/**
+	 * 
+	 * @param cost
+	 *            总旅行时间[分钟]
+	 */
 	public void setCost(int cost) {
 		this.cost = cost;
 	}

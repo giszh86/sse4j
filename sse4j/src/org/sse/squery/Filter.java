@@ -13,7 +13,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  */
 public class Filter {
-	private Geometry geometry;// [WGS84]
+	private Geometry geometry;
 	private List<Property> properties;
 	private int count = 50;
 	private QueryType qtype = QueryType.Fuzzy;
@@ -33,6 +33,11 @@ public class Filter {
 		return geometry;
 	}
 
+	/**
+	 * 
+	 * @param geometry
+	 *            [WGS84]
+	 */
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
 	}

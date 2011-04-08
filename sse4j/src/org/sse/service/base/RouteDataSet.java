@@ -10,8 +10,8 @@ import java.util.List;
  * 
  */
 public class RouteDataSet {
-	private int distance;// 总路程[米]
-	private int cost;// 总花费[秒]
+	private int distance;
+	private int cost;
 	private int minx;
 	private int miny;
 	private int maxx;
@@ -28,6 +28,11 @@ public class RouteDataSet {
 		return distance;
 	}
 
+	/**
+	 * 
+	 * @param distance
+	 *            总路程[米]
+	 */
 	public void setDistance(int distance) {
 		this.distance = distance;
 	}
@@ -36,6 +41,11 @@ public class RouteDataSet {
 		return cost;
 	}
 
+	/**
+	 * 
+	 * @param cost
+	 *            总花费[秒]
+	 */
 	public void setCost(int cost) {
 		this.cost = cost;
 	}

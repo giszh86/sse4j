@@ -13,8 +13,8 @@ import org.sse.geo.Point;
 public class RouteEdge extends Edge {
 	private static final long serialVersionUID = 1L;
 
-	private int edgeId; // 道路编号
-	private String name;// 路段名
+	private int edgeId;
+	private String name;
 	private List<Point> points;
 
 	// private LineString geometry;
@@ -36,6 +36,11 @@ public class RouteEdge extends Edge {
 		return name;
 	}
 
+	/**
+	 * 
+	 * @param name
+	 *            路段名
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}

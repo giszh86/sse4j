@@ -60,4 +60,20 @@ public class Matcher {
 		throw new Exception("not found!");
 	}
 
+	/**
+	 * 
+	 * @param from
+	 *            [WGS84]
+	 * @param to
+	 *            [WGS84]
+	 * @return {"ID":"","TITLE":"","WKT":""}
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	public String roadMatch(Point from, Point to) throws Exception {
+		// TODO
+		return null;
+	}
+
 }

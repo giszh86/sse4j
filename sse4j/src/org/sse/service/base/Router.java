@@ -14,12 +14,12 @@ import com.vividsolutions.jts.geom.Point;
  * 
  */
 public class Router {
-	private Point startPoint;// 起点[WGS84]
-	private Point endPoint;// 终点[WGS84]
-	private List<Point> viaPoints;// 途径点[WGS84]
-	private List<Geometry> barriers;// 障碍[WGS84]
-	private List<TrafficCtl> controls;// 交通管制
-	private RouterPreference preference;// 寻路方式
+	private Point startPoint;
+	private Point endPoint;
+	private List<Point> viaPoints;
+	private List<Geometry> barriers;
+	private List<TrafficCtl> controls;
+	private RouterPreference preference;
 
 	public Router() {
 		GeometryFactory gf = new GeometryFactory();

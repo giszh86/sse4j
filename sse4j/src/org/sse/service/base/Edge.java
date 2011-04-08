@@ -11,10 +11,10 @@ import org.sse.util.Maths;
 public class Edge extends BaseEdge {
 	private static final long serialVersionUID = 1L;
 
-	private byte kind;// 道路等级
-	private byte type;// 道路形态及特性
-	private byte toll;// 收费
-	private int length;// 长度
+	private byte kind;
+	private byte type;
+	private byte toll;
+	private int length;
 
 	public short getKind() {
 		return kind;

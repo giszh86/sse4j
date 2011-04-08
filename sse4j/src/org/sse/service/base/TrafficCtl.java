@@ -7,9 +7,9 @@ package org.sse.service.base;
  * 
  */
 public class TrafficCtl {
-	private int roadId = -1;// 路段ID[同Edge Id]
-	private short forbidDirect = -1;// 禁行方向 0:双向 1:顺向 2:反向
-	private float speed = -1;// 路段车速[公里/小时]
+	private int roadId = -1;
+	private short forbidDirect = -1;
+	private float speed = -1;
 
 	public int getRoadId() {
 		return roadId;

@@ -11,11 +11,11 @@ public class WSRouteGuid implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String name;
-	private String state; // 交通状况[A/B/C]
+	private String state;
 	// private String icon;
 	private String turn;
-	private int len; // 道路长度[米]
-	private int cost;// 旅行时间[秒]
+	private int len;
+	private int cost;
 	private String vertexes;
 
 	public WSRouteGuid() {
@@ -38,6 +38,11 @@ public class WSRouteGuid implements Serializable {
 		return state;
 	}
 
+	/**
+	 * 
+	 * @param state
+	 *            交通状况[A/B/C]
+	 */
 	public void setState(String state) {
 		this.state = state;
 	}
@@ -62,6 +67,11 @@ public class WSRouteGuid implements Serializable {
 		return len;
 	}
 
+	/**
+	 * 
+	 * @param len
+	 *            道路长度[米]
+	 */
 	public void setLen(int len) {
 		this.len = len;
 	}
@@ -70,6 +80,11 @@ public class WSRouteGuid implements Serializable {
 		return cost;
 	}
 
+	/**
+	 * 
+	 * @param cost
+	 *            旅行时间[秒]
+	 */
 	public void setCost(int cost) {
 		this.cost = cost;
 	}

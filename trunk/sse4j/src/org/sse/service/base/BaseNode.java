@@ -13,8 +13,8 @@ import java.util.List;
 public class BaseNode implements Serializable, Cloneable {
 	private static final long serialVersionUID = 1L;
 
-	private int id;// 索引编号，1开始连续
-	private int[] edgeIds;// 关联道路编号
+	private int id;
+	private int[] edgeIds;
 
 	public int getId() {
 		return id;

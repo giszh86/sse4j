@@ -7,20 +7,8 @@ package org.sse.service.base;
  * 
  */
 public enum RouterPreference {
-	/**
-	 * 最快
-	 */
-	Fastest,
-	/**
-	 * 最短
-	 */
-	Shortest,
-	/**
-	 * 最经济
-	 */
-	Cheapest,
-	/**
-	 * 步行
-	 */
-	OnFoot
+	Fastest, /* 最快 */
+	Shortest, /* 最短 */
+	Cheapest, /* 最经济 */
+	OnFoot, /* 步行 */
 }

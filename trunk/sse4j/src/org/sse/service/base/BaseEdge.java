@@ -11,11 +11,11 @@ import java.io.Serializable;
 public class BaseEdge implements Serializable, Cloneable {
 	private static final long serialVersionUID = 1L;
 
-	private int id;// 索引编号，1开始连续
-	private int startNodeId;// 起始连接点编号
-	private int endNodeId;// 终止连接点编号
-	private byte direction;// 交通流方向
-	private int gn;// 权重
+	private int id;
+	private int startNodeId;
+	private int endNodeId;
+	private byte direction;
+	private int gn;
 
 	public int getId() {
 		return id;
@@ -67,6 +67,7 @@ public class BaseEdge implements Serializable, Cloneable {
 	 * 
 	 * 
 	 * @param gn
+	 *            权重
 	 */
 	public void setGn(int gn) {
 		this.gn = gn;

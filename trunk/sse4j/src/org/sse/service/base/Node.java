@@ -9,7 +9,7 @@ package org.sse.service.base;
 public class Node extends BaseNode {
 	private static final long serialVersionUID = 1L;
 
-	private byte lightFlag;// 红绿灯标识
+	private byte lightFlag;
 	private int x;
 	private int y;
 

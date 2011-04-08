@@ -15,13 +15,13 @@ public class RouteSegment {
 	private String name;
 	private int kind;
 	private int attrib;
-	private int length;// 长度[米]
-	private int speed;// 车速[公里/小时]
-	private int cost;// 花费[秒]
+	private int length;
+	private int speed;
+	private int cost;
 	private int sAngle;
 	private int eAngle;
-	private int circleNum;// 环岛出口序号
-	private int lightFlag;// 道路终点红绿灯标识
+	private int circleNum;
+	private int lightFlag;
 	private List<Integer> ids;
 	private List<Point> points;
 
@@ -98,6 +98,11 @@ public class RouteSegment {
 		return length;
 	}
 
+	/**
+	 * 
+	 * @param length
+	 *            长度[米]
+	 */
 	public void setLength(int length) {
 		this.length = length;
 	}
@@ -106,6 +111,11 @@ public class RouteSegment {
 		return speed;
 	}
 
+	/**
+	 * 
+	 * @param speed
+	 *            车速[公里/小时]
+	 */
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
@@ -114,6 +124,11 @@ public class RouteSegment {
 		return cost;
 	}
 
+	/**
+	 * 
+	 * @param cost
+	 *            花费[秒]
+	 */
 	public void setCost(int cost) {
 		this.cost = cost;
 	}
@@ -138,6 +153,11 @@ public class RouteSegment {
 		return circleNum;
 	}
 
+	/**
+	 * 
+	 * @param circleNum
+	 *            环岛出口序号
+	 */
 	public void setCircleNum(int circleNum) {
 		this.circleNum = circleNum;
 	}
@@ -146,6 +166,11 @@ public class RouteSegment {
 		return lightFlag;
 	}
 
+	/**
+	 * 
+	 * @param lightFlag
+	 *            道路终点红绿灯标识
+	 */
 	public void setLightFlag(int lightFlag) {
 		this.lightFlag = lightFlag;
 	}

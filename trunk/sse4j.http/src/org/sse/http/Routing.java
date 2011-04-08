@@ -15,6 +15,11 @@ import org.sse.ws.base.WSRouter;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
+/**
+ * 
+ * @author dux(duxionggis@126.com)
+ * 
+ */
 public class Routing extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	org.sse.ws.Routing routing = new org.sse.ws.Routing();

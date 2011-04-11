@@ -16,8 +16,8 @@ public class HotMapperTest {
 		double lon = 116.4;
 		double lat = 39.9;
 		EarthPos pos = Google.degreeToPixel(lon, lat, zoom);
-		int x = (int) (pos.xLon / Google.getSize());
-		int y = (int) (pos.yLat / Google.getSize());
+		int x = (int) (pos.xLon / Google.getSize()); // 6744
+		int y = (int) (pos.yLat / Google.getSize()); // 3104
 		String keyword = "大厦";
 
 		long t1 = System.currentTimeMillis();

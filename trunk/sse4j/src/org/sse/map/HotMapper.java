@@ -88,7 +88,7 @@ public class HotMapper {
 	 * @param y
 	 *            0 ~ Pow(2,zoom)-1
 	 * @param keyword
-	 * @return
+	 * @return common path
 	 * @throws Exception
 	 */
 	public String createHotmap(int zoom, int x, int y, String keyword)

@@ -64,14 +64,14 @@ public class Searching {
 						NaviConfig.WGS);
 				if ((geo != null && geo.intersects(g)) || (geo == null)) {
 					sb.append("{");
-					sb.append("\"ID\":\"" + doc.get(PtyName.OID) + "\",");
-					sb.append("\"TITLE\":\"" + doc.get(PtyName.TITLE) + "\",");
+					sb.append("\"id\":\"" + doc.get(PtyName.OID) + "\",");
+					sb.append("\"title\":\"" + doc.get(PtyName.TITLE) + "\",");
 
 					for (Coordinate c : g.getCoordinates()) {
 						c.x = (int) c.x;
 						c.y = (int) c.y;
 					}
-					sb.append("\"WKT\":\"" + g.toString() + "\"");
+					sb.append("\"wkt\":\"" + g.toString() + "\"");
 					sb.append("}");
 					sb.append(",");
 					if (count == filter.getCount())

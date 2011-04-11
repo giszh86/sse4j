@@ -44,32 +44,32 @@ public class WSSearchingTest {
 	}
 
 	public static class Result {
-		private String ID;
-		private String TITLE;
-		private String WKT;
+		private String id;
+		private String title;
+		private String wkt;
 
-		public String getID() {
-			return ID;
+		public String getId() {
+			return id;
 		}
 
-		public void setID(String id) {
-			ID = id;
+		public void setId(String id) {
+			this.id = id;
 		}
 
-		public String getTITLE() {
-			return TITLE;
+		public String getTitle() {
+			return title;
 		}
 
-		public void setTITLE(String title) {
-			TITLE = title;
+		public void setTitle(String title) {
+			this.title = title;
 		}
 
-		public String getWKT() {
-			return WKT;
+		public String getWkt() {
+			return wkt;
 		}
 
-		public void setWKT(String wkt) {
-			WKT = wkt;
+		public void setWkt(String wkt) {
+			this.wkt = wkt;
 		}
 	}
 }

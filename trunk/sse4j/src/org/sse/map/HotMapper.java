@@ -4,14 +4,14 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.imageio.ImageIO;
 
 import org.apache.lucene.document.Document;
@@ -178,7 +178,8 @@ public class HotMapper {
 		}
 		// save image and js
 		ImageIO.write(image, "png", imgfile);
-		BufferedWriter out = new BufferedWriter(new FileWriter(jsfile));
+		BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(jsfile), "UTF-8"));
 		TileTip tt = new TileTip();
 		tt.setZoom(zoom);
 		tt.setX(x);

@@ -1,0 +1,2 @@
+#labels hotmap,highlight
+complete HotMapper class and inner functions

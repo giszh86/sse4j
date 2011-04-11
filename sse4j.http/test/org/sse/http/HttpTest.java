@@ -8,6 +8,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
 
+import org.sse.ws.base.WSResult;
+import com.google.gson.Gson;
+
 public class HttpTest {
 
 	public static void main(String[] args) throws IOException {
@@ -33,10 +36,17 @@ public class HttpTest {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(
 				new GZIPInputStream(conn.getInputStream())));
 		String s;
-		while ((s = reader.readLine()) != null)
-			System.out.println(s);
+		StringBuffer sb = new StringBuffer();
+		while ((s = reader.readLine()) != null) {
+			// System.out.println(s);
+			sb.append(s.trim());
+		}
 		reader.close();
-		
+
 		conn.disconnect();
+
+		// result
+		WSResult result = new Gson().fromJson(sb.toString(), WSResult.class);
+		System.out.println(result.getJsonString());
 	}
 }

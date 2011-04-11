@@ -25,6 +25,11 @@
   <servlet-name>Matching</servlet-name>
   <servlet-class>org.sse.http.Matching</servlet-class>
  </servlet>
+  <servlet>
+    <servlet-name>HotTile</servlet-name>
+    <servlet-class>org.sse.http.HotTile</servlet-class>
+  </servlet>
+
  <servlet-mapping>
   <servlet-name>Searching</servlet-name>
   <url-pattern>/servlet/Searching</url-pattern>
@@ -41,6 +46,10 @@
   <servlet-name>Matching</servlet-name>
   <url-pattern>/servlet/Matching</url-pattern>
  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>HotTile</servlet-name>
+    <url-pattern>/servlet/HotTile</url-pattern>
+  </servlet-mapping>
  <welcome-file-list>
   <welcome-file>index.jsp</welcome-file>
  </welcome-file-list>

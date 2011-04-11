@@ -95,8 +95,8 @@ public class HotMapper {
 			throws Exception {
 		char[] chars = keyword.toCharArray();
 		StringBuffer sb = new StringBuffer();
-		for (char c : chars) {
-			sb.append((int) c);
+		for (int c : chars) {
+			sb.append(c);
 		}
 		// make path
 		String path = "/cache/" + sb.toString() + "/" + zoom + "/" + x + "/"
@@ -105,6 +105,8 @@ public class HotMapper {
 		File imgfile = new File(outpath + path + ".png");
 		if (jsfile.exists() && imgfile.exists()) {
 			return path;
+		} else {
+			imgfile.mkdirs();
 		}
 		// tile extent
 		EarthPos min = Google.pixelToDegree(x * Google.getSize(), (y + 1)
@@ -132,12 +134,13 @@ public class HotMapper {
 		filter.setGeometry(extent);
 		List<Document> result = Searcher.getInstance().search(stg.getKey(),
 				filter);
+
+		List<EarthPos> spector = new LinkedList<EarthPos>();
+		List<PoiTip> tips = new LinkedList<PoiTip>();
+		BufferedImage image = new BufferedImage(Google.getSize(), Google
+				.getSize(), BufferedImage.TYPE_4BYTE_ABGR);
 		// create image and js
 		if (result != null && result.size() > 0) {
-			List<EarthPos> spector = new LinkedList<EarthPos>();
-			List<PoiTip> tips = new ArrayList<PoiTip>();
-			BufferedImage image = new BufferedImage(Google.getSize(), Google
-					.getSize(), BufferedImage.TYPE_4BYTE_ABGR);
 			Graphics2D graph = (Graphics2D) image.getGraphics();
 			WKTReader reader = new WKTReader();
 			for (Iterator<Document> i = result.iterator(); i.hasNext();) {
@@ -172,27 +175,20 @@ public class HotMapper {
 					}
 				}
 			}
-			// save image and js
-			if (tips.size() > 0) {
-				imgfile.mkdirs();
-				ImageIO.write(image, "png", imgfile);
-				BufferedWriter out = new BufferedWriter(new FileWriter(jsfile));
-				TileTip tt = new TileTip();
-				tt.setZoom(zoom);
-				tt.setX(x);
-				tt.setY(y);
-				tt.setTips(tips);
-				out.write("hotMapTip(" + new Gson().toJson(tt) + ");");
-				out.flush();
-				out.close();
-			} else {
-				throw new Exception("null");
-			}
-			tips = null;
-			spector = null;
-		} else {
-			throw new Exception("null");
 		}
+		// save image and js
+		ImageIO.write(image, "png", imgfile);
+		BufferedWriter out = new BufferedWriter(new FileWriter(jsfile));
+		TileTip tt = new TileTip();
+		tt.setZoom(zoom);
+		tt.setX(x);
+		tt.setY(y);
+		tt.setTips(tips);
+		out.write("hotMapTip(" + new Gson().toJson(tt) + ");");
+		out.flush();
+		out.close();
+		tips = null;
+		spector = null;
 		result = null;
 
 		return path;

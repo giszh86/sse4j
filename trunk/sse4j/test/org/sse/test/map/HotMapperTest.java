@@ -12,13 +12,13 @@ public class HotMapperTest {
 		Thread.sleep(10000);
 
 		HotMapper hm = HotMapper.getInstance();
-		int zoom = 12;
+		int zoom = 13;
 		double lon = 116.4;
 		double lat = 39.9;
 		EarthPos pos = Google.degreeToPixel(lon, lat, zoom);
 		int x = (int) (pos.xLon / Google.getSize());
 		int y = (int) (pos.yLat / Google.getSize());
-		String keyword = "北京大厦";
+		String keyword = "大厦";
 
 		long t1 = System.currentTimeMillis();
 		String path = hm.createHotmap(zoom, x, y, keyword);

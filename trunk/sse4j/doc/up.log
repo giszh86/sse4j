@@ -15,4 +15,7 @@ deploy v1.0
 complete HotMapper class
 HotMapper createHotmap(int zoom, int x, int y, String keyword) return Javascript and Image Path
 
+sse4j.http add HotTile servlet class
+HotTile support client overlap tiles dynamically
+
 --------------------------------------------------------------

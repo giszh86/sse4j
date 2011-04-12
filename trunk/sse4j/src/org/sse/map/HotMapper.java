@@ -20,8 +20,8 @@ import org.sse.StorageFactory;
 import org.sse.StorageFactory.StorageType;
 import org.sse.geoc.District;
 import org.sse.geoc.Matcher;
-import org.sse.map.Tip.PoiTip;
-import org.sse.map.Tip.TileTip;
+import org.sse.map.Tip.TipPoi;
+import org.sse.map.Tip.TipTile;
 import org.sse.mcache.IStorage;
 import org.sse.squery.Filter;
 import org.sse.squery.Property;
@@ -50,7 +50,7 @@ public class HotMapper {
 	private BufferedImage icon;
 	private GeometryFactory gf;
 	private String outpath = "";
-	private int count = 5000;
+	private int count = 2500; // TODO 2500
 
 	public static HotMapper getInstance() {
 		if (instance == null) {
@@ -135,8 +135,7 @@ public class HotMapper {
 		List<Document> result = Searcher.getInstance().search(stg.getKey(),
 				filter);
 
-		List<EarthPos> spector = new LinkedList<EarthPos>();
-		List<PoiTip> tips = new LinkedList<PoiTip>();
+		LinkedList<TipPoi> tips = new LinkedList<TipPoi>();
 		BufferedImage image = new BufferedImage(Google.getSize(), Google
 				.getSize(), BufferedImage.TYPE_4BYTE_ABGR);
 		// create image and js
@@ -146,9 +145,9 @@ public class HotMapper {
 			for (Iterator<Document> i = result.iterator(); i.hasNext();) {
 				Document doc = i.next();
 
-				PoiTip tip = new PoiTip();
-				tip.setId(doc.get(PtyName.OID));
-				tip.setTitle(doc.get(PtyName.TITLE));
+				TipPoi tp = new TipPoi();
+				tp.setId(doc.get(PtyName.OID));
+				tp.setTitle(doc.get(PtyName.TITLE));
 
 				Geometry g = reader.read(doc.get(PtyName.GID));
 				EarthPos gp = new EarthPos(g.getCoordinate().x, g
@@ -157,30 +156,32 @@ public class HotMapper {
 					gp = Google.googToDegree(g.getCoordinate().x, g
 							.getCoordinate().y);
 				}
-				EarthPos p = Google.degreeToPixel(gp.xLon, gp.yLat, zoom);
-				p.setBuffer(icon.getWidth() / 3 + 1, icon.getHeight() / 3 + 1);
-				p.xLon = p.xLon - x * Google.getSize();
-				p.yLat = p.yLat - y * Google.getSize();
-				tip.setX((int) p.xLon);
-				tip.setY((int) p.yLat);
-				int px = (int) (p.xLon - icon.getWidth() / 2);
-				int py = (int) (p.yLat - icon.getHeight() / 2);
+				gp = Google.degreeToPixel(gp.xLon, gp.yLat, zoom);
+				gp.xLon = gp.xLon - x * Google.getSize();
+				gp.yLat = gp.yLat - y * Google.getSize();
+				tp.setX((int) gp.xLon);
+				tp.setY((int) gp.yLat);
+				int px = tp.getX() - icon.getWidth() / 2;
+				int py = tp.getY() - icon.getHeight() / 2;
 				if (px >= 0 && py >= 0
 						&& px <= (Google.getSize() - icon.getWidth())
 						&& py <= (Google.getSize() - icon.getHeight())) {
-					if (!spector.contains(p)) {
-						spector.add(p);
-						tips.add(tip);
+					int index = tips.indexOf(tp);
+					if (index >= 0) {
+						tips.get(index).addSub(tp.clone());
+					} else {
+						tips.add(tp);
 						graph.drawImage(icon, null, px, py);
 					}
 				}
 			}
 		}
+		// System.out.println("r:" + result.size() + " t:" + tips.size());
 		// save image and js
 		ImageIO.write(image, "png", imgfile);
 		BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
 				new FileOutputStream(jsfile), "UTF-8"));
-		TileTip tt = new TileTip();
+		TipTile tt = new TipTile();
 		tt.setZoom(zoom);
 		tt.setX(x);
 		tt.setY(y);
@@ -189,7 +190,6 @@ public class HotMapper {
 		out.flush();
 		out.close();
 		tips = null;
-		spector = null;
 		result = null;
 
 		return path;

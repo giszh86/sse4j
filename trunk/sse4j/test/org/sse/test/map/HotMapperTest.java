@@ -18,7 +18,7 @@ public class HotMapperTest {
 		EarthPos pos = Google.degreeToPixel(lon, lat, zoom);
 		int x = (int) (pos.xLon / Google.getSize()); // 6744
 		int y = (int) (pos.yLat / Google.getSize()); // 3104
-		String keyword = "大厦";
+		String keyword = "北京宾馆";
 
 		long t1 = System.currentTimeMillis();
 		String path = hm.createHotmap(zoom, x, y, keyword);

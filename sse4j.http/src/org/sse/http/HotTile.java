@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.sse.NaviConfig;
 import org.sse.map.HotMapper;
 
 /**
@@ -20,9 +19,6 @@ import org.sse.map.HotMapper;
 public class HotTile extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static Logger logger = Logger.getLogger(HotTile.class.getName());
-	static {
-		NaviConfig.init();
-	}
 
 	public HotTile() {
 		super();

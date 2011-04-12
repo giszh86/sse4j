@@ -8,9 +8,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
 
-import org.sse.ws.base.WSResult;
-import com.google.gson.Gson;
-
 public class HttpTest {
 
 	public static void main(String[] args) throws IOException {
@@ -46,7 +43,6 @@ public class HttpTest {
 		conn.disconnect();
 
 		// result
-		WSResult result = new Gson().fromJson(sb.toString(), WSResult.class);
-		System.out.println(result.getJsonString());
+		System.out.println(sb.toString());
 	}
 }

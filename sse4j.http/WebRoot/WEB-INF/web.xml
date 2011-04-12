@@ -2,33 +2,26 @@
 <web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee   http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
  <servlet>
-  <description>poi or path or district search</description>
-  <display-name>Searching</display-name>
-  <servlet-name>Searching</servlet-name>
-  <servlet-class>org.sse.http.Searching</servlet-class>
- </servlet>
- <servlet>
-  <description>plan or webPlan</description>
-  <display-name>Routing</display-name>
   <servlet-name>Routing</servlet-name>
   <servlet-class>org.sse.http.Routing</servlet-class>
+  <load-on-startup>1</load-on-startup>  
  </servlet>
  <servlet>
-  <description>geocoding or reverseGeocoding</description>
-  <display-name>Locating</display-name>
+  <servlet-name>Searching</servlet-name>
+  <servlet-class>org.sse.http.Searching</servlet-class>  
+ </servlet>
+ <servlet>
   <servlet-name>Locating</servlet-name>
   <servlet-class>org.sse.http.Locating</servlet-class>
  </servlet>
  <servlet>
-  <description>road or district match</description>
-  <display-name>Matching</display-name>
   <servlet-name>Matching</servlet-name>
   <servlet-class>org.sse.http.Matching</servlet-class>
  </servlet>
-  <servlet>
-    <servlet-name>HotTile</servlet-name>
-    <servlet-class>org.sse.http.HotTile</servlet-class>
-  </servlet>
+ <servlet>
+   <servlet-name>HotTile</servlet-name>
+   <servlet-class>org.sse.http.HotTile</servlet-class>
+ </servlet>
 
  <servlet-mapping>
   <servlet-name>Searching</servlet-name>
@@ -46,14 +39,11 @@
   <servlet-name>Matching</servlet-name>
   <url-pattern>/servlet/Matching</url-pattern>
  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>HotTile</servlet-name>
-    <url-pattern>/servlet/HotTile</url-pattern>
-  </servlet-mapping>
+ <servlet-mapping>
+   <servlet-name>HotTile</servlet-name>
+   <url-pattern>/servlet/HotTile</url-pattern>
+ </servlet-mapping>
  <welcome-file-list>
   <welcome-file>index.jsp</welcome-file>
- </welcome-file-list>
- <login-config>
-  <auth-method>BASIC</auth-method>
- </login-config>
+ </welcome-file-list> 
 </web-app>

@@ -27,6 +27,13 @@ public class Routing extends HttpServlet {
 	public Routing() {
 		super();
 	}
+
+	public void init() throws ServletException {
+	}
+
+	public void destroy() {
+		super.destroy();
+	}
 	
 	//	<ws:webPlan>         
 	//	  <arg0>            

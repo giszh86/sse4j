@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.sse.map.HotMapper;
 
 /**
- * Desc: http://<server>:<port>/sse4j/servlet/HotTile?zoom=&x=&y=&type=&keyword=
+ * Desc: http://<server>:<port>/sse4j/servlet/HotTile?zoom=&x=&y=&type=&keyword=<&key=>
  * 
  * @author dux(duxionggis@126.com)
  * 
@@ -40,7 +40,8 @@ public class HotTile extends HttpServlet {
 			try {
 				String path = HotMapper.getInstance().createHotmap(
 						Integer.valueOf(zoom), Integer.valueOf(x),
-						Integer.valueOf(y), keyword);
+						Integer.valueOf(y), keyword,
+						request.getParameter("key"));
 				if (type.equalsIgnoreCase("img")) {
 					response.setContentType("image/png");
 					request.getRequestDispatcher(path + ".png").forward(

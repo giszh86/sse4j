@@ -82,7 +82,7 @@ public class HotMapper {
 	/**
 	 * 
 	 * @param zoom
-	 *            12 ~ 17
+	 *            10 ~ 17
 	 * @param x
 	 *            0 ~ Pow(2,zoom)-1
 	 * @param y

@@ -1,5 +1,7 @@
 package org.sse.test.map;
 
+import java.io.File;
+
 import org.sse.NaviConfig;
 import org.sse.map.HotMapper;
 import org.sse.util.EarthPos;
@@ -21,9 +23,20 @@ public class HotMapperTest {
 		String keyword = "北京宾馆";
 
 		long t1 = System.currentTimeMillis();
-		String path = hm.createHotmap(zoom, x, y, keyword);
+		String path = hm.createHotmap(zoom, x, y, keyword, null);
 		System.out.println("time:" + (System.currentTimeMillis() - t1));
 		System.out.println(path);
-	}
+		new File(".." + path + ".js").delete();
+		new File(".." + path + ".png").delete();
 
+		t1 = System.currentTimeMillis();
+		hm.createHotmap(zoom, x, y, keyword, null);
+		System.out.println("time:" + (System.currentTimeMillis() - t1));
+		new File(".." + path + ".js").delete();
+		new File(".." + path + ".png").delete();
+
+		t1 = System.currentTimeMillis();
+		hm.createHotmap(zoom, x, y, keyword, "110000");
+		System.out.println("time:" + (System.currentTimeMillis() - t1));
+	}
 }

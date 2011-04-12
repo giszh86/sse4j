@@ -101,14 +101,14 @@ public class HotMapper {
 		// make path
 		String path = "/cache/" + sb.toString() + "/" + zoom + "/" + x + "/"
 				+ y;
-		File jsfile = new File(outpath + path + ".js");
-		File imgfile = new File(outpath + path + ".png");
-		if (jsfile.exists() && imgfile.exists()) {
-			return path;
-		} else {
-			imgfile.mkdirs();
-		}
 		synchronized (lock) {
+			File jsfile = new File(outpath + path + ".js");
+			File imgfile = new File(outpath + path + ".png");
+			if (jsfile.exists() && imgfile.exists()) {
+				return path;
+			} else {
+				imgfile.mkdirs();
+			}
 			// tile extent
 			EarthPos min = Google.pixelToDegree(x * Google.getSize(), (y + 1)
 					* Google.getSize(), zoom);

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.sse.map.HotMapper;
 
 /**
- * Desc: http://<server>:<port>/sse4j/servlet/HotTile?zoom=&x=&y=&type=&keyword=<&key=>
+ * Desc: http://<server>:<port>/sse4j/servlet/HotTile?zoom=&x=&y=&type=&keyword=[&key=]
  * 
  * @author dux(duxionggis@126.com)
  * 

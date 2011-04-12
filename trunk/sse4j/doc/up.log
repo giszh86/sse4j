@@ -11,3 +11,8 @@ deploy v1.0
 
 --------------------------------------------------------------
 
+2011-4-12
+complete HotMapper class
+HotMapper createHotmap(int zoom, int x, int y, String keyword) return Javascript and Image Path
+
+--------------------------------------------------------------

@@ -94,10 +94,13 @@ public class HotMapper {
 	 */
 	public synchronized String createHotmap(int zoom, int x, int y,
 			String keyword, String key) throws Exception {
-		char[] chars = keyword.toCharArray();
 		StringBuffer sb = new StringBuffer();
-		for (int c : chars) {
-			sb.append(c);
+		for (int i = 0; i < keyword.length(); i = i + 2) {
+			long c = keyword.charAt(i);
+			if (i + 1 < keyword.length()) {
+				c = Long.valueOf(c + "" + (int) keyword.charAt(i + 1));
+			}
+			sb.append(Long.toHexString(c));
 		}
 		// make path
 		String path = "/cache/" + sb.toString() + "/" + zoom + "/" + x + "/"

@@ -6,6 +6,8 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.sse.exe.Tips.BduTip;
+import org.sse.exe.Tips.BduTips;
 import org.sse.util.Google;
 import org.sse.util.EarthPos;
 import com.google.gson.Gson;

@@ -28,7 +28,7 @@ import com.vividsolutions.jts.operation.distance.DistanceOp;
  * 
  */
 public class Geocoder {
-	private double buf = 50; // miter
+	private double buf = 100; // meter
 
 	public org.sse.geo.Point geocoding(String key, String keyword)
 			throws Exception {

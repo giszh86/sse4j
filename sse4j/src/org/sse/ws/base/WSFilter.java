@@ -81,7 +81,7 @@ public class WSFilter implements Serializable {
 	 * 设置距离
 	 * 
 	 * @param distance
-	 *            unit = miter
+	 *            unit = meter
 	 */
 	public void setDistance(int distance) {
 		if (distance > 10000)

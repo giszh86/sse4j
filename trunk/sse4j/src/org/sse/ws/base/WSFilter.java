@@ -102,8 +102,8 @@ public class WSFilter implements Serializable {
 	public void setCount(int count) {
 		if (count < 1)
 			count = 50;
-		else if (count > 200)
-			count = 200;
+		else if (count > 500)
+			count = 500;
 		this.count = count;
 	}
 

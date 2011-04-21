@@ -78,20 +78,19 @@ public class Geocoder {
 		}
 		List<Document> docs = Searcher.getInstance().search(storage.getKey(),
 				terms);
-		if (docs.size() == 1) {
-			return docs.get(0).get(PoiPtyName.ADDRESS);
-		} else {
-			double min = Double.MAX_VALUE;
-			Document doc = null;
-			for (Document i : docs) {
-				double dis = DistanceOp.distance(point, MercatorUtil
-						.toGeometry(i.get(PoiPtyName.GID), NaviConfig.WGS));
-				if (dis < min) {
-					min = dis;
-					doc = i;
-				}
+		double min = Double.MAX_VALUE;
+		Document doc = null;
+		for (Document i : docs) {
+			double dis = DistanceOp.distance(point, MercatorUtil.toGeometry(i
+					.get(PoiPtyName.GID), NaviConfig.WGS));
+			if (dis < min) {
+				min = dis;
+				doc = i;
 			}
-			return doc.get(PoiPtyName.ADDRESS);
 		}
+		if (doc != null && min < buf * 10)
+			return doc.get(PoiPtyName.ADDRESS);
+		else
+			throw new Exception("not found!");
 	}
 }

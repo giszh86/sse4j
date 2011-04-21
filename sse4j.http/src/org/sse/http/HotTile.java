@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.sse.map.HotMapper;
 
 /**
- * Desc: http://<server>:<port>/sse4j/servlet/HotTile?zoom=&x=&y=&type=&keyword=[&key=]
+ * Desc:
+ * http://<server>:<port>/sse4j/servlet/HotTile?zoom=&x=&y=&type=&keyword=[
+ * &key=]
  * 
  * @author dux(duxionggis@126.com)
  * 
@@ -26,12 +28,12 @@ public class HotTile extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.setCharacterEncoding(GZipWriter.charset);
 		String type = request.getParameter("type"); // "img" or "js"
 		String x = request.getParameter("x");
 		String y = request.getParameter("y");
 		String zoom = request.getParameter("zoom");
-		// String keyword = request.getParameter("keyword");
+		// String keyword = new String(request.getParameter("keyword").getBytes(
+		// request.getCharacterEncoding()));
 		String keyword = new String(request.getParameter("keyword").getBytes(
 				"ISO-8859-1"));
 		if (x != null && y != null && zoom != null && type != null

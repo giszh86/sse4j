@@ -2,6 +2,9 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" xmlns:modest="com.modestmaps.flex.*">
 	<mx:Script>
 		<![CDATA[			
+			import com.modestmaps.TweenMap;
+			import com.modestmaps.events.MapEvent;
+			import com.modestmaps.mapproviders.XYZMapProvider;
 			import com.ws.*;
 			import com.ws.base.*;
 			
@@ -49,10 +52,47 @@
 					Alert.show("Please input keyword");
 					return;
 				}
+				arg0.count = 250;
 				arg0.key = "110000";				
 				arg0.preference = cbType.selectedLabel;	
 				var searching:Searching = new Searching(leftMap.map);
 				searching.search(arg0);
+			}
+						
+			/**热点地图搜索与叠加*/
+			private var hotlayer:TweenMap;
+			protected function btn_clickHotTile(event:MouseEvent):void
+			{
+				if(hotlayer && leftMap.contains(hotlayer)){
+					leftMap.removeChild(hotlayer);
+					leftMap.map.removeEventListener(MapEvent.EXTENT_CHANGED, syncMaps);
+					leftMap.map.removeEventListener(MapEvent.PANNED, syncMaps);
+					leftMap.map.removeEventListener(MapEvent.ZOOMED_BY, syncMaps);
+					leftMap.map.removeEventListener(MapEvent.STOP_ZOOMING, syncMaps);
+					leftMap.map.removeEventListener(MapEvent.STOP_PANNING, syncMaps);					
+				}
+				var url:String = "http://localhost:8080/sse4j.http/servlet/HotTile?type=img&keyword=";
+				if(txtKeyword.text){
+					url += txtKeyword.text+"&";
+					hotlayer = new TweenMap(leftMap.map.width,leftMap.map.height,false,new XYZMapProvider(url));
+					hotlayer.mouseChildren = hotlayer.mouseEnabled = false;
+					hotlayer.setCenterZoom(leftMap.map.getCenter(),leftMap.map.getZoom());					
+					leftMap.addChild(hotlayer);
+					
+					leftMap.map.addEventListener(MapEvent.EXTENT_CHANGED, syncMaps);
+					leftMap.map.addEventListener(MapEvent.PANNED, syncMaps);
+					leftMap.map.addEventListener(MapEvent.ZOOMED_BY, syncMaps);
+					leftMap.map.addEventListener(MapEvent.STOP_ZOOMING, syncMaps);
+					leftMap.map.addEventListener(MapEvent.STOP_PANNING, syncMaps);
+				}				
+				else{
+					Alert.show("Please input keyword");
+					return;
+				}
+			}
+			private function syncMaps(event:MapEvent=null):void
+			{
+				hotlayer.grid.setMatrix(leftMap.map.grid.getMatrix());
 			}
 			
 			/**路径规划*/
@@ -106,7 +146,7 @@
 			<mx:Button label="reverseGeocoding" click="btn_clickRGeocode(event);"/>
 		</mx:HBox>
 		<mx:HBox width="100%">
-			<mx:Label text="Keyword"/><mx:TextInput id="txtKeyword" width="150" text="中关村"/>			
+			<mx:Label text="Keyword"/><mx:TextInput id="txtKeyword" width="150" text="大厦"/>			
 			<mx:ComboBox id="cbType">
 				<mx:ArrayList>
 					<mx:Object id="POI" label="POI" />
@@ -114,6 +154,7 @@
 				</mx:ArrayList>
 			</mx:ComboBox>
 			<mx:Button label="Search" click="btn_clickSearch(event);"/>
+			<mx:Button label="HotTile" click="btn_clickHotTile(event);"/>
 		</mx:HBox>
 		<mx:HBox width="100%">
 			<mx:Label text="Start"/><mx:TextInput id="txtStart" width="150" text="39.9,116.4"/>

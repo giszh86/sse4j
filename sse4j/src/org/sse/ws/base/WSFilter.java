@@ -84,8 +84,8 @@ public class WSFilter implements Serializable {
 	 *            unit = meter
 	 */
 	public void setDistance(int distance) {
-		if (distance > 10000)
-			distance = 10000;
+		if (distance > 50000)
+			distance = 50000;
 		this.distance = distance;
 	}
 
@@ -102,8 +102,8 @@ public class WSFilter implements Serializable {
 	public void setCount(int count) {
 		if (count < 1)
 			count = 50;
-		else if (count > 500)
-			count = 500;
+		else if (count > 2500)
+			count = 2500;
 		this.count = count;
 	}
 

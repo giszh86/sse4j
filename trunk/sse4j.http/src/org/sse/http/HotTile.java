@@ -39,8 +39,8 @@ public class HotTile extends HttpServlet {
 			response.setCharacterEncoding(GZipWriter.charset);
 			try {
 				String path = HotMapper.getInstance().createHotmap(
-						Integer.valueOf(zoom), Integer.valueOf(x),
-						Integer.valueOf(y), keyword,
+						Integer.valueOf(zoom), Integer.valueOf(y),
+						Integer.valueOf(x), keyword,
 						request.getParameter("key"));
 				if (type.equalsIgnoreCase("img")) {
 					response.setContentType("image/png");

@@ -5,10 +5,10 @@
 			import com.modestmaps.TweenMap;
 			import com.modestmaps.events.MapEvent;
 			import com.modestmaps.mapproviders.XYZMapProvider;
-			import com.ws.*;
-			import com.ws.base.*;
+			import com.sse.base.*;		
+			import com.sse.ws.*;
 			
-			import mx.controls.Alert;			
+			import mx.controls.Alert;
 			
 			/**地址编码*/
 			protected function btn_clickGeocode(event:MouseEvent):void
@@ -119,6 +119,18 @@
 				}
 			}
 			
+			private function btn_Clear():void{
+				leftMap.map.clear();
+				if(hotlayer && leftMap.contains(hotlayer)){
+					leftMap.removeChild(hotlayer);
+					leftMap.map.removeEventListener(MapEvent.EXTENT_CHANGED, syncMaps);
+					leftMap.map.removeEventListener(MapEvent.PANNED, syncMaps);
+					leftMap.map.removeEventListener(MapEvent.ZOOMED_BY, syncMaps);
+					leftMap.map.removeEventListener(MapEvent.STOP_ZOOMING, syncMaps);
+					leftMap.map.removeEventListener(MapEvent.STOP_PANNING, syncMaps);					
+				}
+			}
+			
 			private function btn_Start():void
 			{
 				txtStart.text = leftMap.map.getCenter().toString();				
@@ -137,7 +149,7 @@
 		<mx:HBox width="100%">
 			<mx:Button label="Zoom In" click="leftMap.map.zoomIn(event)"/>
 			<mx:Button label="Zoom Out" click="leftMap.map.zoomOut(event)"/>			
-			<mx:Button label="Clear" click="leftMap.map.clear();"/>	
+			<mx:Button label="Clear" click="btn_Clear();"/>	
 		</mx:HBox>	
 		<mx:HBox width="100%">		
 			<mx:Label text="Address"/><mx:TextInput id="txtGeocode" width="200" text="中关村"/>
@@ -146,7 +158,7 @@
 			<mx:Button label="reverseGeocoding" click="btn_clickRGeocode(event);"/>
 		</mx:HBox>
 		<mx:HBox width="100%">
-			<mx:Label text="Keyword"/><mx:TextInput id="txtKeyword" width="150" text="大厦"/>			
+			<mx:Label text="Keyword"/><mx:TextInput id="txtKeyword" width="150" text="饭店"/>			
 			<mx:ComboBox id="cbType">
 				<mx:ArrayList>
 					<mx:Object id="POI" label="POI" />
@@ -154,7 +166,7 @@
 				</mx:ArrayList>
 			</mx:ComboBox>
 			<mx:Button label="Search" click="btn_clickSearch(event);"/>
-			<mx:Button label="HotTile" click="btn_clickHotTile(event);"/>
+			<mx:Button label="HotTile" enabled="false" click="btn_clickHotTile(event);"/>
 		</mx:HBox>
 		<mx:HBox width="100%">
 			<mx:Label text="Start"/><mx:TextInput id="txtStart" width="150" text="39.9,116.4"/>

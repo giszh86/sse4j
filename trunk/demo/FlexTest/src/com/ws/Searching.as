@@ -36,8 +36,8 @@ package com.ws
 		{
 			var marker:PopMarker = event.marker as PopMarker;
 			var pt:Point = map.locationPoint(event.location, this.map.parent);
-			tooltip.x = pt.x+10;
-			tooltip.y = pt.y;
+			tooltip.x = pt.x+7;
+			tooltip.y = pt.y+7;
 			tooltip.label = marker.title;
 			tooltip.visible = true;
 		}
@@ -78,7 +78,10 @@ package com.ws
 					wkt = wkt.substring(wkt.lastIndexOf("(")+1,wkt.lastIndexOf(")"));
 					if(filter.preference=="POI"){
 						var loc:Location = MercatorProjection.MC2LL(new Point(parseFloat(wkt.split(" ")[0]),parseFloat(wkt.split(" ")[1])));
-						this.map.putMarker(loc,new PopMarker(arr[i].id+"_"+arr[i].title));	
+						var pt:Point = this.map.locationPoint(loc,this.map);
+						pt.y -= 7;
+						pt.x -= 7;					
+						this.map.putMarker(this.map.pointLocation(pt,this.map),new PopMarker(arr[i].id+"_"+arr[i].title));	
 						if(!extent)
 							extent = new MapExtent(loc.lat,loc.lat,loc.lon,loc.lon);
 						else

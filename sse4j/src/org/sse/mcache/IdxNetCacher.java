@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.index.TermDocs;
 import org.sse.NaviConfig;
 import org.sse.io.IdxReader;
 import org.sse.service.base.Edge;
@@ -57,11 +56,28 @@ public class IdxNetCacher {
 			throws IOException {
 		Envelope extent1 = null;
 		IdxReader nodeReader = new IdxReader(idxpath_node);
-		TermDocs nodedocs = nodeReader.getReader().termDocs();
 		List<Node> nodes = new ArrayList<Node>(nodeReader.getReader().numDocs());
 		SpatialIndex nodesIndex = new STRtree();
-		while (nodedocs.next()) {
-			Document doc = nodeReader.getReader().document(nodedocs.doc());
+
+		// TODO Version=3.1 TermDocs Bug
+		// TermDocs nodedocs = nodeReader.getReader().termDocs();
+		// while (nodedocs.next()) {
+		// Document doc = nodeReader.getReader().document(nodedocs.doc());
+		// Node node = this.createNode(doc);
+		// nodes.add(node);
+		// Geometry g = MercatorUtil.toGeometry(doc.get(NodePtyName.GID),
+		// NaviConfig.WGS);
+		// node.setX((int) g.getCoordinate().x);
+		// node.setY((int) g.getCoordinate().y);
+		// nodesIndex.insert(g.getEnvelopeInternal(), node.getId());
+		// if (extent1 == null)
+		// extent1 = g.getEnvelopeInternal();
+		// else
+		// extent1.expandToInclude(g.getEnvelopeInternal());
+		// }
+		// nodedocs.close();
+		for (int i = 0; i < nodeReader.getReader().numDocs(); i++) {
+			Document doc = nodeReader.getReader().document(i);
 			Node node = this.createNode(doc);
 			nodes.add(node);
 			Geometry g = MercatorUtil.toGeometry(doc.get(NodePtyName.GID),
@@ -74,19 +90,37 @@ public class IdxNetCacher {
 			else
 				extent1.expandToInclude(g.getEnvelopeInternal());
 		}
-		nodedocs.close();
+
 		Collections.sort(nodes, new NodeComparator());
 		((STRtree) nodesIndex).build();
 		Searcher.getInstance().put(idxpath_node, nodeReader, nodesIndex,
 				extent1);
 
+		/******************************************************************************/
+
 		Envelope extent2 = null;
 		IdxReader edgeReader = new IdxReader(idxpath_edge);
-		TermDocs edgedocs = edgeReader.getReader().termDocs();
 		List<Edge> edges = new ArrayList<Edge>(edgeReader.getReader().numDocs());
 		SpatialIndex edgesIndex = new STRtree();
-		while (edgedocs.next()) {
-			Document doc = edgeReader.getReader().document(edgedocs.doc());
+
+		// TODO Version=3.1 TermDocs Bug
+		// TermDocs edgedocs = edgeReader.getReader().termDocs();
+		// while (edgedocs.next()) {
+		// Document doc = edgeReader.getReader().document(edgedocs.doc());
+		// Geometry g = MercatorUtil.toGeometry(doc.get(EdgePtyName.GID),
+		// NaviConfig.WGS);
+		// Edge edge = this.createEdge(doc);
+		// edge.setLength((int) g.getLength());
+		// edges.add(edge);
+		// edgesIndex.insert(g.getEnvelopeInternal(), edge.getId());
+		// if (extent2 == null)
+		// extent2 = g.getEnvelopeInternal();
+		// else
+		// extent2.expandToInclude(g.getEnvelopeInternal());
+		// }
+		// edgedocs.close();
+		for (int i = 0; i < edgeReader.getReader().numDocs(); i++) {
+			Document doc = edgeReader.getReader().document(i);
 			Geometry g = MercatorUtil.toGeometry(doc.get(EdgePtyName.GID),
 					NaviConfig.WGS);
 			Edge edge = this.createEdge(doc);
@@ -98,7 +132,7 @@ public class IdxNetCacher {
 			else
 				extent2.expandToInclude(g.getEnvelopeInternal());
 		}
-		edgedocs.close();
+
 		Collections.sort(edges, new EdgeComparator());
 		((STRtree) edgesIndex).build();
 		Searcher.getInstance().put(idxpath_edge, edgeReader, edgesIndex,
@@ -107,7 +141,6 @@ public class IdxNetCacher {
 		Net net = new Net();
 		net.setEdges(edges);
 		net.setNodes(nodes);
-
 		return net;
 	}
 

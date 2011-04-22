@@ -10,7 +10,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.analysis.tokenattributes.TermAttribute;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.core.QueryNodeException;
 import org.apache.lucene.queryParser.standard.QueryParserUtil;
@@ -49,9 +49,9 @@ public class IdxParser {
 	}
 
 	private IdxParser() {
-		scAnalyzer = new SmartChineseAnalyzer(Version.LUCENE_30, true);
+		scAnalyzer = new SmartChineseAnalyzer(Version.LUCENE_31, true);
 		ikAnalyzer = new IKAnalyzer(true);
-		stAnalyzer = new StandardAnalyzer(Version.LUCENE_30);
+		stAnalyzer = new StandardAnalyzer(Version.LUCENE_31);
 	}
 
 	/**
@@ -70,21 +70,21 @@ public class IdxParser {
 		}
 
 		// if (type == AnalyzerType.SmartCN) {
-		// return new SmartChineseAnalyzer(Version.LUCENE_30, true);
+		// return new SmartChineseAnalyzer(Version.LUCENE_31, true);
 		// } else if (type == AnalyzerType.IK) {
 		// return new IKAnalyzer(true);
 		// } else {
-		// return new StandardAnalyzer(Version.LUCENE_30);
+		// return new StandardAnalyzer(Version.LUCENE_31);
 		// }
 	}
 
 	public String tokenize(String word, AnalyzerType type) throws IOException {
 		TokenStream ts = getAnalyzer(type).tokenStream("word",
 				new StringReader(word));
-		TermAttribute termAtt = ts.getAttribute(TermAttribute.class);
+		CharTermAttribute termAtt = ts.getAttribute(CharTermAttribute.class);
 		StringBuffer sb = new StringBuffer();
 		while (ts.incrementToken()) {
-			sb.append(termAtt.term()).append(" ");
+			sb.append(termAtt.toString()).append(" ");
 		}
 		ts.close();
 		return sb.toString().trim();
@@ -109,7 +109,7 @@ public class IdxParser {
 		if (qtype == QueryType.Fuzzy) {
 			FuzzyLikeThisQuery query = new FuzzyLikeThisQuery(3, analyzer);
 			for (int i = 0; i < fields.size(); i++) {
-				query.addTerms(texts.get(i), fields.get(i), 0.5f, 1);
+				query.addTerms(texts.get(i), fields.get(i), 0.7f, 0);
 			}
 			texts.clear();
 			fields.clear();
@@ -124,6 +124,7 @@ public class IdxParser {
 				else
 					flags[i] = BooleanClause.Occur.MUST_NOT;
 			try {
+				IKQueryParser.setMaxWordLength(true); // TODO
 				return IKQueryParser.parseMultiField(fields
 						.toArray(new String[fields.size()]), texts
 						.toArray(new String[texts.size()]), flags);

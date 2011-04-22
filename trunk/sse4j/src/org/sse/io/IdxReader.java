@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
@@ -14,14 +16,12 @@ import org.apache.lucene.search.DocIdSet;
 import org.apache.lucene.search.DocIdSetIterator;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.MultiSearcher;
-import org.apache.lucene.search.ParallelMultiSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.TermsFilter;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.NIOFSDirectory;
 
 /**
  * 
@@ -29,8 +29,9 @@ import org.apache.lucene.store.FSDirectory;
  * 
  */
 public class IdxReader {
-	private MultiReader mr = null;
-	private boolean useParal = false;
+	private MultiReader mReader = null;
+	private IndexSearcher mSearcher = null;
+	private ExecutorService es;
 
 	/**
 	 * 
@@ -39,16 +40,27 @@ public class IdxReader {
 	 * @throws IOException
 	 */
 	public IdxReader(String idxPath) throws IOException {
-		this(idxPath.split(","), false);
+		this(idxPath.split(","), true);
 	}
 
-	public IdxReader(String[] idxPaths, boolean useParallel) throws IOException {
+	public IdxReader(String[] idxPaths, boolean win) throws IOException {
 		IndexReader[] readers = new IndexReader[idxPaths.length];
-		for (int i = 0; i < idxPaths.length; i++)
-			readers[i] = IndexReader.open(FSDirectory
-					.open(new File(idxPaths[i])), true);
-		mr = new MultiReader(readers, true);
-		useParal = useParallel;
+		for (int i = 0; i < idxPaths.length; i++) {
+			// use NIOFSDirectory under linux
+			if (win) {
+				readers[i] = IndexReader.open(FSDirectory.open(new File(
+						idxPaths[i])), true);
+			} else {
+				readers[i] = IndexReader.open(NIOFSDirectory.open(new File(
+						idxPaths[i])), true);
+			}
+		}
+		es = Executors.newCachedThreadPool();
+		mReader = new MultiReader(readers);
+		if (readers.length > 1)
+			mSearcher = new IndexSearcher(mReader, es);
+		else
+			mSearcher = new IndexSearcher(mReader);
 	}
 
 	/**
@@ -56,21 +68,14 @@ public class IdxReader {
 	 * @return MultiReader object
 	 */
 	public IndexReader getReader() {
-		return mr;
-	}
-
-	/**
-	 * using multi thread
-	 * 
-	 * @param useParallel
-	 */
-	public void useParallel(boolean useParallel) {
-		useParal = useParallel;
+		return mReader;
 	}
 
 	public void close() {
 		try {
-			mr.close();
+			mSearcher.close();
+			mReader.close();
+			es.shutdown();
 		} catch (IOException e) {
 		}
 	}
@@ -112,33 +117,17 @@ public class IdxReader {
 	 * @return
 	 */
 	public List<Document> query(Query query, Filter filter, int count) {
-		if (mr == null)
+		if (mReader == null)
 			return null;
 		if (count < 1)
 			count = 50;
 		List<Document> docs = new ArrayList<Document>();
 		try {
-			Searcher s = null;
-			IndexReader[] readers = mr.getSequentialSubReaders();
-			if (readers.length == 1) {
-				s = new IndexSearcher(readers[0]);
-			} else {
-				IndexSearcher[] searchers = new IndexSearcher[readers.length];
-				for (int i = 0; i < searchers.length; i++)
-					searchers[i] = new IndexSearcher(readers[i]);
-				if (!useParal) {
-					// result contains same object
-					s = new MultiSearcher(searchers);
-				} else {
-					// delete same object from result
-					s = new ParallelMultiSearcher(searchers);
-				}
-			}
-			TopDocs result = s.search(query.weight(s), filter, count);
+			// mSearcher.search(query, filter, n, sort); // Sort(SortField())
+			TopDocs result = mSearcher.search(query, filter, count);
 			for (ScoreDoc doc : result.scoreDocs) {
-				docs.add(mr.document(doc.doc));
+				docs.add(mReader.document(doc.doc));
 			}
-			s.close();
 			filter = null;
 			query = null;
 			return docs;
@@ -155,7 +144,7 @@ public class IdxReader {
 	 * @return
 	 */
 	public List<Document> query(List<Term> terms) {
-		if (mr == null || terms == null)
+		if (mReader == null || terms == null)
 			return null;
 		try {
 			TermsFilter tfilter = new TermsFilter();
@@ -165,16 +154,15 @@ public class IdxReader {
 					tfilter.addTerm(term);
 			}
 			List<Document> docs = new ArrayList<Document>();
-			DocIdSet set = tfilter.getDocIdSet(mr);
+			DocIdSet set = tfilter.getDocIdSet(mReader);
 			DocIdSetIterator di = set.iterator();
 			while (di.nextDoc() != DocIdSetIterator.NO_MORE_DOCS) {
-				docs.add(mr.document(di.docID()));
+				docs.add(mReader.document(di.docID()));
 			}
 			tfilter = null;
 			terms = null;
 			return docs;
 		} catch (IOException e) {
-		} finally {
 		}
 		return null;
 	}

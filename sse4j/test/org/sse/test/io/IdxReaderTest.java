@@ -25,7 +25,7 @@ import org.sse.io.Enums.QueryType;
 
 public class IdxReaderTest {
 	public static void main(String[] args) throws Exception {
-		IdxReader idx = new IdxReader("data/idx/Beijing/Poi");
+		IdxReader idx = new IdxReader("data/idx/110000/Poi");
 		// simple(idx.getReader());
 		query(idx);
 		// terms(idx);
@@ -46,9 +46,9 @@ public class IdxReaderTest {
 		System.out.println(addr + "----2--"
 				+ ((new Date()).getTime() - date1.getTime()));
 
-		// terms.add(new Term("ADDRESS", addr));
-		terms.add(new Term("ADDRESS", "XS"));
-		terms.add(new Term("NAMEC", "XS"));
+		terms.add(new Term("ADDRESS", addr));
+		// terms.add(new Term("ADDRESS", "XS"));
+		// terms.add(new Term("NAMEC", "XS"));
 		terms.add(new Term("NAMEP", "XS"));
 
 		Query query1 = IdxParser.getInstance().createQuery(QueryType.Standard,
@@ -108,8 +108,8 @@ public class IdxReaderTest {
 			CorruptIndexException {
 		IndexSearcher searcher = new IndexSearcher(reader);
 
-		QueryParser parser = new QueryParser(Version.LUCENE_30, "ADDRESS",
-				new SmartChineseAnalyzer(Version.LUCENE_30, true));
+		QueryParser parser = new QueryParser(Version.LUCENE_31, "ADDRESS",
+				new SmartChineseAnalyzer(Version.LUCENE_31, true));
 		Query query = parser.parse("中关村大街41号");
 		TopDocs result = searcher.search(query, 20);
 		for (ScoreDoc doc : result.scoreDocs) {

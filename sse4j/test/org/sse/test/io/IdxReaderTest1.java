@@ -24,10 +24,10 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 public class IdxReaderTest1 {
 	public static void main(String[] args) throws Exception {
 		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < 99; i++) {
-			// sb.append("D:/data/index").append(",");
+		for (int i = 0; i < 20; i++) {
+			sb.append("D:/data/idx/110000/poi").append(",");
 		}
-		sb.append("D:/data/index");
+		sb.append("D:/data/idx/110000/poi");
 
 		// Searcher.getInstance().check("test", sb.toString());
 		//
@@ -51,25 +51,18 @@ public class IdxReaderTest1 {
 
 		IdxReader idx = new IdxReader(sb.toString().split(","), false);
 		List<Term> terms = new ArrayList<Term>();
-		terms.add(new Term("NAMEC", "同济大学"));
+		terms.add(new Term("NAMEC", "地质大学"));
 		Query query = IdxParser.getInstance().createQuery(QueryType.Standard,
 				OccurType.Or,
-				IdxParser.getInstance().getAnalyzer(AnalyzerType.SmartCN),
-				terms);
+				IdxParser.getInstance().getAnalyzer(AnalyzerType.IK), terms);
 		Date date2 = new Date();
-		List<Document> docs2 = idx.query(query, null, 20000);
-		System.out.println("c:" + ((new Date()).getTime() - date2.getTime())
-				+ " s:" + docs2.size());
+		List<Document> docs2 = idx.query(query, null, 1000);
+		System.out.println("time:" + ((new Date()).getTime() - date2.getTime())
+				+ " size:" + docs2.size());
 		for (Document doc : docs2) {
-			// System.out.println(doc.get("NAMEC") + "--" +
-			// doc.get("GEOMETRY"));
+			System.out.println(doc.get("NAMEC") + "--" + doc.get("GEOMETRY"));
 		}
-
-		idx = new IdxReader(sb.toString().split(","), true);
-		date2 = new Date();
-		docs2 = idx.query(query, null, 20000);
-		System.out.println("c:" + ((new Date()).getTime() - date2.getTime())
-				+ " s:" + docs2.size());
+		idx.close();
 	}
 
 }

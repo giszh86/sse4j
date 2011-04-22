@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.lucene.document.Document;
-import org.apache.lucene.index.TermDocs;
 import org.sse.util.MercatorUtil;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -40,10 +39,31 @@ public class Sidxer {
 		tree = new STRtree();
 
 		IdxReader reader = new IdxReader(idxpath);
-		TermDocs docs = reader.getReader().termDocs();
 		List<Sidx> lsidx = new ArrayList<Sidx>();
-		while (docs.next()) {
-			Document doc = reader.getReader().document(docs.doc());
+
+		// TODO Version=3.1 TermDocs Bug
+		// TermDocs docs = reader.getReader().termDocs();
+		// while (docs.next()) {
+		// Document doc = reader.getReader().document(docs.doc());
+		// Sidx sidx = new Sidx();
+		// Envelope env = MercatorUtil.toGeometry(doc.get("GEOMETRY"), wgs)
+		// .getEnvelopeInternal();
+		// sidx.setX1((float) env.getMinX());
+		// sidx.setY1((float) env.getMinY());
+		// sidx.setX2((float) env.getMaxX());
+		// sidx.setY2((float) env.getMaxY());
+		// sidx.setKey(doc.get(keyname));
+		// lsidx.add(sidx);
+		//
+		// if (extent == null)
+		// extent = env;
+		// else
+		// extent.expandToInclude(env);
+		// tree.insert(env, sidx.getKey());
+		// }
+		// docs.close();
+		for (int i = 0; i < reader.getReader().numDocs(); i++) {
+			Document doc = reader.getReader().document(i);
 			Sidx sidx = new Sidx();
 			Envelope env = MercatorUtil.toGeometry(doc.get("GEOMETRY"), wgs)
 					.getEnvelopeInternal();
@@ -60,7 +80,6 @@ public class Sidxer {
 				extent.expandToInclude(env);
 			tree.insert(env, sidx.getKey());
 		}
-		docs.close();
 		reader.close();
 
 		File file = new File(idxpath.split(",")[0] + ".sidx");

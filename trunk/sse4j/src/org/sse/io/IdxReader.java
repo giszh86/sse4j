@@ -29,9 +29,9 @@ import org.apache.lucene.store.NIOFSDirectory;
  * 
  */
 public class IdxReader {
-	private MultiReader mReader = null;
+	private IndexReader mReader = null;
 	private IndexSearcher mSearcher = null;
-	private ExecutorService es;
+	private ExecutorService es = null;
 
 	/**
 	 * 
@@ -55,12 +55,14 @@ public class IdxReader {
 						idxPaths[i])), true);
 			}
 		}
-		es = Executors.newCachedThreadPool();
-		mReader = new MultiReader(readers);
-		if (readers.length > 1)
+
+		mReader = new MultiReader(readers, false);
+		if (readers.length > 1) {
+			es = Executors.newCachedThreadPool();
 			mSearcher = new IndexSearcher(mReader, es);
-		else
+		} else {
 			mSearcher = new IndexSearcher(mReader);
+		}
 	}
 
 	/**
@@ -75,7 +77,8 @@ public class IdxReader {
 		try {
 			mSearcher.close();
 			mReader.close();
-			es.shutdown();
+			if (es != null)
+				es.shutdown();
 		} catch (IOException e) {
 		}
 	}

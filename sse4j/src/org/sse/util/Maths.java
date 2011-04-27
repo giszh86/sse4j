@@ -11,7 +11,7 @@ import org.sse.geo.Point;
  * @author dux(duxionggis@126.com)
  * 
  */
-public class Maths {
+public strictfp class Maths {
 
 	public static void main(String[] arg) {
 		System.out.println(Math.PI * 6378137);

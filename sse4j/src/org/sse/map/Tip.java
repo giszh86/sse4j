@@ -41,6 +41,17 @@ class Tip {
 		private int y;
 		private List<TipPoiBase> subs = new LinkedList<TipPoiBase>();
 
+		private static transient int limitCount = 25;
+		private static transient int width = 4;
+		private static transient int height = 4;
+		public static void setLimitCount(int count){
+			limitCount = count;
+		}
+		public static void setBufferSize(int w,int h){
+			width = w;
+			height = h;
+		}
+
 		public int getX() {
 			return x;
 		}
@@ -66,14 +77,14 @@ class Tip {
 		}
 
 		public void addSub(TipPoiBase sub) {
-			if (this.subs.size() <= 25) // TODO 25
+			if (this.subs.size() <= limitCount)
 				this.subs.add(sub);
 		}
 
 		public boolean equals(Object pt) {
-			if (pt instanceof TipPoi) // TODO 4
-				return (Math.abs(this.getX() - ((TipPoi) pt).getX()) <= 4 && Math
-						.abs(this.getY() - ((TipPoi) pt).getY()) <= 4);
+			if (pt instanceof TipPoi)
+				return (Math.abs(this.getX() - ((TipPoi) pt).getX()) <= width && Math
+						.abs(this.getY() - ((TipPoi) pt).getY()) <= height);
 			return false;
 		}
 	}

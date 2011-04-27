@@ -74,6 +74,9 @@ public class HotMapper {
 			File file = new File(outpath);
 			if (!file.exists())
 				file.mkdirs();
+			TipPoi.setLimitCount(25);
+			TipPoi.setBufferSize(icon.getWidth() / 3 + 1,
+					icon.getHeight() / 3 + 1);
 		} catch (IOException e) {
 		}
 	}

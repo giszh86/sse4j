@@ -39,8 +39,7 @@ public strictfp class Google {
 		return Math.min(Math.max(a, b), c);
 	}
 
-	public strictfp static EarthPos degreeToPixel(double lon, double lat,
-			int zoom) {
+	public static EarthPos degreeToPixel(double lon, double lat, int zoom) {
 		double d = Zc.get(zoom);
 		double e = Math.round(d + lon * Bc.get(zoom));
 		double f = minmax(Math.sin((Math.PI / 180.0) * lat), -0.9999, 0.9999);
@@ -54,7 +53,7 @@ public strictfp class Google {
 		pos.yLat = (int) (pos.yLat / 256);
 	}
 
-	public strictfp static EarthPos pixelToDegree(int x, int y, int zoom) {
+	public static EarthPos pixelToDegree(int x, int y, int zoom) {
 		double e = Zc.get(zoom);
 		double f = (x - e) / Bc.get(zoom);
 		double g = (y - e) / -Cc.get(zoom);
@@ -63,7 +62,7 @@ public strictfp class Google {
 		return new EarthPos(f, h);
 	}
 
-	public strictfp static EarthPos degreeToGoog(double lon, double lat) {
+	public static EarthPos degreeToGoog(double lon, double lat) {
 		double a = Math.log(Math.tan((90 + lat) * Math.PI / 360))
 				/ (Math.PI / 180);
 		double custLat = a * 20037508.342789 / 180;
@@ -72,7 +71,7 @@ public strictfp class Google {
 		return new EarthPos(custLon, custLat);
 	}
 
-	public strictfp static EarthPos googToDegree(double x, double y) {
+	public static EarthPos googToDegree(double x, double y) {
 		double lat_deg, lon_deg;
 		lat_deg = (y / 20037508.342789) * 180;
 		lon_deg = (x / 20037508.342789) * 180;

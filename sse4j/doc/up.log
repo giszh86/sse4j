@@ -19,3 +19,10 @@ sse4j.http add HotTile servlet class
 HotTile support client overlap tiles dynamically
 
 --------------------------------------------------------------
+
+2011-4-22
+update third jar libraries to the lastest version
+update some function under sse4j project by newest jar libraries 
+support FlexDemo under Demo dir
+
+--------------------------------------------------------------

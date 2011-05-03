@@ -11,10 +11,13 @@ package com.sse.base
 		
 		public function WSResult(result:String)
 		{
-			var list:XMLList = new XML(result).descendants("return");
-			_resultCode = list.child("resultCode");
-			_faultString = list.child("faultString");	
-			_jsonString = list.child("jsonString");
+			var list:XMLList = new XML(result).descendants("return");			
+//			_resultCode = list.child("resultCode");
+//			_faultString = list.child("faultString");
+//			_jsonString = list.child("jsonString");
+			_resultCode = list[0].resultCode;
+			_faultString = list[0].faultString;
+			_jsonString = list[0].jsonString;		
 			trace(_jsonString);
 			if(_resultCode==1)
 				_json = JSON.decode(_jsonString);

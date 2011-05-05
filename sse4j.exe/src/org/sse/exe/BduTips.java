@@ -4,17 +4,17 @@ import java.util.LinkedList;
 
 import com.google.gson.Gson;
 
-class Tips {
+class BduTips {
 	/**
 	 * 
 	 * @author dux(duxionggis@126.com)
 	 * 
 	 */
-	static class BduTips {
+	static class Tips {
 		private int uid_num;
 		private int err_no;
 		private String tileid;
-		private LinkedList<BduTip> uids;
+		private LinkedList<Tip> uids;
 
 		public int getUid_num() {
 			return uid_num;
@@ -40,11 +40,11 @@ class Tips {
 			this.tileid = tileid;
 		}
 
-		public LinkedList<BduTip> getUids() {
+		public LinkedList<Tip> getUids() {
 			return uids;
 		}
 
-		public void setUids(LinkedList<BduTip> uids) {
+		public void setUids(LinkedList<Tip> uids) {
 			this.uids = uids;
 		}
 
@@ -55,7 +55,7 @@ class Tips {
 	 * @author dux(duxionggis@126.com)
 	 * 
 	 */
-	static class BduTip {
+	static class Tip {
 		private float x;
 		private float y;
 		private String uid;

@@ -6,8 +6,8 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.sse.exe.Tips.BduTip;
-import org.sse.exe.Tips.BduTips;
+import org.sse.exe.BduTips.Tip;
+import org.sse.exe.BduTips.Tips;
 import org.sse.util.Google;
 import org.sse.util.EarthPos;
 import com.google.gson.Gson;
@@ -32,13 +32,13 @@ public class Bdu {
 		int yFrom = (int) tile.yLat - 10;
 		int yTo = yFrom + 20;
 
-		List<BduTip> list = getTips(xFrom, yFrom, xTo, yTo, zoom, city, key);
+		List<Tip> list = getTips(xFrom, yFrom, xTo, yTo, zoom, city, key);
 		System.out.println("Size:" + list.size() + list);
 	}
 
-	static List<BduTip> getTips(int xFrom, int yFrom, int xTo, int yTo,
+	static List<Tip> getTips(int xFrom, int yFrom, int xTo, int yTo,
 			int zoom, int city, String key) {
-		List<BduTip> list = new LinkedList<BduTip>();
+		List<Tip> list = new LinkedList<Tip>();
 		for (int i = xFrom; i <= xTo; i++)
 			for (int j = yFrom; j <= yTo; j++) {
 				String url = getJsUrl(i, j, zoom, city, key);
@@ -56,7 +56,7 @@ public class Bdu {
 
 				String data = baos.toString().trim();
 				data = data.substring(9, data.length() - 1);
-				BduTips dd = new Gson().fromJson(data, BduTips.class);
+				Tips dd = new Gson().fromJson(data, Tips.class);
 				if (dd.getUid_num() > 0)
 					list.addAll(dd.getUids());
 			}

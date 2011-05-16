@@ -71,7 +71,7 @@
 					leftMap.map.removeEventListener(MapEvent.STOP_ZOOMING, syncMaps);
 					leftMap.map.removeEventListener(MapEvent.STOP_PANNING, syncMaps);					
 				}
-				var url:String = "http://localhost:8080/sse4j.http/servlet/HotTile?type=img&keyword=";
+				var url:String = "http://localhost:8080/sse4j/servlet/HotTile?type=img&keyword=";
 				if(txtKeyword.text){
 					url += txtKeyword.text+"&";
 					hotlayer = new TweenMap(leftMap.map.width,leftMap.map.height,false,new XYZMapProvider(url));
@@ -166,7 +166,7 @@
 				</mx:ArrayList>
 			</mx:ComboBox>
 			<mx:Button label="Search" click="btn_clickSearch(event);"/>
-			<mx:Button label="HotTile" enabled="false" click="btn_clickHotTile(event);"/>
+			<mx:Button label="HotTile" enabled="true" click="btn_clickHotTile(event);"/>
 		</mx:HBox>
 		<mx:HBox width="100%">
 			<mx:Label text="Start"/><mx:TextInput id="txtStart" width="150" text="39.9,116.4"/>

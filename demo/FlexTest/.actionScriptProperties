@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties mainApplicationPath="FlexTest.mxml" projectUUID="9c268100-a8d8-4431-a96a-620d4c9e296b" version="6">
+<actionScriptProperties mainApplicationPath="MMapTest.mxml" projectUUID="9c268100-a8d8-4431-a96a-620d4c9e296b" version="6">
   <compiler additionalCompilerArguments="-locale zh_CN" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
@@ -9,12 +9,13 @@
         </excludedEntries>
       </libraryPathEntry>
       <libraryPathEntry kind="1" linkType="1" path="libs"/>
+      <libraryPathEntry kind="3" linkType="1" path="/MMap/bin/MMap.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
   <applications>
     <application path="FlexClient.mxml"/>
-    <application path="FlexTest.mxml"/>
+    <application path="MMapTest.mxml"/>
   </applications>
   <modules/>
   <buildCSSFiles/>

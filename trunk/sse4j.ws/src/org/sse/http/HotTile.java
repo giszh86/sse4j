@@ -1,6 +1,5 @@
 package org.sse.http;
 
-
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -21,7 +20,6 @@ import org.sse.map.HotMapper;
  */
 public class HotTile extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final static String charset = "UTF-8";
 	private static Logger logger = Logger.getLogger(HotTile.class.getName());
 
 	public HotTile() {
@@ -30,15 +28,16 @@ public class HotTile extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.setCharacterEncoding(charset);
+		String charset = request.getCharacterEncoding();
+		if (charset == null)
+			charset = "ISO-8859-1";
+
 		String type = request.getParameter("type"); // "img" or "js"
 		String x = request.getParameter("x");
 		String y = request.getParameter("y");
 		String zoom = request.getParameter("zoom");
-		// String keyword = new String(request.getParameter("keyword").getBytes(
-		// request.getCharacterEncoding()));
 		String keyword = new String(request.getParameter("keyword").getBytes(
-				"ISO-8859-1"));
+				charset));
 		if (x != null && y != null && zoom != null && type != null
 				&& keyword != null) {
 			response.setCharacterEncoding(charset);

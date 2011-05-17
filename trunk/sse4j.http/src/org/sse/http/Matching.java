@@ -47,8 +47,7 @@ public class Matching extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			// 1 get parameters
-			request.setCharacterEncoding(GZipWriter.charset);
+			// 1 get parameters			
 			String xml = request.getParameter("xml");
 			// 2 write
 			GZipWriter.write(this.excute(XmlParser.getDocument(xml)), response);

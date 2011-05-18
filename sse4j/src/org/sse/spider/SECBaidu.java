@@ -20,6 +20,8 @@ public class SECBaidu extends SECallable {
 	}
 
 	public SECResult call() throws Exception {
+		SECResult result = new SECResult();
+
 		URL uri = new URL(url + this.getKeyword());
 		BufferedReader reader = new BufferedReader(new InputStreamReader(uri
 				.openStream(), charset));
@@ -29,10 +31,25 @@ public class SECBaidu extends SECallable {
 			sb.append(s.trim());
 		}
 		reader.close();
-		System.out.println(sb.toString());
+		// System.out.println(sb);
 
-		// TODO
-		return null;
+		String startSprit = "<table cellpadding=\"0\" cellspacing=\"0\" class=\"result\" id=";
+		String endSprit = "</td></tr></table><br>";
+		int fromIndex = 0;
+		while (fromIndex < sb.length()) {
+			int startIndex = sb.indexOf(startSprit, fromIndex);
+			fromIndex = startIndex + startSprit.length();
+			int endIndex = sb.indexOf(endSprit, fromIndex);
+			if (endIndex > startIndex && endIndex >= 0 && startIndex >= 0) {
+				// TODO
+				result.addLink(sb.substring(startIndex, endIndex
+						+ endSprit.length()));
+				fromIndex = endIndex + endSprit.length();
+			} else {
+				fromIndex = sb.length();
+			}
+		}
+
+		return result;
 	}
-
 }

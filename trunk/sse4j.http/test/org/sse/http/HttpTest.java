@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.zip.GZIPInputStream;
 
 public class HttpTest {
@@ -24,7 +25,10 @@ public class HttpTest {
 
 		// send
 		DataOutputStream out = new DataOutputStream(conn.getOutputStream());
-		String xml = "xml=<ws:poiInfo><arg0><id>200</id><key>110000</key></arg0></ws:poiInfo>";
+		// "xml=<ws:poiInfo><arg0><id>200</id><key>110000</key></arg0></ws:poiInfo>";
+		String xml = "xml=<ws:search><arg0><count>50</count><distance></distance><geometryWKT></geometryWKT><key>110000</key><keyword>";
+		xml += URLEncoder.encode("中关村北大街", "utf-8");
+		xml += "</keyword><preference>POI</preference></arg0></ws:search>";
 		out.writeBytes(xml);
 		out.flush();
 		out.close();

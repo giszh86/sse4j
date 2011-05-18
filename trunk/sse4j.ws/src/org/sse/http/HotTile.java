@@ -28,19 +28,16 @@ public class HotTile extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String charset = request.getCharacterEncoding();
-		if (charset == null)
-			charset = "ISO-8859-1";
-
 		String type = request.getParameter("type"); // "img" or "js"
 		String x = request.getParameter("x");
 		String y = request.getParameter("y");
 		String zoom = request.getParameter("zoom");
-		String keyword = new String(request.getParameter("keyword").getBytes(
-				charset));
+		// notice: using encodeURI(keyword) when building http url
+		// tomcat conf/server.xml contains <Connector URIEncoding="UTF-8">
+		String keyword = request.getParameter("keyword");
 		if (x != null && y != null && zoom != null && type != null
 				&& keyword != null) {
-			response.setCharacterEncoding(charset);
+			response.setCharacterEncoding("UTF-8");
 			try {
 				String path = HotMapper.getInstance().createHotmap(
 						Integer.valueOf(zoom), Integer.valueOf(y),

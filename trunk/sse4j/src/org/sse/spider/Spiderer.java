@@ -12,8 +12,15 @@ import java.util.concurrent.Future;
 public class Spiderer {
 	public static void main(String[] args) throws Exception {
 		ExecutorService es = Executors.newCachedThreadPool();
-		Future<SECResult> baiduResult = es.submit(new SECBaidu("北京大厦"));
-		Future<SECResult> sogouResult = es.submit(new SECSogou("sse4j"));
+		Future<SECResult> baiduF = es.submit(new SECBaidu("大厦"));
+		Future<SECResult> sogouF = es.submit(new SECSogou("大厦"));
+
+		SECResult baiduR = baiduF.get();
+		System.out.println(baiduR.getLinks().size());
+
+		SECResult sogouR = sogouF.get();
+		System.out.println(sogouR.getLinks().size());
+
 		es.shutdown();
 	}
 }

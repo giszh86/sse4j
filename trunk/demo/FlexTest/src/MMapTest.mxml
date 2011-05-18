@@ -73,7 +73,7 @@
 				}
 				var url:String = "http://localhost:8080/sse4j/servlet/HotTile?type=img&keyword=";
 				if(txtKeyword.text){
-					url += txtKeyword.text+"&";
+					url += encodeURI(txtKeyword.text)+"&";
 					hotlayer = new TweenMap(leftMap.map.width,leftMap.map.height,false,new XYZMapProvider(url));
 					hotlayer.mouseChildren = hotlayer.mouseEnabled = false;
 					hotlayer.setCenterZoom(leftMap.map.getCenter(),leftMap.map.getZoom());					

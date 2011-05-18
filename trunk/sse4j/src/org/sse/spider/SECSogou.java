@@ -3,6 +3,7 @@ package org.sse.spider;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLEncoder;
 
 /**
  * 
@@ -22,7 +23,7 @@ public class SECSogou extends SECallable {
 	public SECResult call() throws Exception {
 		SECResult result = new SECResult();
 
-		URL uri = new URL(url + this.getKeyword());
+		URL uri = new URL(url + URLEncoder.encode(this.getKeyword(), "UTF-8"));
 		BufferedReader reader = new BufferedReader(new InputStreamReader(uri
 				.openStream(), charset));
 		String s;

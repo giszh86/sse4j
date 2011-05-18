@@ -12,9 +12,13 @@ import java.util.concurrent.Future;
  */
 public class Spiderer {
 	public static void main(String[] args) throws Exception {
+		String key = "北京 海淀香山 10号";
+		String ekey = URLEncoder.encode(key, "UTF-8");
+		new SECGoogle(ekey).call();
+		
 		ExecutorService es = Executors.newCachedThreadPool();
-		Future<SECResult> baiduF = es.submit(new SECBaidu("北京海淀 香山 10号"));
-		Future<SECResult> sogouF = es.submit(new SECSogou("北京海淀 香山 10号"));
+		Future<SECResult> baiduF = es.submit(new SECBaidu(ekey));
+		Future<SECResult> sogouF = es.submit(new SECSogou(ekey));
 
 		SECResult baiduR = baiduF.get();
 		System.out.println(baiduR.getLinks());
@@ -23,9 +27,7 @@ public class Spiderer {
 		System.out.println(sogouR.getLinks());
 
 		es.shutdown();
-		
-		String key = "北京海淀香山10号";
-		String ekey = URLEncoder.encode(key, "UTF-8");
-		System.out.println(ekey+"_"+URLEncoder.encode(ekey, "UTF-8"));
+
+		System.out.println(ekey + "_" + URLEncoder.encode(ekey, "UTF-8"));
 	}
 }

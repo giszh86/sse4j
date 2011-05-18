@@ -1,5 +1,9 @@
 package org.sse.spider;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+
 /**
  * 
  * @author dux(duxionggis@126.com)
@@ -16,7 +20,19 @@ public class SECGoogle extends SECallable {
 	}
 
 	public SECResult call() throws Exception {
-		// TODO
-		return null;
+		SECResult result = new SECResult();
+
+		URL uri = new URL(url + this.getKeyword());
+		BufferedReader reader = new BufferedReader(new InputStreamReader(uri
+				.openStream(), charset));
+		String s;
+		StringBuffer sb = new StringBuffer();
+		while ((s = reader.readLine()) != null) {
+			sb.append(s.trim());
+		}
+		reader.close();
+		System.out.println(sb);
+		
+		return result;
 	}
 }

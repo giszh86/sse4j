@@ -32,10 +32,9 @@ public class HotTile extends HttpServlet {
 		String x = request.getParameter("x");
 		String y = request.getParameter("y");
 		String zoom = request.getParameter("zoom");
-		// String keyword = new String(request.getParameter("keyword").getBytes(
-		// request.getCharacterEncoding()));
-		String keyword = new String(request.getParameter("keyword").getBytes(
-				"ISO-8859-1"));
+		// notice: using encodeURI(keyword) when building http url
+		// tomcat conf/server.xml contains <Connector URIEncoding="UTF-8">
+		String keyword = request.getParameter("keyword");
 		if (x != null && y != null && zoom != null && type != null
 				&& keyword != null) {
 			response.setCharacterEncoding(GZipWriter.charset);

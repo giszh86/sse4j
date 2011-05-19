@@ -30,4 +30,8 @@ abstract class SECallable implements Callable<SECResult> {
 		throw new Exception("unimplement function!");
 	}
 
+	protected SECResult.Item buildItem(String link) throws Exception {
+		throw new Exception("unimplement function!");
+	}
+
 }

@@ -57,4 +57,10 @@ public class SECYoudao extends SECallable {
 		return result;
 	}
 
+	protected SECResult.Item buildItem(String link) throws Exception {
+		SECResult.Item item = new SECResult.Item();
+		item.setSource(SECResult.Type.YOUDAO.name());
+		// TODO
+		return item;
+	}
 }

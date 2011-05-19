@@ -7,7 +7,7 @@ import java.net.URL;
 /**
  * 
  * @author dux(duxionggis@126.com)
- * 
+ * @deprecated
  */
 public class SECGoogle extends SECallable {
 	private String url = "http://www.google.com.hk/search?hl=zh-CN&newwindow=1&safe=strict&q=";
@@ -32,7 +32,7 @@ public class SECGoogle extends SECallable {
 		}
 		reader.close();
 		System.out.println(sb);
-		
+
 		return result;
 	}
 }

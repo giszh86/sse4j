@@ -57,4 +57,10 @@ public class SECSogou extends SECallable {
 		return result;
 	}
 
+	protected SECResult.Item buildItem(String link) throws Exception {
+		SECResult.Item item = new SECResult.Item();
+		item.setSource(SECResult.Type.SOGOU.name());
+		// TODO
+		return item;
+	}
 }

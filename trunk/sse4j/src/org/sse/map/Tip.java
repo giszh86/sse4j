@@ -1,6 +1,7 @@
 package org.sse.map;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -39,7 +40,7 @@ class Tip {
 		private static final long serialVersionUID = 1L;
 		private int x;
 		private int y;
-		private List<TipPoiBase> subs = new LinkedList<TipPoiBase>();
+		private List<TipPoiBase> subs = new ArrayList<TipPoiBase>();
 
 		private static transient int limitCount = 25;
 		private static transient int width = 4;

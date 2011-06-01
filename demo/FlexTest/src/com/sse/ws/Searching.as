@@ -24,9 +24,10 @@ package com.sse.ws
 		private static var tooltip:Tooltip = new Tooltip();
 		private var preference:String;
 		
-		public function Searching(map:TweenMap)
+		public function Searching(wsdl:String,map:TweenMap)
 		{
-			super("http://localhost:8080/sse4j/SearchingPort?wsdl",map);			
+			super(wsdl,map);
+			
 			if(!this.map.contains(tooltip)){
 				this.map.addChild(tooltip);
 				this.map.addEventListener(MarkerEvent.MARKER_ROLL_OVER, onMarkerRollOver);

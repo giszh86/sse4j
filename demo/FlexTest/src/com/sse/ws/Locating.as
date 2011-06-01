@@ -18,9 +18,9 @@ package com.sse.ws
 		private var operG:AbstractOperation;
 		private var operRG:AbstractOperation;
 		
-		public function Locating(map:TweenMap)
+		public function Locating(wsdl:String,map:TweenMap)
 		{
-			super("http://localhost:8080/sse4j/LocatingPort?wsdl",map);
+			super(wsdl,map);
 			
 			operG = this.ws.getOperation("geocoding");
 			operG.addEventListener(FaultEvent.FAULT,OnFault);

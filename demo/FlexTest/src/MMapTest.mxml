@@ -5,7 +5,7 @@
 			import com.modestmaps.TweenMap;
 			import com.modestmaps.events.MapEvent;
 			import com.modestmaps.mapproviders.XYZMapProvider;
-			import com.sse.base.*;		
+			import com.sse.base.*;
 			import com.sse.ws.*;
 			
 			import mx.controls.Alert;
@@ -21,7 +21,8 @@
 					return;
 				}
 				arg0.key = "110000";
-				var locating:Locating = new Locating(leftMap.map);
+				var wsdl:String = "http://localhost:8080/sse4j/LocatingPort?wsdl";
+				var locating:Locating = new Locating(wsdl,leftMap.map);
 				locating.geocoding(arg0);
 			}
 			
@@ -37,7 +38,8 @@
 					Alert.show("Please input XY");
 					return;
 				}	
-				var locating:Locating = new Locating(leftMap.map);
+				var wsdl:String = "http://localhost:8080/sse4j/LocatingPort?wsdl";
+				var locating:Locating = new Locating(wsdl,leftMap.map);
 				locating.reverseGeocoding(arg0);
 			}
 			
@@ -55,7 +57,8 @@
 				arg0.count = 250;
 				arg0.key = "110000";				
 				arg0.preference = cbType.selectedLabel;	
-				var searching:Searching = new Searching(leftMap.map);
+				var wsdl:String = "http://localhost:8080/sse4j/SearchingPort?wsdl";
+				var searching:Searching = new Searching(wsdl,leftMap.map);
 				searching.search(arg0);
 			}
 						
@@ -99,7 +102,8 @@
 			protected function btn_clickPlan(event:MouseEvent):void
 			{
 				if(txtStart.text && txtEnd.text){
-					var routing:Routing = new Routing(leftMap.map);
+					var wsdl:String = "http://localhost:8080/sse4j/RoutingPort?wsdl";
+					var routing:Routing = new Routing(wsdl,leftMap.map);
 					var arg0:WSRouter = new WSRouter();
 					arg0.key = "110000";
 					arg0.preference = cbRType.selectedLabel;

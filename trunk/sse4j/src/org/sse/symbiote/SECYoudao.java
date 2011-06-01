@@ -11,7 +11,6 @@ import java.net.URL;
  */
 public class SECYoudao extends SECallable {
 	private String url = "http://www.youdao.com/search?q=";
-	private String newsUrl = "http://news.youdao.com/search?q=";
 
 	public SECYoudao() {
 	}

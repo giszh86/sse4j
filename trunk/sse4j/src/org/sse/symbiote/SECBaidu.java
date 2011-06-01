@@ -11,7 +11,6 @@ import java.net.URL;
  */
 public class SECBaidu extends SECallable {
 	private String url = "http://www.baidu.com/s?wd=";
-	private String newsUrl = "http://news.baidu.com/ns?word=";
 
 	public SECBaidu() {
 	}

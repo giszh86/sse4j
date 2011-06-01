@@ -11,7 +11,6 @@ import java.net.URL;
  */
 public class SECSogou extends SECallable {
 	private String url = "http://www.sogou.com/web?query=";
-	private String newsUrl = "http://news.sogou.com/news?query=";
 
 	public SECSogou() {
 	}

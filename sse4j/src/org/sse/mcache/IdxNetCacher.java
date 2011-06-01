@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import org.apache.lucene.document.Document;
 import org.sse.NaviConfig;
 import org.sse.io.IdxReader;
@@ -139,8 +141,8 @@ public class IdxNetCacher {
 				extent2);
 
 		Net net = new Net();
-		net.setEdges(edges);
-		net.setNodes(nodes);
+		net.setEdges(new CopyOnWriteArrayList<Edge>(edges));
+		net.setNodes(new CopyOnWriteArrayList<Node>(nodes));
 		return net;
 	}
 

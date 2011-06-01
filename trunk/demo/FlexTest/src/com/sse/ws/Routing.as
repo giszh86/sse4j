@@ -22,9 +22,9 @@ package com.sse.ws
 		private var operWP:AbstractOperation;
 		private var router:WSRouter;
 		
-		public function Routing(map:TweenMap)
+		public function Routing(wsdl:String,map:TweenMap)
 		{
-			super("http://localhost:8080/sse4j/RoutingPort?wsdl",map);
+			super(wsdl,map);
 			
 			operP = ws.getOperation("plan");
 			operP.addEventListener(FaultEvent.FAULT,OnFault);

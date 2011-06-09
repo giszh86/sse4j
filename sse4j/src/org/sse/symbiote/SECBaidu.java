@@ -10,21 +10,24 @@ import java.net.URL;
  * 
  */
 public class SECBaidu extends SECallable {
-	private String url = "http://www.baidu.com/s?wd=";
-
-	public SECBaidu() {
-	}
 
 	public SECBaidu(String keyword) {
 		super(keyword);
+		init();
+	}
+
+	private void init() {
+		url = "http://www.baidu.com/s?wd=";
+		startSprit = "<table cellpadding=\"0\" cellspacing=\"0\" class=\"result\" id=";
+		endSprit = "</td></tr></table><br>";
 	}
 
 	public SECResult call() throws Exception {
 		SECResult result = new SECResult();
 
-		URL uri = new URL(url + this.getKeyword());
+		URL uri = new URL(url + keyword);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(uri
-				.openStream(), charset));
+				.openStream(), CHARSET_GB));
 		String s;
 		StringBuffer sb = new StringBuffer();
 		while ((s = reader.readLine()) != null) {
@@ -33,8 +36,6 @@ public class SECBaidu extends SECallable {
 		reader.close();
 		// System.out.println(sb);
 
-		String startSprit = "<table cellpadding=\"0\" cellspacing=\"0\" class=\"result\" id=";
-		String endSprit = "</td></tr></table><br>";
 		int fromIndex = 0;
 		while (fromIndex < sb.length()) {
 			int startIndex = sb.indexOf(startSprit, fromIndex);

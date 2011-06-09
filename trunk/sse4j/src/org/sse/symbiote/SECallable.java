@@ -8,21 +8,14 @@ import java.util.concurrent.Callable;
  * 
  */
 abstract class SECallable implements Callable<SECResult> {
-	public final static String charset = "GB2312";
-	private String keyword = "";
-
-	SECallable() {
-	}
+	protected final static String CHARSET_GB = "GBK";
+	protected final static String CHARSET_UTF = "UTF-8";
+	protected String keyword = "";
+	protected String url = "";
+	protected String startSprit = "";
+	protected String endSprit = "";
 
 	SECallable(String keyword) {
-		this.keyword = keyword;
-	}
-
-	public String getKeyword() {
-		return keyword;
-	}
-
-	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
 

@@ -10,21 +10,26 @@ import java.net.URL;
  * 
  */
 public class SECYoudao extends SECallable {
-	private String url = "http://www.youdao.com/search?q=";
-
-	public SECYoudao() {
-	}
+	private String start = "<ul id=\"results\" class=\"rz\">";
+	private String end = "</a></span></p></li></ul>";
 
 	public SECYoudao(String keyword) {
 		super(keyword);
+		init();
+	}
+
+	private void init() {
+		url = "http://www.youdao.com/search?q=";
+		startSprit = "<li><h3><a href=";
+		endSprit = "</a></span></p></li>";
 	}
 
 	public SECResult call() throws Exception {
 		SECResult result = new SECResult();
 
-		URL uri = new URL(url + this.getKeyword());
+		URL uri = new URL(url + keyword);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(uri
-				.openStream(), "UTF-8"));
+				.openStream(), CHARSET_UTF));
 		String s;
 		StringBuffer sb = new StringBuffer();
 		while ((s = reader.readLine()) != null) {
@@ -33,10 +38,6 @@ public class SECYoudao extends SECallable {
 		reader.close();
 		// System.out.println(sb);
 
-		String start = "<ul id=\"results\" class=\"rz\">";
-		String end = "</a></span></p></li></ul>";
-		String startSprit = "<li><h3><a href=";
-		String endSprit = "</a></span></p></li>";
 		int fromIndex = sb.indexOf(start);
 		int endLength = sb.indexOf(end) + end.length();
 		while (fromIndex < endLength) {

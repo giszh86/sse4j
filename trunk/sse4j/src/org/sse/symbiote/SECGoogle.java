@@ -10,21 +10,22 @@ import java.net.URL;
  * @deprecated
  */
 public class SECGoogle extends SECallable {
-	private String url = "http://www.google.com.hk/search?hl=zh-CN&newwindow=1&safe=strict&q=";
-
-	public SECGoogle() {
-	}
 
 	public SECGoogle(String keyword) {
 		super(keyword);
+		init();
+	}
+
+	private void init() {
+		url = "http://www.google.com.hk/#hl=zh-CN&newwindow=1&safe=strict&q=";
 	}
 
 	public SECResult call() throws Exception {
 		SECResult result = new SECResult();
 
-		URL uri = new URL(url + this.getKeyword());
+		URL uri = new URL(url + keyword + "&fp=1&cad=b");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(uri
-				.openStream(), charset));
+				.openStream(), "Big5"));
 		String s;
 		StringBuffer sb = new StringBuffer();
 		while ((s = reader.readLine()) != null) {

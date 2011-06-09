@@ -20,7 +20,7 @@ import org.sse.symbiote.SECResult.Item;
  */
 public class Spiderer {
 	public static void main(String[] args) throws Exception {
-		String key = "海淀";
+		String key = "香山";
 		String ekey = URLEncoder.encode(key, "UTF-8");
 		// new SECGoogle(ekey).call();
 
@@ -40,11 +40,11 @@ public class Spiderer {
 			}
 		}
 		es.shutdown();
-		
+
 		for (Iterator<Item> ii = result.iterator(); ii.hasNext();) {
 			Item item = ii.next();
-			System.out.println(item.getHref() + "_" + item.getShapshot() + "_"
-					+ item.getSource());
+			System.out.println(item.getSource() + " -- " + item.getHref()
+					+ " -- " + item.getShapshot() + " -- " + item.getRemark());
 		}
 
 		// es.invokeAll(tasks);

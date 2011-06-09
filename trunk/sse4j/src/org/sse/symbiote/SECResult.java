@@ -11,27 +11,27 @@ import com.google.gson.Gson;
  * 
  */
 public class SECResult {
-	private List<String> links = new LinkedList<String>();
+	private List<Item> links = new LinkedList<Item>();
 
-	public List<String> getLinks() {
+	public List<Item> getLinks() {
 		return links;
 	}
 
-	public void setLinks(List<String> links) {
+	public void setLinks(List<Item> links) {
 		this.links = links;
 	}
 
-	public void addLink(String link) {
+	public void addLink(Item link) {
 		if (links == null)
-			links = new LinkedList<String>();
+			links = new LinkedList<Item>();
 		links.add(link);
 	}
 
 	public static class Item {
-		private String href;
-		private String remark;
-		private String shapshot;
-		private String source;
+		private String href = "";
+		private String remark = "";
+		private String shapshot = "";
+		private String source = "";
 
 		public String getHref() {
 			return href;
@@ -67,6 +67,12 @@ public class SECResult {
 
 		public String toString() {
 			return new Gson().toJson(this);
+		}
+
+		public boolean equals(Object obj) {
+			if (obj instanceof Item)
+				return ((Item) obj).getHref().equals(this.href);
+			return false;
 		}
 	}
 

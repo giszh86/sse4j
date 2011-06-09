@@ -46,9 +46,10 @@ public class SECYoudao extends SECallable {
 			int endIndex = sb.indexOf(endSprit, fromIndex);
 			if (endIndex > startIndex && endIndex >= 0 && endIndex < endLength
 					&& startIndex >= 0) {
-				// TODO
-				result.addLink(sb.substring(startIndex, endIndex
-						+ endSprit.length()));
+				String link = sb.substring(startIndex, endIndex
+						+ endSprit.length());
+				// System.out.println(link);
+				result.addLink(this.buildItem(link));
 				fromIndex = endIndex + endSprit.length();
 			} else {
 				fromIndex = endLength;
@@ -61,7 +62,23 @@ public class SECYoudao extends SECallable {
 	protected SECResult.Item buildItem(String link) throws Exception {
 		SECResult.Item item = new SECResult.Item();
 		item.setSource(SECResult.Type.YOUDAO.name());
-		// TODO
+//		int idx1 = link.indexOf("href=");
+//		int idx2 = link.indexOf("id=\"hitURL", idx1);
+//		if (idx2 > idx1) {
+//			String tmp = link.substring(idx1 + 6, idx2).trim();
+//			item.setHref(tmp.substring(0, tmp.length() - 1));
+//			int idx3 = link.indexOf("<span id=\"title", idx2);
+//			int idx4 = link.indexOf("<p class=\"s\">", idx3);
+//			if (idx4 > idx3) {
+//				item.setRemark(link.substring(idx3, idx4).trim());
+//				int idx5 = link.indexOf("href=", idx4);
+//				int idx6 = link.indexOf("target=", idx5);
+//				if (idx6 > idx5) {
+//					String tmp1 = link.substring(idx5 + 6, idx6).trim();
+//					item.setShapshot(tmp1.substring(0, tmp1.length() - 1));
+//				}
+//			}
+//		}
 		return item;
 	}
 }

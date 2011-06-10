@@ -11,11 +11,12 @@ import java.util.concurrent.Callable;
  * 
  */
 abstract class SECallable implements Callable<SECResult> {
-	protected String keyword = "";
-	protected String url = "";
-	protected String startSprit = "";
-	protected String endSprit = "";
-	protected String charset = "GBK";
+	String keyword = "";
+	String url = "";
+	String source = "";
+	String startSprit = "";
+	String endSprit = "";
+	String charset = "GBK";
 
 	SECallable(String keyword) {
 		this.keyword = keyword;
@@ -44,7 +45,7 @@ abstract class SECallable implements Callable<SECResult> {
 				String link = sb.substring(startIndex, endIndex
 						+ endSprit.length());
 				// System.out.println(link);
-				result.addLink(this.buildItem(link));
+				result.addLink(this.buildItem(link, source));
 				fromIndex = endIndex + endSprit.length();
 			} else {
 				fromIndex = sb.length();
@@ -54,8 +55,25 @@ abstract class SECallable implements Callable<SECResult> {
 		return result;
 	}
 
-	protected SECResult.Item buildItem(String link) throws Exception {
-		throw new Exception("unimplement function!");
+	SECResult.Item buildItem(String link, String source) throws Exception {
+		SECResult.Item item = new SECResult.Item();
+		item.setSource(source);
+		int idx1 = link.indexOf("href=");
+		int idx2 = link.indexOf("\"", idx1 + 6);
+		if (idx2 > idx1 && idx1 >= 0) {
+			item.setHref(link.substring(idx1 + 6, idx2));
+			int idx3 = link.indexOf(">", idx2);
+			int idx4 = link.indexOf("</a>", idx3);
+			if (idx4 > idx3 && idx3 >= 0) {
+				item.setTitle(link.substring(idx3 + 1, idx4).trim());
+				int idx5 = link.indexOf("href=", idx4);
+				int idx6 = link.indexOf("\"", idx5 + 6);
+				if (idx6 > idx5 && idx5 >= 0) {
+					item.setShapshot(link.substring(idx5 + 6, idx6));
+				}
+			}
+		}
+		return item;
 	}
 
 }

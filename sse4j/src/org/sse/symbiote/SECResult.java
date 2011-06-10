@@ -29,7 +29,7 @@ public class SECResult {
 
 	public static class Item {
 		private String href = "";
-		private String remark = "";
+		private String title = "";
 		private String shapshot = "";
 		private String source = "";
 
@@ -41,12 +41,12 @@ public class SECResult {
 			this.href = href;
 		}
 
-		public String getRemark() {
-			return remark;
+		public String getTitle() {
+			return title;
 		}
 
-		public void setRemark(String remark) {
-			this.remark = remark;
+		public void setTitle(String title) {
+			this.title = title;
 		}
 
 		public String getShapshot() {

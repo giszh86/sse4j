@@ -45,6 +45,7 @@ public class Spiderer {
 	 *            UTF-8 Encoding format
 	 * @return
 	 * @throws InterruptedException
+	 *             cache then invoke stop() function
 	 */
 	public List<Item> crawl(String keyword) throws InterruptedException {
 		List<Item> result = new LinkedList<Item>();

@@ -204,7 +204,7 @@ package com.modestmaps.flex
 		 * <modest:Map provider="{new FancyCustomMapProvider()}" .../>
 		 */
 		[Inspectable(category="Map",
-					 enumeration="BLUE_MARBLE,MICROSOFT_AERIAL,MICROSOFT_ROAD,MICROSOFT_HYBRID,YAHOO_ROAD,YAHOO_AERIAL,YAHOO_HYBRID,OPEN_STREET_MAP,XYZ_MAP",
+					 enumeration="BLUE_MARBLE,MICROSOFT_AERIAL,MICROSOFT_ROAD,MICROSOFT_HYBRID,YAHOO_ROAD,YAHOO_AERIAL,YAHOO_HYBRID,OPEN_STREET_MAP,GOOGLE_ROAD,XYZ_MAP",
 					 defaultValue="BLUE_MARBLE")]
 		public function set provider(provider:*):void
 		{
@@ -236,6 +236,9 @@ package com.modestmaps.flex
 						break;
 					case "YAHOO_ROAD":
 						_mapProvider = new YahooRoadMapProvider();
+						break;
+					case "GOOGLE_ROAD":
+						_mapProvider = new GRoadMapProvider();
 						break;
 					case "XYZ_MAP":
 						_mapProvider = new XYZMapProvider();

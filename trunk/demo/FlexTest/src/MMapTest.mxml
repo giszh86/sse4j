@@ -95,7 +95,7 @@
 			}
 			private function syncMaps(event:MapEvent=null):void
 			{
-				hotlayer.grid.setMatrix(leftMap.map.grid.getMatrix());
+				hotlayer.grid.setMatrix(leftMap.map.grid.getMatrix());				
 			}
 			
 			/**路径规划*/
@@ -183,8 +183,8 @@
 				</mx:ArrayList>
 			</mx:ComboBox>
 			<mx:Button label="RoutePlan" click="btn_clickPlan(event);"/>
-		</mx:HBox><!--OPEN_STREET_MAP XYZ_MAP-->		
-		<modest:MapComponent id="leftMap" width="100%" height="100%" provider="OPEN_STREET_MAP"
+		</mx:HBox><!--OPEN_STREET_MAP GOOGLE_ROAD XYZ_MAP-->		
+		<modest:MapComponent id="leftMap" width="100%" height="100%" provider="GOOGLE_ROAD"
 								 draggable="true" showOv="true" showNav="true"
 								 zoom="12" center="39.9, 116.4" startPanning="btn_Start()" stopPanning="btn_End()" />		
     </mx:Panel>	

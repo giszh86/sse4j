@@ -26,7 +26,7 @@ package com.modestmaps.mapproviders
 		protected function getZoomString(coord:Coordinate):String
 		{
 			trace("x=" + coord.row + "&y=" + coord.column + "&zoom=" + coord.zoom);
-			return "x=" + coord.row + "&y=" + coord.column + "&zoom=" + coord.zoom;
+			return "x=" + coord.row + "&y=" + coord.column + "&zoom=" + coord.zoom+"&t="+Math.random();
 		}
 		
 	}

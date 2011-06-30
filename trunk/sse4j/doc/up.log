@@ -26,3 +26,10 @@ update some function under sse4j project by newest jar libraries
 support FlexDemo under Demo dir
 
 --------------------------------------------------------------
+
+2011-6-30
+update poi index data
+update WSBuilder class
+add org.sse.symbiote package solution(base framework sdk to crawl deep poi)
+
+--------------------------------------------------------------

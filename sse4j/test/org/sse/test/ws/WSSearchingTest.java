@@ -27,7 +27,7 @@ public class WSSearchingTest {
 		r = json.fromJson(result.getJsonString(), r.getClass());
 		System.out.println("size:" + r.length);
 
-		wsFilter.setKeyword("2010105");
+		wsFilter.setKeyword("大学");
 		wsFilter.setPreference("POI");
 		result = new Searching().search(wsFilter);
 		System.out.println(result.getJsonString());

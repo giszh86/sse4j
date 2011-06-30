@@ -50,9 +50,9 @@ public class WSBuilder {
 			ptyes.add(new Property(PtyName.TITLE, keyword));
 			// TODO
 			if (wsFilter.getPreference().equalsIgnoreCase("POI")) {
-				ptyes.add(new Property(PoiPtyName.ADDRESS, keyword));
+				// ptyes.add(new Property(PoiPtyName.ADDRESS, keyword));
 				ptyes.add(new Property(PoiPtyName.NAMEP, keyword));
-				ptyes.add(new Property(PoiPtyName.KIND, keyword));
+				// ptyes.add(new Property(PoiPtyName.KIND, keyword));
 			}
 			filter.setProperties(ptyes);
 		}
@@ -62,6 +62,7 @@ public class WSBuilder {
 					true);
 			filter.setGeometry(g);
 		}
+		// filter.setQtype(QueryType.Standard);
 		filter.setCount(wsFilter.getCount());
 		if (wsFilter.getDistance() > 0) {
 			filter.setGeometry(filter.getGeometry().buffer(

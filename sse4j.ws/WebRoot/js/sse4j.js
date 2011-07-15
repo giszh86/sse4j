@@ -67,7 +67,7 @@ function SSEPoint(lon,lat){
 }
 function SSEFilter(key,preference,keyword,count,distance,geometryWKT){
 	this.key = key;
-	this.preference = preference;
+	this.preference = preference;//'POI' 'NET' 'DIST'
 	this.keyword = keyword;	
 	this.count = count;
 	this.distance = distance;
@@ -75,7 +75,7 @@ function SSEFilter(key,preference,keyword,count,distance,geometryWKT){
 }
 function SSERouter(key,preference,startPoint,endPoint,viaPoints){
 	this.key = key;
-	this.preference = preference;
+	this.preference = preference;//'Fastest' 'Shortest' 'OnFoot'
 	this.startPoint = startPoint;//SSEPoint
 	this.endPoint = endPoint;//SSEPoint
 	this.viaPoints = viaPoints;//Array(SSEPoint)

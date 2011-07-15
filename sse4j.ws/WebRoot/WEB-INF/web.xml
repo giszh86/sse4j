@@ -36,9 +36,6 @@
   <url-pattern>/servlet/HotTile</url-pattern>
  </servlet-mapping>
  <welcome-file-list>
-  <welcome-file>index.jsp</welcome-file>
+  <welcome-file>sse4j.html</welcome-file>
  </welcome-file-list>
- <login-config>
-  <auth-method>BASIC</auth-method>
- </login-config>
 </web-app>

@@ -1,0 +1,29 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml">
+	<head>
+		<title></title>
+		<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<META http-equiv="x-ua-compatible" content="ie=7">
+		<script type="text/javascript" src="js/sse4j.js">
+		</script>
+		<script type="text/javascript">
+			function geocoding(){
+				var geoc = new SSEFilterGeoc('110000','中关村');
+				SSELocating.geocoding(geoc,function(result){
+					alert(result.jsonString);
+				});				
+			}
+			
+			function reverseGeocoding(){
+				var pt = new SSEPoint(39.9,116.4);
+				SSELocating.reverseGeocoding(pt,function(result){
+					alert(result.jsonString);
+				});		
+			}
+		</script>
+	</head>
+	<body>
+		<div><a href="javascript:geocoding();">Geocoding</a></div>
+		<div><a href="javascript:reverseGeocoding();">reverseGeocoding</a></div>
+	</body>
+</html>
+

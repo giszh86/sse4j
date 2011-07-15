@@ -1,7 +1,8 @@
-var LocatingWSDL = 'http://localhost:8080/sse4j/LocatingPort?wsdl';
-var SearchingWSDL = 'http://localhost:8080/sse4j/SearchingPort?wsdl';
-var RoutingWSDL = 'http://localhost:8080/sse4j/RoutingPort?wsdl';
-var MatchingWSDL = 'http://localhost:8080/sse4j/MatchingPort?wsdl';
+var BaseUrl = 'http://localhost:8080/sse4j/';
+var LocatingWSDL = BaseUrl+'LocatingPort?wsdl';
+var SearchingWSDL = BaseUrl+'SearchingPort?wsdl';
+var RoutingWSDL = BaseUrl+'RoutingPort?wsdl';
+var MatchingWSDL = BaseUrl+'MatchingPort?wsdl';
 var SoapStart = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.sse.org/"><soapenv:Header/><soapenv:Body>';
 var SoapEnd = '</soapenv:Body></soapenv:Envelope>';
 

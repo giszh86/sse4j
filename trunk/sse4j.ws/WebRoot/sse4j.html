@@ -3,27 +3,93 @@
 		<title></title>
 		<META http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<META http-equiv="x-ua-compatible" content="ie=7">
-		<script type="text/javascript" src="js/sse4j.js">
+		<script type="text/javascript" src="./js/sse4j.js">
 		</script>
 		<script type="text/javascript">
 			function geocoding(){
-				var geoc = new SSEFilterGeoc('110000','中关村');
-				SSELocating.geocoding(geoc,function(result){
-					alert(result.jsonString);
+				var key = '110000';
+				var address = geoText.value;				
+				SSELocating.geocoding(key,address,function(result){
+					if(result){
+						if(+result.resultCode==1){
+							alert(result.jsonString);
+						}else{
+							alert(result.faultString);
+						}
+					}
 				});				
 			}
 			
 			function reverseGeocoding(){
-				var pt = new SSEPoint(39.9,116.4);
+				var pt = new SSEPoint(116.4,39.9);
 				SSELocating.reverseGeocoding(pt,function(result){
-					alert(result.jsonString);
+					if(result){
+						if(+result.resultCode==1){
+							alert(result.jsonString);
+						}else{
+							alert(result.faultString);
+						}
+					}
 				});		
+			}
+
+			function search(){
+				var filter = new SSEFilter;
+				filter.key = '110000';
+				filter.preference = 'POI';
+				filter.keyword = sText.value;
+				filter.count = 25;
+				//filter.distance = 5000;
+				//filter.geometryWKT = 'POINT(116.4 39.9)';
+				SSESearching.search(filter,function(result){
+					if(result){
+						if(+result.resultCode==1){
+							alert(result.jsonString);
+						}else{
+							alert(result.faultString);
+						}
+					}
+				});	
+			}
+
+			function poiInfo(){
+				var key = '110000';
+				var id = '200';				
+				SSESearching.poiInfo(key,id,function(result){
+					if(result){
+						if(+result.resultCode==1){
+							alert(result.jsonString);
+						}else{
+							alert(result.faultString);
+						}
+					}
+				});				
+			}
+
+			function webPlan(){
+				var router = new SSERouter;
+				router.preference = 'Fastest';
+				router.startPoint = new SSEPoint(116.4,39.9);
+				router.endPoint = new SSEPoint(116.32,39.97);
+				router.viaPoints = [new SSEPoint(116.64,39.85),null];
+				SSERouting.webPlan(router,function(result){
+					if(result){
+						if(+result.resultCode==1){
+							alert(result.jsonString);
+						}else{
+							alert(result.faultString);
+						}
+					}
+				});				
 			}
 		</script>
 	</head>
 	<body>
-		<div><a href="javascript:geocoding();">Geocoding</a></div>
+		<div><input type="text" value = "中关村" id="geoText"/><a href="javascript:geocoding();">Geocoding</a></div>
 		<div><a href="javascript:reverseGeocoding();">reverseGeocoding</a></div>
+		<div><input type="text" value = "麦当劳 大厦" id="sText"/><a href="javascript:search();">search</a></div>
+		<div><a href="javascript:poiInfo();">poiInfo</a></div>
+		<div><a href="javascript:webPlan();">webPlan</a></div>
 	</body>
 </html>
 

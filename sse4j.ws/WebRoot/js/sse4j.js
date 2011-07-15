@@ -188,9 +188,8 @@ function SSEResult(faultString,resultCode,jsonString){
 		if(+this.resultCode==1){
 			//var json = JSON.parse(this.jsonString);
 			var json = eval('('+this.jsonString+')');
-			var awkt = json.vertex.split(',');
-			var pt = {"x":awkt[0],"y":awkt[1]};
-			json.vertex = MC2LL(pt);
+			var awkt = json.vertex.split(',');			
+			json.vertex = MC2LL({"x":awkt[0],"y":awkt[1]});
 			return json;
 		}else{
 			return false;

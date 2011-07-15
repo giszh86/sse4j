@@ -59,11 +59,55 @@ function requestOnready(xml, wsdl, func){
 	}
 }
 
+function MC2LL(point){
+	var lat = (point.y/20037508.342789)*180;
+	var lon = (point.x/20037508.342789)*180;
+	lat = 180/Math.PI*(2*Math.atan(Math.exp(lat*Math.PI/180))-Math.PI/2);
+	return new SSEPoint(lon.toFixed(6),lat.toFixed(6));
+}
+
+function Radix(){	
+}
+Radix.charindex = function(value){
+	var idx = value;
+	if (idx >= 48 && idx <= 57) {
+		idx -= 48;
+	} else if (idx >= 65 && idx <= 90) {
+		idx -= 55;
+	} else {
+		idx = -1;
+	}
+	return idx;
+}
+Radix.x2h = function(value,radix){
+	if (value==null || value=='')
+		return 0;
+	value = value.toUpperCase();			
+	var n = (value.charAt(0) == '-');
+	if (n && value.length == 1)
+		return 0;
+	else if (n)
+		value = value.substring(1);
+	
+	var result = 0;
+	for (var i=0;i<value.length;i++) {		
+		result += Math.pow(radix, i)*Radix.charindex(value.charCodeAt(value.length-i-1));
+	}			
+	
+	if (n)
+		return -result;
+	else
+		return result;
+}
+
 /***************************************************************************/
 
 function SSEPoint(lon,lat){
 	this.lon = lon;
 	this.lat = lat;
+	this.toString=function(){
+		return (this.lon+","+this.lat);
+	}
 }
 function SSEFilter(key,preference,keyword,count,distance,geometryWKT){
 	this.key = key;
@@ -84,32 +128,102 @@ function SSEResult(faultString,resultCode,jsonString){
 	this.faultString = faultString;
 	this.resultCode = resultCode;
 	this.jsonString = jsonString;
+	
+	/**
+	 * get geocoding result
+	 * @return SSEPoint
+	 */
 	this.returnByGeocoding = function(){
 		if(+this.resultCode==1){
+			//var json = JSON.parse(this.jsonString);
+			var json = eval('('+this.jsonString+')');
+			return MC2LL(json);
 		}else{
 			return false;
 		}
 	};
+	
+	/**
+	 * get reversegeocoding result
+	 * @return String
+	 */
 	this.returnByReGeocoding = function(){
 		if(+this.resultCode==1){
+			//var json = JSON.parse(this.jsonString);
+			var json = eval('('+this.jsonString+')');
+			return json.geoc;
 		}else{
 			return false;
 		}
 	};
+	
+	/**
+	 * get search result
+	 * @return Array({id(String),title(String),wkt(SSEPoint)})
+	 */
 	this.returnBySearch = function(){
 		if(+this.resultCode==1){
+			//var json = JSON.parse(this.jsonString);
+			var json = eval('('+this.jsonString+')');
+			for(var i=0;i<json.length;i++){
+				var wkt = json[i].wkt;
+				if(wkt.indexOf('POINT')>-1){
+					wkt = wkt.substring(7,wkt.length-1);
+					var awkt = wkt.split(' ');
+					var pt = {"x":awkt[0],"y":awkt[1]};
+					json[i].wkt = MC2LL(pt);
+				}
+			}
+			return json;
 		}else{
 			return false;
 		}
 	};
+	
+	/**
+	 * get poiinfo result
+	 * @return {id,name,kind,phone,address,remark,vertex(SSEPoint)}
+	 */
 	this.returnByPoiInfo = function(){
 		if(+this.resultCode==1){
+			//var json = JSON.parse(this.jsonString);
+			var json = eval('('+this.jsonString+')');
+			var awkt = json.vertex.split(',');
+			var pt = {"x":awkt[0],"y":awkt[1]};
+			json.vertex = MC2LL(pt);
+			return json;
 		}else{
 			return false;
 		}
 	};
+	
+	/**
+	 * get webplan result
+	 * @return {dis,cost,minx,miny,maxx,maxy,Array({name,state,turn,len,cost,vertexes(Array(SSEPoint))})}
+	 */
 	this.returnByWebPlan = function(){
 		if(+this.resultCode==1){
+			//var json = JSON.parse(this.jsonString);
+			var json = eval('('+this.jsonString+')');
+			var cx = (json.minx+json.maxx)/2;
+			var cy = (json.miny+json.maxy)/2;
+			for(var i=0;i<json.guids.length;i++){
+				var varr = json.guids[i].vertexes.split(';');
+				for(var j=0;j<varr.length;j++){
+					var xy = varr[j].split(",");
+					var x = Radix.x2h(xy[0],36)+cx;
+					var y = Radix.x2h(xy[1],36)+cy;					
+					varr[j] = MC2LL({"x":x,"y":y});
+				}
+				json.guids[i].vertexes = varr;
+			}
+			var min = MC2LL({"x":json.minx,"y":json.miny});
+			var max = MC2LL({"x":json.maxx,"y":json.maxy});
+			json.minx = min.lon;
+			json.miny = min.lat;
+			json.maxx = max.lon;
+			json.maxy = max.lat;
+			return json;
 		}else{
 			return false;
 		}

@@ -1,4 +1,4 @@
-var LocatingService = "http://192.168.61.102:7172/sse4j/LocatingPort?wsdl";
+var LocatingService = "http://localhost:8080/sse4j/LocatingPort?wsdl";
 
 /***************************************************************************/
 

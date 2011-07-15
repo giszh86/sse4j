@@ -11,25 +11,19 @@
 				var address = geoText.value;				
 				SSELocating.geocoding(key,address,function(result){
 					if(result){
-						if(+result.resultCode==1){
-							alert(result.jsonString);
-						}else{
-							alert(result.faultString);
-						}
+						var r = result.returnByGeocoding();
+						if(r)alert(r.lat+" "+r.lon);
 					}
 				});				
 			}
 			
 			function reverseGeocoding(){
 				var pt = new SSEPoint(116.4,39.9);
-				SSELocating.reverseGeocoding(pt,function(result){
+				SSELocating.reverseGeocoding(pt,function(result){					
 					if(result){
-						if(+result.resultCode==1){
-							alert(result.jsonString);
-						}else{
-							alert(result.faultString);
-						}
-					}
+						var r = result.returnByReGeocoding();
+						if(r)alert(r);
+					}					
 				});		
 			}
 
@@ -41,29 +35,29 @@
 				filter.count = 25;
 				//filter.distance = 5000;
 				//filter.geometryWKT = 'POINT(116.4 39.9)';
-				SSESearching.search(filter,function(result){
+				SSESearching.search(filter,function(result){					
 					if(result){
-						if(+result.resultCode==1){
-							alert(result.jsonString);
-						}else{
-							alert(result.faultString);
-						}
+						var r = result.returnBySearch();
+						if(r){
+							var str = "";
+							for(var i=0;i<r.length;i++){
+								str += r[i].id+" "+r[i].title+" "+r[i].wkt.toString()+"\r\n";
+							}
+							alert(str);
+						}						
 					}
-				});	
+				});
 			}
 
 			function poiInfo(){
 				var key = '110000';
 				var id = '200';				
 				SSESearching.poiInfo(key,id,function(result){
-					if(result){
-						if(+result.resultCode==1){
-							alert(result.jsonString);
-						}else{
-							alert(result.faultString);
-						}
+					if(result){						
+						var r = result.returnByPoiInfo();
+						if(r)alert(r.id+" "+r.name+" "+r.kind+" "+r.phone+" "+r.address+" "+r.remark+" "+r.vertex.toString());
 					}
-				});				
+				});
 			}
 
 			function webPlan(){
@@ -73,11 +67,21 @@
 				router.endPoint = new SSEPoint(116.32,39.97);
 				router.viaPoints = [new SSEPoint(116.64,39.85),null];
 				SSERouting.webPlan(router,function(result){
-					if(result){
-						if(+result.resultCode==1){
-							alert(result.jsonString);
-						}else{
-							alert(result.faultString);
+					if(result){						
+						var r = result.returnByWebPlan();
+						if(r){
+							var str = "总行程:"+r.dis+"米--用时:"+r.cost+"分钟 ["+r.minx+" "+r.miny+" "+r.maxx+" "+r.maxy+"]\r\n";
+							var guids = r.guids;
+							var vertexes = "";		
+							for(var i=0;i<guids.length;i++){					
+								str += guids[i].name+"--行使--"+guids[i].len+"米["+guids[i].cost+"秒]--"+guids[i].turn+"--"+guids[i].vertexes.length+"\r\n";
+								for(var j=0;j<guids[i].vertexes.length;j++){
+									vertexes += guids[i].vertexes[j].toString()+";"
+								}
+								vertexes += "\r\n";
+							}
+							alert(str);
+							alert(vertexes);
 						}
 					}
 				});				

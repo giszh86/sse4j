@@ -7,8 +7,9 @@ var SoapStart = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soa
 var SoapEnd = '</soapenv:Body></soapenv:Envelope>';
 
 /***************************************************************************/
-
-function createHttpRequest(){
+function SSEUtil(){	
+}
+SSEUtil.createHttpRequest = function(){
 	var request = false;
 	if(window.XMLHttpRequest){
 		request = new XMLHttpRequest();
@@ -25,8 +26,8 @@ function createHttpRequest(){
 	}
 	return request;
 }
-function requestOnready(xml, wsdl, func){
-	var request = createHttpRequest();
+SSEUtil.requestOnready = function(xml, wsdl, func){
+	var request = SSEUtil.createHttpRequest();
 	if(request){
 		try{
 			request.open("post", wsdl, true);
@@ -59,8 +60,7 @@ function requestOnready(xml, wsdl, func){
 		}
 	}
 }
-
-function MC2LL(point){
+SSEUtil.MC2LL = function(point){
 	var lat = (point.y/20037508.342789)*180;
 	var lon = (point.x/20037508.342789)*180;
 	lat = 180/Math.PI*(2*Math.atan(Math.exp(lat*Math.PI/180))-Math.PI/2);
@@ -138,7 +138,7 @@ function SSEResult(faultString,resultCode,jsonString){
 		if(+this.resultCode==1){
 			//var json = JSON.parse(this.jsonString);
 			var json = eval('('+this.jsonString+')');
-			return MC2LL(json);
+			return SSEUtil.MC2LL(json);
 		}else{
 			return false;
 		}
@@ -172,7 +172,9 @@ function SSEResult(faultString,resultCode,jsonString){
 					wkt = wkt.substring(7,wkt.length-1);
 					var awkt = wkt.split(' ');
 					var pt = {"x":awkt[0],"y":awkt[1]};
-					json[i].wkt = MC2LL(pt);
+					json[i].wkt = SSEUtil.MC2LL(pt);
+				}else if(wkt.indexOf('LINESTRING')>-1){
+					//TODO
 				}
 			}
 			return json;
@@ -190,7 +192,7 @@ function SSEResult(faultString,resultCode,jsonString){
 			//var json = JSON.parse(this.jsonString);
 			var json = eval('('+this.jsonString+')');
 			var awkt = json.vertex.split(',');			
-			json.vertex = MC2LL({"x":awkt[0],"y":awkt[1]});
+			json.vertex = SSEUtil.MC2LL({"x":awkt[0],"y":awkt[1]});
 			return json;
 		}else{
 			return false;
@@ -213,12 +215,12 @@ function SSEResult(faultString,resultCode,jsonString){
 					var xy = varr[j].split(",");
 					var x = Radix.x2h(xy[0],36)+cx;
 					var y = Radix.x2h(xy[1],36)+cy;					
-					varr[j] = MC2LL({"x":x,"y":y});
+					varr[j] = SSEUtil.MC2LL({"x":x,"y":y});
 				}
 				json.guids[i].vertexes = varr;
 			}
-			var min = MC2LL({"x":json.minx,"y":json.miny});
-			var max = MC2LL({"x":json.maxx,"y":json.maxy});
+			var min = SSEUtil.MC2LL({"x":json.minx,"y":json.miny});
+			var max = SSEUtil.MC2LL({"x":json.maxx,"y":json.maxy});
 			json.minx = min.lon;
 			json.miny = min.lat;
 			json.maxx = max.lon;
@@ -238,7 +240,7 @@ var SSELocating = {
 			var xml = SoapStart + '<ws:geocoding>';
 			xml +='<arg0><key>'+key+'</key><address>'+address+'</address></arg0>';
 			xml += '</ws:geocoding>' + SoapEnd;
-			requestOnready(xml,LocatingWSDL,func);
+			SSEUtil.requestOnready(xml,LocatingWSDL,func);
 		}else{
 			alert("input null!");
 		}
@@ -248,7 +250,7 @@ var SSELocating = {
 			var xml = SoapStart + '<ws:reverseGeocoding>';
 			xml += '<arg0><x>'+pt.lon+'</x><y>'+pt.lat+'</y></arg0>';
 			xml += '</ws:reverseGeocoding>' + SoapEnd;
-			requestOnready(xml,LocatingWSDL,func);
+			SSEUtil.requestOnready(xml,LocatingWSDL,func);
 		}else{
 			alert("input null!");
 		}
@@ -265,7 +267,7 @@ var SSESearching = {
 			if(filter.distance)xml+='<distance>'+filter.distance+'</distance>';
 			if(filter.geometryWKT)xml+='<geometryWKT>'+filter.geometryWKT+'</geometryWKT>';
 			xml += '</arg0></ws:search>' + SoapEnd;
-			requestOnready(xml,SearchingWSDL,func);
+			SSEUtil.requestOnready(xml,SearchingWSDL,func);
 		}else{
 			alert("input null!");
 		}
@@ -275,7 +277,7 @@ var SSESearching = {
 			var xml = SoapStart + '<ws:poiInfo><arg0>';
 			xml += '<key>'+key+'</key><id>'+id+'</id>';
 			xml += '</arg0></ws:poiInfo>' + SoapEnd;
-			requestOnready(xml,SearchingWSDL,func);
+			SSEUtil.requestOnready(xml,SearchingWSDL,func);
 		}else{
 			alert("input null!");
 		}
@@ -297,7 +299,7 @@ var SSERouting = {
 				}
 			}
 			xml += '</arg0></ws:webPlan>' + SoapEnd;
-			requestOnready(xml,RoutingWSDL,func);
+			SSEUtil.requestOnready(xml,RoutingWSDL,func);
 		}else{
 			alert("input null!");
 		}

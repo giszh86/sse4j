@@ -201,7 +201,7 @@ function SSEResult(faultString,resultCode,jsonString){
 	
 	/**
 	 * get webplan result
-	 * @return {dis,cost,minx,miny,maxx,maxy,Array({name,state,turn,len,cost,vertexes(Array(SSEPoint))})}
+	 * @return {dis,cost,minx,miny,maxx,maxy,guids(Array({name,state,turn,len,cost,vertexes(Array(SSEPoint))}))}
 	 */
 	this.returnByWebPlan = function(){
 		if(+this.resultCode==1){

@@ -1,5 +1,7 @@
 package org.sse.symbiote;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -59,13 +61,15 @@ public class Spiderer {
 				SECResult r = i.next().get();
 				for (Iterator<Item> ii = r.getLinks().iterator(); ii.hasNext();) {
 					Item item = ii.next();
-					if (!result.contains(item))
+					if (!result.contains(item)) {
 						result.add(item);
+					}
 				}
 			} catch (ExecutionException e) {
 				// TODO
 			}
 		}
+		Collections.sort(result, new RankComparator());
 		return result;
 	}
 
@@ -73,4 +77,12 @@ public class Spiderer {
 		es.shutdown();
 	}
 
+	private class RankComparator implements Comparator<Item> {
+		public int compare(Item o1, Item o2) {
+			if (o1.getRank() <= o2.getRank())
+				return 0;
+			else
+				return 1;
+		}
+	}
 }

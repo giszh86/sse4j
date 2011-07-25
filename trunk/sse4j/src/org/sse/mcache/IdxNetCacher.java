@@ -30,24 +30,20 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  */
 public class IdxNetCacher {
 
-	private class EdgeComparator implements Comparator {
+	private class EdgeComparator implements Comparator<Edge> {
 		@Override
-		public int compare(Object o1, Object o2) {
-			Edge e1 = (Edge) o1;
-			Edge e2 = (Edge) o2;
-			if (e1.getId() < e2.getId())
+		public int compare(Edge o1, Edge o2) {
+			if (o1.getId() < o2.getId())
 				return 0;
 			else
 				return 1;
 		}
 	}
 
-	private class NodeComparator implements Comparator {
+	private class NodeComparator implements Comparator<Node> {
 		@Override
-		public int compare(Object o1, Object o2) {
-			Node n1 = (Node) o1;
-			Node n2 = (Node) o2;
-			if (n1.getId() < n2.getId())
+		public int compare(Node o1, Node o2) {
+			if (o1.getId() < o2.getId())
 				return 0;
 			else
 				return 1;

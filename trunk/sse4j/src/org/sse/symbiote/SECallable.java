@@ -37,6 +37,7 @@ abstract class SECallable implements Callable<SECResult> {
 		// System.out.println(sb);
 
 		int fromIndex = 0;
+		int rank = 0;
 		while (fromIndex < sb.length()) {
 			int startIndex = sb.indexOf(startSprit, fromIndex);
 			fromIndex = startIndex + startSprit.length();
@@ -45,8 +46,9 @@ abstract class SECallable implements Callable<SECResult> {
 				String link = sb.substring(startIndex, endIndex
 						+ endSprit.length());
 				// System.out.println(link);
-				result.addLink(this.buildItem(link, source));
+				result.addLink(this.buildItem(link, source, rank));
 				fromIndex = endIndex + endSprit.length();
+				rank++;
 			} else {
 				fromIndex = sb.length();
 			}
@@ -55,9 +57,11 @@ abstract class SECallable implements Callable<SECResult> {
 		return result;
 	}
 
-	SECResult.Item buildItem(String link, String source) throws Exception {
+	SECResult.Item buildItem(String link, String source, int rank)
+			throws Exception {
 		SECResult.Item item = new SECResult.Item();
 		item.setSource(source);
+		item.setRank(rank);
 		int idx1 = link.indexOf("href=");
 		int idx2 = link.indexOf("\"", idx1 + 6);
 		if (idx2 > idx1 && idx1 >= 0) {

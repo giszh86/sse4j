@@ -21,9 +21,11 @@ public class SECYoudao extends SECallable {
 	}
 
 	@Override
-	SECResult.Item buildItem(String link, String source) throws Exception {
+	SECResult.Item buildItem(String link, String source, int rank)
+			throws Exception {
 		SECResult.Item item = new SECResult.Item();
 		item.setSource(source);
+		item.setRank(rank);
 		int idx1 = link.indexOf("href=");
 		int idx2 = link.indexOf("\"", idx1 + 6);
 		if (idx2 > idx1 && idx1 >= 0) {

@@ -32,6 +32,7 @@ public class SECResult {
 		private String title = "";
 		private String shapshot = "";
 		private String source = "";
+		private transient int rank = 0;
 
 		public String getHref() {
 			return href;
@@ -63,6 +64,14 @@ public class SECResult {
 
 		public void setSource(String source) {
 			this.source = source;
+		}
+
+		public int getRank() {
+			return rank;
+		}
+
+		public void setRank(int rank) {
+			this.rank = rank;
 		}
 
 		public String toString() {

@@ -15,7 +15,7 @@ import org.sse.symbiote.SECResult.Item;
 public class SpidererTest {
 
 	public static void main(String[] args) throws Exception {
-		String key = "上地环岛";
+		String key = "sse4j";
 		String ekey = URLEncoder.encode(key, "UTF-8");
 		System.out.println(ekey + "_" + URLEncoder.encode(ekey, "UTF-8"));
 		// new SECGoogle(ekey).call();

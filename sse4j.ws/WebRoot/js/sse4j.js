@@ -169,11 +169,18 @@ function SSEResult(faultString,resultCode,jsonString){
 			for(var i=0;i<json.length;i++){
 				var wkt = json[i].wkt;
 				if(wkt.indexOf('POINT')>-1){
-					wkt = wkt.substring(7,wkt.length-1);
-					var awkt = wkt.split(' ');
-					var pt = {"x":awkt[0],"y":awkt[1]};
-					json[i].wkt = SSEUtil.MC2LL(pt);
+					wkt = wkt.substring(wkt.lastIndexOf('(')+1,wkt.lastIndexOf(')'));
+					var awkt = wkt.split(' ');					
+					json[i].wkt = SSEUtil.MC2LL({"x":awkt[0],"y":awkt[1]});
 				}else if(wkt.indexOf('LINESTRING')>-1){
+					wkt = wkt.substring(wkt.lastIndexOf('(')+1,wkt.lastIndexOf(')'));
+					var awkt = wkt.split(', ');
+					for(var j=0;j<awkt.length;j++){
+						var aawkt = awkt[j].split(' ');
+						awkt[j] = SSEUtil.MC2LL({"x":aawkt[0],"y":aawkt[1]});
+					}
+					json[i].wkt = awkt;
+				}else{//Polygon or GeometryCollection
 					//TODO
 				}
 			}
@@ -305,3 +312,19 @@ var SSERouting = {
 		}
 	}
 }
+
+/***************************************************************************/
+
+function hotMapTip(json){
+	if(json){
+		var tips = eval('('+json+')');//{zoom,x,y,tips([{x,y,id,title,subs([{id,title}])}])}
+		if(window.ssemapapi=='G35'){
+			if(window.ssemap){
+			}
+		}else{
+			//TOTO
+		}
+	}
+}
+
+/***************************************************************************/

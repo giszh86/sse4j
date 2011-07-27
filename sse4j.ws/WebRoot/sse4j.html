@@ -1,65 +1,214 @@
 <html>
 	<head>
 		<title></title>
-		<META http-equiv="Content-Type" content="text/html; charset=utf-8">		
+		<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<style type="text/css">
+		body{border:0;margin:0;width:100%;height:100%;font:12px arial,sans-serif;}
+		.dtop{width:100%;height:100px;}
+		.dleft{position:absolute;width:300px;overflow-y:auto;overflow-x:auto;background-color:#EEEEEE;}
+		.dmap{position:absolute;left:300px;background-color:#CCCCCC;}
+		.ditem{}
+		</style>
+		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 		<script type="text/javascript" src="./js/sse4j.js">
 		</script>
 		<script type="text/javascript">
+			var map;			
+			function initialize() {
+				var latlng = new google.maps.LatLng(39.9, 116.4);
+				var myOptions = {
+					zoom: 10,
+					center: latlng,
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				}
+				map = new google.maps.Map(document.getElementById("map"), myOptions);
+				resize();
+
+				//important
+				window.ssemap = window.ssemap || map;
+				window.ssemapapi = window.ssemapapi || 'G35';				
+			}
+			function resize(){
+				if(map){
+					var mapstyle = map.getDiv().style;
+					var w = document.body.clientWidth;
+					var h = document.body.clientHeight;
+					mapstyle.width = w-300;
+					mapstyle.height = h-100;
+	
+					var leftstyle = document.getElementById("left").style;
+					leftstyle.height = h-100;
+				}
+			}
+
+			var overlays = new Array;
+			function clear(){
+				for(var i=0;i<overlays.length;i++)
+					overlays[i].setMap(null);
+				overlays = new Array;
+			}
+
+			/*****************************************************/
+						
 			function geocoding(){
 				var key = '110000';
-				var address = geoText.value;				
+				var address = document.getElementById('geoText').value;				
 				SSELocating.geocoding(key,address,function(result){
 					if(result){
 						var r = result.returnByGeocoding();
-						if(r)alert(r.lat+" "+r.lon);
+						if(r){
+							r = new google.maps.LatLng(r.lat, r.lon);
+							var marker = new google.maps.Marker({
+								position: r,
+								title: address,
+								map: map
+							});
+							overlays.push(marker);
+							map.setZoom(13);
+							map.setCenter(r);
+						}else{
+							alert(result.faultString);
+						}
 					}
 				});				
 			}
-			
 			function reverseGeocoding(){
-				var pt = new SSEPoint(116.4,39.9);
+				var latlng = map.getCenter();
+				var pt = new SSEPoint(latlng.lng(),latlng.lat());
 				SSELocating.reverseGeocoding(pt,function(result){					
 					if(result){
 						var r = result.returnByReGeocoding();
-						if(r)alert(r);
-					}					
+						if(r){
+							var marker = new google.maps.Marker({
+								position: latlng,
+								title: r,
+								map: map,
+								draggable: false,
+							    animation: google.maps.Animation.DROP
+							});
+							var infowindow = new google.maps.InfoWindow();
+							google.maps.event.addListener(marker, 'click', function() {
+								infowindow.setContent(r);
+								infowindow.open(map,marker);
+							});
+							overlays.push(marker);
+						}else{
+							alert(result.faultString);
+						}
+					}
 				});		
 			}
-
+			
+			/*****************************************************/			
+			
+			var sflag = new Array;
+			function Flag(count){
+				for(var i=0;i<+count;i++){
+					sflag[i] = false;
+				}
+			}
 			function search(){
 				var filter = new SSEFilter;
 				filter.key = '110000';
-				filter.preference = 'POI';
-				filter.keyword = sText.value;
-				filter.count = 25;
+				filter.preference = document.getElementById('sType').value;
+				filter.keyword = document.getElementById('sText').value;
+				filter.count = 50;
 				//filter.distance = 5000;
 				//filter.geometryWKT = 'POINT(116.4 39.9)';
+				Flag(filter.count);
 				SSESearching.search(filter,function(result){					
 					if(result){
 						var r = result.returnBySearch();
 						if(r){
-							var str = "";
-							for(var i=0;i<r.length;i++){
-								str += r[i].id+" "+r[i].title+" "+r[i].wkt.toString()+"\r\n";
+							var html = '';
+							for(var i=0;i<r.length;i++){								
+								if(filter.preference=='POI'){								
+									var lat = r[i].wkt.lat;
+									var lon = r[i].wkt.lon;
+									html += '<div class="ditem">'+i+'&nbsp;&nbsp;'+'<a href="javascript:poiInfo('+r[i].id+','+filter.key+','+i+');" onmouseover="sCenter('+lat+','+lon+');">'+r[i].title+'</a>'+'</div>';									
+								}else{
+									var lat = r[i].wkt[0].lat;
+									var lon = r[i].wkt[0].lon;									
+									html += '<div class="ditem">'+i+'&nbsp;&nbsp;'+'<a href="javascript:void(0);" onmouseover="sCenter('+lat+','+lon+');">'+r[i].title+'</a>'+'</div>';
+
+									var coords = new Array;
+									for(var j=0;j<r[i].wkt.length;j++){						
+										coords.push(new google.maps.LatLng(r[i].wkt[j].lat,r[i].wkt[j].lon));						
+									}
+									var polyOptions = {
+										path: coords,
+										strokeColor: '#ff0000',
+										strokeOpacity: 1.0,
+										strokeWeight: 3,
+										map: map
+									};
+									var poly = new google.maps.Polyline(polyOptions);
+									overlays.push(poly);
+								}
 							}
-							alert(str);
-						}						
+							document.getElementById('left').innerHTML = html;
+						}else{
+							alert(result.faultString);
+						}				
 					}
 				});
 			}
-
-			function poiInfo(){
-				var key = '110000';
-				var id = '200';				
+			function sCenter(lat,lon){				
+				map.setCenter(new google.maps.LatLng(lat, lon));
+			}
+			function poiInfo(id,key,numid){
+				if(sflag[+numid]) return;
 				SSESearching.poiInfo(key,id,function(result){
 					if(result){						
 						var r = result.returnByPoiInfo();
-						if(r)alert(r.id+" "+r.name+" "+r.kind+" "+r.phone+" "+r.address+" "+r.remark+" "+r.vertex.toString());
+						if(r){
+							var latlng = new google.maps.LatLng(r.vertex.lat, r.vertex.lon);					
+							var marker = new google.maps.Marker({
+								position: latlng,
+								title: r.name,
+								map: map
+							});
+							var infowindow = new google.maps.InfoWindow();
+							google.maps.event.addListener(marker, 'click', function() {
+								var content = 'name: '+r.name+'<br/>kind: '+r.kind+'<br/>phone: '+r.phone+'<br/>address: '+r.address+'<br/>remark: '+r.remark+'<br/>';
+								content += '<a href="javascript:setRouter(0,'+latlng.lat()+','+latlng.lng()+');">Plan(Start)</a>&nbsp;&nbsp;<a href="javascript:setRouter(1,'+latlng.lat()+','+latlng.lng()+');">Plan(Via)</a>&nbsp;&nbsp;<a href="javascript:setRouter(2,'+latlng.lat()+','+latlng.lng()+');">Plan(End)</a>';
+								infowindow.setContent(content);
+								infowindow.open(map,marker);
+							});
+							sflag[numid] = true;
+							overlays.push(marker);
+						}else{
+							alert(result.faultString);
+						}
 					}
 				});
 			}
-
+			
+			/*****************************************************/
+			
+			var router = null;
+			function pInit(){
+				router = new SSERouter;
+				router.preference = 'Fastest';
+				router.startPoint = null;
+				router.endPoint = null;
+				router.viaPoints = new Array;
+			}
+			function setRouter(type,lat,lon){
+				if(router==null)pInit();
+				if(type==0){
+					router.startPoint=new SSEPoint(lon,lat);
+				}else if(type==1){
+					router.viaPoints[0]=new SSEPoint(lon,lat);
+				}else if(type==2){
+					router.endPoint=new SSEPoint(lon,lat);
+				}
+				if(router.startPoint && router.endPoint){
+					alert(1);
+				}
+			}
 			function webPlan(){
+				pInit();
 				var router = new SSERouter;
 				router.preference = 'Fastest';
 				router.startPoint = new SSEPoint(116.4,39.9);
@@ -71,8 +220,8 @@
 						if(r){
 							var str = "总行程:"+r.dis+"米--用时:"+r.cost+"分钟 ["+r.minx+" "+r.miny+" "+r.maxx+" "+r.maxy+"]\r\n";
 							var guids = r.guids;
-							var vertexes = "";		
-							for(var i=0;i<guids.length;i++){					
+							var vertexes = "";
+							for(var i=0;i<guids.length;i++){		
 								str += guids[i].name+"--行使--"+guids[i].len+"米["+guids[i].cost+"秒]--"+guids[i].turn+"--"+guids[i].vertexes.length+"\r\n";
 								for(var j=0;j<guids[i].vertexes.length;j++){
 									vertexes += guids[i].vertexes[j].toString()+";"
@@ -87,12 +236,14 @@
 			}
 		</script>
 	</head>
-	<body>
-		<div><input type="text" value = "中关村" id="geoText"/><a href="javascript:geocoding();">Geocoding</a></div>
-		<div><a href="javascript:reverseGeocoding();">reverseGeocoding</a></div>
-		<div><input type="text" value = "麦当劳 大厦" id="sText"/><a href="javascript:search();">search</a></div>
-		<div><a href="javascript:poiInfo();">poiInfo</a></div>
-		<div><a href="javascript:webPlan();">webPlan</a></div>
+	<body onload="initialize()" onresize="resize()">
+		<div id="top" class="dtop">
+			<div><input type="text" value = "中关村" id="geoText"/><a href="javascript:geocoding();">Geocoding</a>&nbsp;&nbsp;<a href="javascript:reverseGeocoding();">reverseGeocoding</a>&nbsp;&nbsp;<a href="javascript:clear();">clear</a></div>
+			<div><input type="text" value = "麦当劳 大厦" id="sText"/><select id="sType"><option value="POI">POI</option><option value="NET">Road</option></select><a href="javascript:search();">search</a></div>
+			<div>&nbsp;Start:&nbsp;<input type="text" value = "上地" id="pStart"/>&nbsp;End:&nbsp;<input type="text" value = "香山" id="pStart"/><a href="javascript:webPlan();">webPlan</a></div>
+		</div>
+		<div id="left" class="dleft"></div>
+		<div id="map" class="dmap"></div>
 	</body>
 </html>
 

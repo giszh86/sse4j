@@ -109,6 +109,12 @@ function SSEPoint(lon,lat){
 	this.toString=function(){
 		return (this.lon+","+this.lat);
 	}
+	this.equals=function(pt){
+		if(pt){
+			return ((this.lat==pt.lat)&&(this.lon==pt.lon));
+		}
+		return false;
+	}
 }
 function SSEFilter(key,preference,keyword,count,distance,geometryWKT){
 	this.key = key;

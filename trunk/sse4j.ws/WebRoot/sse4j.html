@@ -5,7 +5,7 @@
 		<style type="text/css">
 		body{border:0;margin:0;width:100%;height:100%;font:12px arial,sans-serif;}
 		.dtop{width:100%;height:100px;}
-		.dleft{position:absolute;width:300px;overflow-y:auto;overflow-x:auto;background-color:#EEEEEE;}
+		.dleft{position:absolute;width:300px;overflow-y:auto;background-color:#EEEEEE;}
 		.dmap{position:absolute;left:300px;background-color:#CCCCCC;}
 		.ditem{}
 		</style>
@@ -13,11 +13,13 @@
 		<script type="text/javascript" src="./js/sse4j.js">
 		</script>
 		<script type="text/javascript">
-			var map;			
+			var map;
+			var dzoom = 13;	
+			var dkey = '110000';		
 			function initialize() {
 				var latlng = new google.maps.LatLng(39.9, 116.4);
 				var myOptions = {
-					zoom: 10,
+					zoom: 12,
 					center: latlng,
 					mapTypeId: google.maps.MapTypeId.ROADMAP
 				}
@@ -43,15 +45,21 @@
 
 			var overlays = new Array;
 			function clear(){
+				if(routepoly) routepoly.setMap(null);
 				for(var i=0;i<overlays.length;i++)
 					overlays[i].setMap(null);
 				overlays = new Array;
+			}
+			var infowins = new Array;
+			function closeInfo(){
+				for(var i=0;i<infowins.length;i++)
+					infowins[i].close();
 			}
 
 			/*****************************************************/
 						
 			function geocoding(){
-				var key = '110000';
+				var key = dkey;
 				var address = document.getElementById('geoText').value;				
 				SSELocating.geocoding(key,address,function(result){
 					if(result){
@@ -64,7 +72,7 @@
 								map: map
 							});
 							overlays.push(marker);
-							map.setZoom(13);
+							map.setZoom(dzoom);
 							map.setCenter(r);
 						}else{
 							alert(result.faultString);
@@ -86,12 +94,16 @@
 								draggable: false,
 							    animation: google.maps.Animation.DROP
 							});
+							closeInfo();
 							var infowindow = new google.maps.InfoWindow();
-							google.maps.event.addListener(marker, 'click', function() {
-								infowindow.setContent(r);
+							infowindow.setContent(r);
+							infowindow.open(map,marker);
+							google.maps.event.addListener(marker, 'click', function() {	
+								closeInfo();							
 								infowindow.open(map,marker);
 							});
 							overlays.push(marker);
+							infowins.push(infowindow);
 						}else{
 							alert(result.faultString);
 						}
@@ -109,13 +121,14 @@
 			}
 			function search(){
 				var filter = new SSEFilter;
-				filter.key = '110000';
+				filter.key = dkey;
 				filter.preference = document.getElementById('sType').value;
 				filter.keyword = document.getElementById('sText').value;
 				filter.count = 50;
 				//filter.distance = 5000;
 				//filter.geometryWKT = 'POINT(116.4 39.9)';
 				Flag(filter.count);
+				pInit();
 				SSESearching.search(filter,function(result){					
 					if(result){
 						var r = result.returnBySearch();
@@ -147,13 +160,14 @@
 								}
 							}
 							document.getElementById('left').innerHTML = html;
-						}else{
+						}else{							
 							alert(result.faultString);
 						}				
 					}
 				});
 			}
-			function sCenter(lat,lon){				
+			function sCenter(lat,lon){
+				map.setZoom(dzoom);		
 				map.setCenter(new google.maps.LatLng(lat, lon));
 			}
 			function poiInfo(id,key,numid){
@@ -167,25 +181,40 @@
 								position: latlng,
 								title: r.name,
 								map: map
-							});
+							});	
+							closeInfo();						
 							var infowindow = new google.maps.InfoWindow();
+							var content = 'name: '+r.name+'<br/>kind: '+r.kind+'<br/>phone: '+r.phone+'<br/>address: '+r.address+'<br/>remark: '+r.remark+'<br/>';
+							content += '<a href="javascript:setRouter(0,'+latlng.lat()+','+latlng.lng()+');">Plan(Start)</a>&nbsp;&nbsp;<a href="javascript:setRouter(1,'+latlng.lat()+','+latlng.lng()+');">Plan(Via)</a>&nbsp;&nbsp;<a href="javascript:setRouter(2,'+latlng.lat()+','+latlng.lng()+');">Plan(End)</a>';
+							infowindow.setContent(content);
+							infowindow.open(map,marker);
 							google.maps.event.addListener(marker, 'click', function() {
-								var content = 'name: '+r.name+'<br/>kind: '+r.kind+'<br/>phone: '+r.phone+'<br/>address: '+r.address+'<br/>remark: '+r.remark+'<br/>';
-								content += '<a href="javascript:setRouter(0,'+latlng.lat()+','+latlng.lng()+');">Plan(Start)</a>&nbsp;&nbsp;<a href="javascript:setRouter(1,'+latlng.lat()+','+latlng.lng()+');">Plan(Via)</a>&nbsp;&nbsp;<a href="javascript:setRouter(2,'+latlng.lat()+','+latlng.lng()+');">Plan(End)</a>';
-								infowindow.setContent(content);
+								closeInfo();
 								infowindow.open(map,marker);
 							});
 							sflag[numid] = true;
 							overlays.push(marker);
+							infowins.push(infowindow);
 						}else{
 							alert(result.faultString);
 						}
 					}
 				});
 			}
+
+			/*****************************************************/
+			
+			function hotmap(){
+				var prefer = document.getElementById('sType').value;
+				if(prefer!='POI'){
+					alert('POI Selected!');
+					return;
+				}
+			}
 			
 			/*****************************************************/
 			
+			var routepoly = null;
 			var router = null;
 			function pInit(){
 				router = new SSERouter;
@@ -198,49 +227,124 @@
 				if(router==null)pInit();
 				if(type==0){
 					router.startPoint=new SSEPoint(lon,lat);
+					if(router.viaPoints[0] && router.viaPoints[0].equals(router.startPoint)){
+						router.viaPoints[0] = null;
+					}
+					if(router.endPoint && router.endPoint.equals(router.startPoint)){
+						router.endPoint = null;
+					}					
 				}else if(type==1){
 					router.viaPoints[0]=new SSEPoint(lon,lat);
+					if(router.startPoint && router.startPoint.equals(router.viaPoints[0])){
+						router.startPoint = null;
+					}
+					if(router.endPoint && router.endPoint.equals(router.viaPoints[0])){
+						router.endPoint = null;
+					}
 				}else if(type==2){
 					router.endPoint=new SSEPoint(lon,lat);
+					if(router.viaPoints[0] && router.viaPoints[0].equals(router.endPoint)){
+						router.viaPoints[0] = null;
+					}
+					if(router.startPoint && router.startPoint.equals(router.endPoint)){
+						router.startPoint = null;
+					}
 				}
-				if(router.startPoint && router.endPoint){
-					alert(1);
+				if(router.startPoint && router.endPoint){					
+					webPlan();
 				}
 			}
-			function webPlan(){
-				pInit();
-				var router = new SSERouter;
-				router.preference = 'Fastest';
-				router.startPoint = new SSEPoint(116.4,39.9);
-				router.endPoint = new SSEPoint(116.32,39.97);
-				router.viaPoints = [new SSEPoint(116.64,39.85),null];
+			function webPlan(){				
 				SSERouting.webPlan(router,function(result){
 					if(result){						
 						var r = result.returnByWebPlan();
 						if(r){
-							var str = "总行程:"+r.dis+"米--用时:"+r.cost+"分钟 ["+r.minx+" "+r.miny+" "+r.maxx+" "+r.maxy+"]\r\n";
+							var coords = new Array;
+							var html = '<br/><div>总行程: '+r.dis+'米&nbsp;&nbsp;&nbsp;&nbsp;共用时:'+r.cost+'分钟</div><br/>';
 							var guids = r.guids;
-							var vertexes = "";
-							for(var i=0;i<guids.length;i++){		
-								str += guids[i].name+"--行使--"+guids[i].len+"米["+guids[i].cost+"秒]--"+guids[i].turn+"--"+guids[i].vertexes.length+"\r\n";
-								for(var j=0;j<guids[i].vertexes.length;j++){
-									vertexes += guids[i].vertexes[j].toString()+";"
+							for(var i=0;i<guids.length;i++){
+								var state = '';
+								if(guids[i].state=='A'){
+									state = '<strong style="color:#FF0000">[拥堵]</strong>';
+								}else if(guids[i].state=='B'){
+									state = '<strong style="color:#FFAA00">[缓行]</strong>';
+								}else{
+									state = '<strong style="color:#00FF00">[畅通]</strong>';
 								}
-								vertexes += "\r\n";
+								html += '<div>'+i+':&nbsp;<a href="javascript:void(0);">'+guids[i].name+'</a>'+state+'行使'+guids[i].len+'米['+guids[i].cost+'秒]&nbsp;'+guids[i].turn+'</div>';
+								for(var j=0;j<guids[i].vertexes.length;j++){
+									coords.push(new google.maps.LatLng(guids[i].vertexes[j].lat, guids[i].vertexes[j].lon));									
+								}
 							}
-							alert(str);
-							alert(vertexes);
+							html += '<br/>';
+							document.getElementById('left').innerHTML = html;
+
+							if(routepoly) routepoly.setMap(null);
+							var polyOptions = {
+								path: coords,
+								strokeColor: '#0000ff',
+								strokeOpacity: 1.0,
+								strokeWeight: 3,
+								map: map
+							};
+							routepoly = new google.maps.Polyline(polyOptions);							
+							map.fitBounds(new google.maps.LatLngBounds(new google.maps.LatLng(r.miny,r.minx),new google.maps.LatLng(r.maxy,r.maxx)));							
+						}else{
+							alert(result.faultString);
 						}
 					}
-				});				
+				});
 			}
+
+			function planSearch(){
+				pInit();
+				panSearchSet(document.getElementById('pStart').value, 0);
+				panSearchSet(document.getElementById('pEnd').value, 2);
+			}
+			function panSearchSet(keyword,type){
+				var filter = new SSEFilter;
+				filter.key = dkey;
+				filter.preference = 'POI';
+				filter.keyword = keyword;
+				filter.count = 2;
+				SSESearching.search(filter,function(result){					
+					if(result){
+						var r = result.returnBySearch();
+						if(r){
+							var title = r[0].title;
+							var latlng = new google.maps.LatLng(r[0].wkt.lat, r[0].wkt.lon);							
+							var marker = new google.maps.Marker({
+								position: latlng,
+								title: title,
+								map: map
+							});							
+							var infowindow = new google.maps.InfoWindow();
+							infowindow.setContent(title);							
+							google.maps.event.addListener(marker, 'click', function() {	
+								closeInfo();
+								infowindow.open(map,marker);
+							});
+							overlays.push(marker);
+							infowins.push(infowindow);
+							
+							setRouter(type,latlng.lat(),latlng.lng());
+						}else{
+							alert(result.faultString);
+						}
+					}
+				});
+			}
+			
+			/*****************************************************/
+			
 		</script>
 	</head>
 	<body onload="initialize()" onresize="resize()">
 		<div id="top" class="dtop">
-			<div><input type="text" value = "中关村" id="geoText"/><a href="javascript:geocoding();">Geocoding</a>&nbsp;&nbsp;<a href="javascript:reverseGeocoding();">reverseGeocoding</a>&nbsp;&nbsp;<a href="javascript:clear();">clear</a></div>
-			<div><input type="text" value = "麦当劳 大厦" id="sText"/><select id="sType"><option value="POI">POI</option><option value="NET">Road</option></select><a href="javascript:search();">search</a></div>
-			<div>&nbsp;Start:&nbsp;<input type="text" value = "上地" id="pStart"/>&nbsp;End:&nbsp;<input type="text" value = "香山" id="pStart"/><a href="javascript:webPlan();">webPlan</a></div>
+			<div><input type="text" value = "中关村" id="geoText"/><a href="javascript:geocoding();">Geocoding</a>&nbsp;&nbsp;<a href="javascript:reverseGeocoding();">reverseGeocoding</a></div>
+			<div><input type="text" value = "麦当劳 大厦" id="sText"/><select id="sType"><option value="POI">POI</option><option value="NET">Road</option></select><a href="javascript:search();">search</a>&nbsp;&nbsp;<a href="javascript:hotmap();">hotmap</a></div>
+			<div>Start:&nbsp;<input type="text" value = "上地" id="pStart"/>&nbsp;End:&nbsp;<input type="text" value = "西单" id="pEnd"/><a href="javascript:planSearch();">webPlan</a></div>
+			<div><a href="javascript:clear();">clear</a></div>
 		</div>
 		<div id="left" class="dleft"></div>
 		<div id="map" class="dmap"></div>

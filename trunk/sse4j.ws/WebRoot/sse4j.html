@@ -40,16 +40,22 @@
 			}
 
 			var overlays = new Array;
+			var hotlays = new Array;
 			function clear(){
 				if(hotMapType){
 					map.overlayMapTypes.removeAt(0);
 					hotMapType = null;
 				}
+				for(var i=0;i<hotlays.length;i++)
+					hotlays[i].setMap(null);
+				hotlays = new Array;
+				
 				if(routepoly) routepoly.setMap(null);
 				for(var i=0;i<overlays.length;i++)
 					overlays[i].setMap(null);
 				overlays = new Array;
 			}
+			
 			var infowins = new Array;
 			function closeInfo(){
 				for(var i=0;i<infowins.length;i++)
@@ -230,6 +236,12 @@
 				};
 				hotMapType = new google.maps.ImageMapType(hotMapTypeOpts);
 				map.overlayMapTypes.insertAt(0,hotMapType);	
+
+				google.maps.event.addListener(map, 'zoom_changed', function() {
+					for(var i=0;i<hotlays.length;i++)
+						hotlays[i].setMap(null);
+					hotlays = new Array;
+				});
 			}
 			
 			/**			
@@ -251,10 +263,11 @@
 							title: json.tips[i].title,
 							map: map
 						});
-						overlays.push(marker);
+						hotlays.push(marker);
 					}
 				}
 			}
+				
 									
 			/*****************************************************/
 			

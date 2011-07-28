@@ -25,10 +25,6 @@
 				}
 				map = new google.maps.Map(document.getElementById("map"), myOptions);
 				resize();
-
-				//important
-				window.ssemap = window.ssemap || map;
-				window.ssemapapi = window.ssemapapi || 'G35';				
 			}
 			function resize(){
 				if(map){
@@ -45,6 +41,10 @@
 
 			var overlays = new Array;
 			function clear(){
+				if(hotMapType){
+					map.overlayMapTypes.removeAt(0);
+					hotMapType = null;
+				}
 				if(routepoly) routepoly.setMap(null);
 				for(var i=0;i<overlays.length;i++)
 					overlays[i].setMap(null);
@@ -203,15 +203,59 @@
 			}
 
 			/*****************************************************/
-			
+
+			var hotMapType = null;			
 			function hotmap(){
 				var prefer = document.getElementById('sType').value;
-				if(prefer!='POI'){
-					alert('POI Selected!');
+				var txt = document.getElementById('sText').value;
+				if(prefer!='POI' && txt!=''){
+					alert('POI Selected and input!');
 					return;
 				}
+				txt = encodeURI(txt);
+
+				//Image
+				if(hotMapType) map.overlayMapTypes.removeAt(0);
+				var hotMapTypeOpts = {
+					getTileUrl: function(coord, zoom) {
+						var burl = HotMapUrl+'keyword='+txt+'&zoom='+zoom+'&y='+coord.x+'&x='+coord.y;
+						SSEUtil.createJS(burl+'&type=js');
+					    return burl+'&type=img';
+					},
+					tileSize: new google.maps.Size(256,256),
+					isPng: true,
+					maxZoom: 17,
+					minZoom: 10,
+					name: "HotMap"
+				};
+				hotMapType = new google.maps.ImageMapType(hotMapTypeOpts);
+				map.overlayMapTypes.insertAt(0,hotMapType);	
 			}
 			
+			/**			
+			 * @param json {zoom,x,y,tips([{x,y,id,title,subs([{id,title}])}])}
+			 */
+			function hotMapTip(json){
+				if(json){
+					var tile = 256;
+					var size = tile<<json.zoom;
+					for(var i=0;i<json.tips.length;i++){
+						var x = json.x*tile + json.tips[i].x;
+						var y = json.y*tile + json.tips[i].y + 4;
+						var latlng = SSEUtil.pixelToLL(x,y,size);
+						latlng = new google.maps.LatLng(latlng.lat,latlng.lon);
+						var marker = new google.maps.Marker({
+							icon:BaseUrl+'js/hot.png',
+							flat:true,
+							position: latlng,
+							title: json.tips[i].title,
+							map: map
+						});
+						overlays.push(marker);
+					}
+				}
+			}
+									
 			/*****************************************************/
 			
 			var routepoly = null;

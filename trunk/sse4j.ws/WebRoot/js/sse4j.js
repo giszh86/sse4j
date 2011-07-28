@@ -3,6 +3,7 @@ var LocatingWSDL = BaseUrl+'LocatingPort?wsdl';
 var SearchingWSDL = BaseUrl+'SearchingPort?wsdl';
 var RoutingWSDL = BaseUrl+'RoutingPort?wsdl';
 var MatchingWSDL = BaseUrl+'MatchingPort?wsdl';
+var HotMapUrl = BaseUrl+'servlet/HotTile?';
 var SoapStart = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.sse.org/"><soapenv:Header/><soapenv:Body>';
 var SoapEnd = '</soapenv:Body></soapenv:Envelope>';
 
@@ -65,6 +66,22 @@ SSEUtil.MC2LL = function(point){
 	var lon = (point.x/20037508.342789)*180;
 	lat = 180/Math.PI*(2*Math.atan(Math.exp(lat*Math.PI/180))-Math.PI/2);
 	return new SSEPoint(lon.toFixed(6),lat.toFixed(6));
+}
+SSEUtil.createJS = function(url){				
+	var script=document.createElement("script");
+    script.type='text/javascript';
+    script.src=url;
+    document.getElementsByTagName("head")[0].appendChild(script);
+}
+SSEUtil.clip = function(n, min, max){
+	return Math.min(Math.max(n, min), max);
+}
+SSEUtil.pixelToLL = function(x, y, size){
+	x = (SSEUtil.clip(x,0,size-1) / size) - 0.5;
+	x = 360 * x;
+	y = 0.5 - (SSEUtil.clip(y,0,size-1) / size);
+	y = 90 - 360 * Math.atan(Math.exp(-y * 2 * Math.PI)) / Math.PI;	
+	return new SSEPoint(x.toFixed(6),y.toFixed(6));
 }
 
 function Radix(){	
@@ -166,7 +183,7 @@ function SSEResult(faultString,resultCode,jsonString){
 	
 	/**
 	 * get search result
-	 * @return Array({id(String),title(String),wkt(SSEPoint)})
+	 * @return [{id(String),title(String),wkt(SSEPoint)}]
 	 */
 	this.returnBySearch = function(){
 		if(+this.resultCode==1){
@@ -214,7 +231,7 @@ function SSEResult(faultString,resultCode,jsonString){
 	
 	/**
 	 * get webplan result
-	 * @return {dis,cost,minx,miny,maxx,maxy,guids(Array({name,state,turn,len,cost,vertexes(Array(SSEPoint))}))}
+	 * @return {dis,cost,minx,miny,maxx,maxy,guids([{name,state,turn,len,cost,vertexes([SSEPoint])}])}
 	 */
 	this.returnByWebPlan = function(){
 		if(+this.resultCode==1){
@@ -315,20 +332,6 @@ var SSERouting = {
 			SSEUtil.requestOnready(xml,RoutingWSDL,func);
 		}else{
 			alert("input null!");
-		}
-	}
-}
-
-/***************************************************************************/
-
-function hotMapTip(json){
-	if(json){
-		var tips = eval('('+json+')');//{zoom,x,y,tips([{x,y,id,title,subs([{id,title}])}])}
-		if(window.ssemapapi=='G35'){
-			if(window.ssemap){
-			}
-		}else{
-			//TOTO
 		}
 	}
 }

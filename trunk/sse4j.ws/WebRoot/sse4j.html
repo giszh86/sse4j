@@ -14,8 +14,8 @@
 		</script>
 		<script type="text/javascript">
 			var map;
-			var dzoom = 13;	
-			var dkey = '110000';		
+			var dzoom = 13;
+			var dkey = '110000';
 			function initialize() {
 				var latlng = new google.maps.LatLng(39.9, 116.4);
 				var myOptions = {
@@ -173,7 +173,7 @@
 			function poiInfo(id,key,numid){
 				if(sflag[+numid]) return;
 				SSESearching.poiInfo(key,id,function(result){
-					if(result){						
+					if(result){
 						var r = result.returnByPoiInfo();
 						if(r){
 							var latlng = new google.maps.LatLng(r.vertex.lat, r.vertex.lon);					
@@ -181,7 +181,7 @@
 								position: latlng,
 								title: r.name,
 								map: map
-							});	
+							});
 							closeInfo();						
 							var infowindow = new google.maps.InfoWindow();
 							var content = 'name: '+r.name+'<br/>kind: '+r.kind+'<br/>phone: '+r.phone+'<br/>address: '+r.address+'<br/>remark: '+r.remark+'<br/>';
@@ -232,7 +232,7 @@
 					}
 					if(router.endPoint && router.endPoint.equals(router.startPoint)){
 						router.endPoint = null;
-					}					
+					}
 				}else if(type==1){
 					router.viaPoints[0]=new SSEPoint(lon,lat);
 					if(router.startPoint && router.startPoint.equals(router.viaPoints[0])){
@@ -250,13 +250,13 @@
 						router.startPoint = null;
 					}
 				}
-				if(router.startPoint && router.endPoint){					
+				if(router.startPoint && router.endPoint){
 					webPlan();
 				}
 			}
-			function webPlan(){				
+			function webPlan(){
 				SSERouting.webPlan(router,function(result){
-					if(result){						
+					if(result){
 						var r = result.returnByWebPlan();
 						if(r){
 							var coords = new Array;
@@ -307,7 +307,7 @@
 				filter.preference = 'POI';
 				filter.keyword = keyword;
 				filter.count = 2;
-				SSESearching.search(filter,function(result){					
+				SSESearching.search(filter,function(result){
 					if(result){
 						var r = result.returnBySearch();
 						if(r){
@@ -317,10 +317,10 @@
 								position: latlng,
 								title: title,
 								map: map
-							});							
+							});
 							var infowindow = new google.maps.InfoWindow();
-							infowindow.setContent(title);							
-							google.maps.event.addListener(marker, 'click', function() {	
+							infowindow.setContent(title);
+							google.maps.event.addListener(marker, 'click', function() {
 								closeInfo();
 								infowindow.open(map,marker);
 							});

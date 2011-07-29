@@ -81,7 +81,7 @@ SSEUtil.pixelToLL = function(x, y, size){
 	x = 360 * x;
 	y = 0.5 - (SSEUtil.clip(y,0,size-1) / size);
 	y = 90 - 360 * Math.atan(Math.exp(-y * 2 * Math.PI)) / Math.PI;	
-	return new SSEPoint(x.toFixed(6),y.toFixed(6));
+	return new SSEPoint(x,y);
 }
 
 function Radix(){	

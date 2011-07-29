@@ -1,0 +1,453 @@
+<html>
+	<head>
+		<title></title>
+		<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<style type="text/css">
+		body{border:0;margin:0;width:100%;height:100%;font:12px arial,sans-serif;}
+		.dtop{width:100%;height:100px;}
+		.dleft{position:absolute;width:300px;overflow-y:auto;background-color:#EEEEEE;}
+		.dmap{position:absolute;left:300px;background-color:#CCCCCC;}
+		.ditem{}
+		</style>
+		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+		<script type="text/javascript" src="http://localhost:8080/sse4j/js/sse4j.js">
+		</script>
+		<script type="text/javascript">
+			var map;
+			var dzoom = 13;
+			var dkey = '110000';
+			function initialize() {
+				var latlng = new google.maps.LatLng(39.9, 116.4);
+				var myOptions = {
+					zoom: 12,
+					center: latlng,
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				}
+				map = new google.maps.Map(document.getElementById("map"), myOptions);
+				google.maps.event.addListener(map, 'zoom_changed', function() {
+					clearHot();
+				});				
+				resize();
+			}
+			function resize(){
+				if(map){
+					var mapstyle = map.getDiv().style;
+					var w = document.body.clientWidth;
+					var h = document.body.clientHeight;
+					mapstyle.width = w-300;
+					mapstyle.height = h-100;
+	
+					var leftstyle = document.getElementById("left").style;
+					leftstyle.height = h-100;
+				}
+			}
+
+			var overlays = new Array;
+			var hotlays = new Array;
+			function clear(){
+				if(hotMapType){
+					map.overlayMapTypes.removeAt(0);
+					hotMapType = null;
+				}
+				clearHot();				
+				if(routepoly) routepoly.setMap(null);
+				for(var i=0;i<overlays.length;i++)
+					overlays[i].setMap(null);
+				overlays = new Array;
+			}
+			function clearHot(){
+				for(var i=0;i<hotlays.length;i++)
+					hotlays[i].setMap(null);
+				hotlays = new Array;
+			}
+			
+			var infowins = new Array;
+			function closeInfo(){
+				for(var i=0;i<infowins.length;i++)
+					infowins[i].close();
+			}
+
+			/*****************************************************/
+						
+			function geocoding(){
+				var key = dkey;
+				var address = document.getElementById('geoText').value;				
+				SSELocating.geocoding(key,address,function(result){
+					if(result){
+						var r = result.returnByGeocoding();
+						if(r){
+							r = new google.maps.LatLng(r.lat, r.lon);
+							var marker = new google.maps.Marker({
+								position: r,
+								title: address,
+								map: map
+							});
+							overlays.push(marker);
+							map.setZoom(dzoom);
+							map.setCenter(r);
+						}else{
+							alert(result.faultString);
+						}
+					}
+				});				
+			}
+			function reverseGeocoding(){
+				var latlng = map.getCenter();
+				var pt = new SSEPoint(latlng.lng(),latlng.lat());
+				SSELocating.reverseGeocoding(pt,function(result){					
+					if(result){
+						var r = result.returnByReGeocoding();
+						if(r){
+							var marker = new google.maps.Marker({
+								position: latlng,
+								title: r,
+								map: map,
+								draggable: false,
+							    animation: google.maps.Animation.DROP
+							});
+							closeInfo();
+							var infowindow = new google.maps.InfoWindow();
+							infowindow.setContent(r);
+							infowindow.open(map,marker);
+							google.maps.event.addListener(marker, 'click', function() {	
+								closeInfo();							
+								infowindow.open(map,marker);
+							});
+							overlays.push(marker);
+							infowins.push(infowindow);
+						}else{
+							alert(result.faultString);
+						}
+					}
+				});		
+			}
+			
+			/*****************************************************/			
+			
+			var sflag = new Array;
+			function Flag(count){
+				for(var i=0;i<+count;i++){
+					sflag[i] = false;
+				}
+			}
+			function search(){
+				var filter = new SSEFilter;
+				filter.key = dkey;
+				filter.preference = document.getElementById('sType').value;
+				filter.keyword = document.getElementById('sText').value;
+				filter.count = 50;
+				//filter.distance = 5000;
+				//filter.geometryWKT = 'POINT(116.4 39.9)';
+				Flag(filter.count);
+				pInit();
+				SSESearching.search(filter,function(result){					
+					if(result){
+						var r = result.returnBySearch();
+						if(r){
+							var html = '';
+							for(var i=0;i<r.length;i++){								
+								if(filter.preference=='POI'){								
+									var lat = r[i].wkt.lat;
+									var lon = r[i].wkt.lon;
+									html += '<div class="ditem">'+i+'&nbsp;&nbsp;'+'<a href="javascript:poiInfo('+r[i].id+','+filter.key+','+i+');" onmouseover="sCenter('+lat+','+lon+');">'+r[i].title+'</a>'+'</div>';									
+								}else{
+									var lat = r[i].wkt[0].lat;
+									var lon = r[i].wkt[0].lon;									
+									html += '<div class="ditem">'+i+'&nbsp;&nbsp;'+'<a href="javascript:void(0);" onmouseover="sCenter('+lat+','+lon+');">'+r[i].title+'</a>'+'</div>';
+
+									var coords = new Array;
+									for(var j=0;j<r[i].wkt.length;j++){						
+										coords.push(new google.maps.LatLng(r[i].wkt[j].lat,r[i].wkt[j].lon));						
+									}
+									var polyOptions = {
+										path: coords,
+										strokeColor: '#ff0000',
+										strokeOpacity: 1.0,
+										strokeWeight: 3,
+										map: map
+									};
+									var poly = new google.maps.Polyline(polyOptions);
+									overlays.push(poly);
+								}
+							}
+							document.getElementById('left').innerHTML = html;
+						}else{							
+							alert(result.faultString);
+						}				
+					}
+				});
+			}
+			function sCenter(lat,lon){
+				map.setZoom(dzoom);		
+				map.setCenter(new google.maps.LatLng(lat, lon));
+			}
+			function poiInfo(id,key,numid){
+				if(sflag[+numid]) return;
+				SSESearching.poiInfo(key,id,function(result){
+					if(result){
+						var r = result.returnByPoiInfo();
+						if(r){
+							var latlng = new google.maps.LatLng(r.vertex.lat, r.vertex.lon);					
+							var marker = new google.maps.Marker({
+								position: latlng,
+								title: r.name,
+								map: map
+							});
+							closeInfo();						
+							var infowindow = new google.maps.InfoWindow();
+							var content = 'name: '+r.name+'<br/>kind: '+r.kind+'<br/>phone: '+r.phone+'<br/>address: '+r.address+'<br/>remark: '+r.remark+'<br/>';
+							content += '<a href="javascript:setRouter(0,'+latlng.lat()+','+latlng.lng()+');">Plan(Start)</a>&nbsp;&nbsp;<a href="javascript:setRouter(1,'+latlng.lat()+','+latlng.lng()+');">Plan(Via)</a>&nbsp;&nbsp;<a href="javascript:setRouter(2,'+latlng.lat()+','+latlng.lng()+');">Plan(End)</a>';
+							infowindow.setContent(content);
+							infowindow.open(map,marker);
+							google.maps.event.addListener(marker, 'click', function() {
+								closeInfo();
+								infowindow.open(map,marker);
+							});
+							sflag[numid] = true;
+							overlays.push(marker);
+							infowins.push(infowindow);
+						}else{
+							alert(result.faultString);
+						}
+					}
+				});
+			}
+
+			/*****************************************************/
+
+			var hotMapType = null;			
+			function hotmap(){
+				var prefer = document.getElementById('sType').value;
+				var txt = document.getElementById('sText').value;
+				if(prefer!='POI' && txt!=''){
+					alert('POI Selected and input!');
+					return;
+				}
+				txt = encodeURI(txt);
+
+				//Image
+				if(hotMapType) map.overlayMapTypes.removeAt(0);
+				clearHot();
+				var hotMapTypeOpts = {
+					getTileUrl: function(coord, zoom) {
+						var burl = HotMapUrl+'keyword='+txt+'&zoom='+zoom+'&y='+coord.x+'&x='+coord.y;
+						SSEUtil.createJS(burl+'&type=js');
+					    return burl+'&type=img';
+					},
+					tileSize: new google.maps.Size(256,256),
+					isPng: true,
+					maxZoom: 17,
+					minZoom: 10,
+					name: "HotMap"
+				};
+				hotMapType = new google.maps.ImageMapType(hotMapTypeOpts);
+				map.overlayMapTypes.insertAt(0,hotMapType);
+			}
+			
+			/**			
+			 * @param json {zoom,x,y,tips([{x,y,id,title,subs([{id,title}])}])}
+			 */
+			function hotMapTip(json){
+				if(json){
+					var tile = 256;
+					var size = tile<<json.zoom;
+					for(var i=0;i<json.tips.length;i++){
+						var x = json.x*tile + json.tips[i].x;
+						var y = json.y*tile + json.tips[i].y + 4;
+						var latlng = SSEUtil.pixelToLL(x,y,size);
+						latlng = new google.maps.LatLng(latlng.lat,latlng.lon);
+
+						if(hotlays.length<1000){//cache limit
+							var title = json.tips[i].title;
+							for(var j=0;j<json.tips[i].subs.length;j++){
+								title += '\r\n'+json.tips[i].subs[j].title;
+							}
+							var marker = new google.maps.Marker({
+								icon:BaseUrl+'js/hot.png',
+								flat:true,
+								position: latlng,
+								title: title,
+								map: map
+							});
+							hotlays.push(marker);
+						}
+					}
+				}
+			}
+				
+									
+			/*****************************************************/
+			
+			var routepoly = null;
+			var routes = new Array;
+			var router = null;
+			function pInit(){
+				router = new SSERouter;
+				router.preference = 'Fastest';
+				router.startPoint = null;
+				router.endPoint = null;
+				router.viaPoints = new Array;
+			}
+			function setRouter(type,lat,lon){
+				if(router==null)pInit();
+				if(type==0){
+					router.startPoint=new SSEPoint(lon,lat);
+					if(router.viaPoints[0] && router.viaPoints[0].equals(router.startPoint)){
+						router.viaPoints[0] = null;
+					}
+					if(router.endPoint && router.endPoint.equals(router.startPoint)){
+						router.endPoint = null;
+					}
+				}else if(type==1){
+					router.viaPoints[0]=new SSEPoint(lon,lat);
+					if(router.startPoint && router.startPoint.equals(router.viaPoints[0])){
+						router.startPoint = null;
+					}
+					if(router.endPoint && router.endPoint.equals(router.viaPoints[0])){
+						router.endPoint = null;
+					}
+				}else if(type==2){
+					router.endPoint=new SSEPoint(lon,lat);
+					if(router.viaPoints[0] && router.viaPoints[0].equals(router.endPoint)){
+						router.viaPoints[0] = null;
+					}
+					if(router.startPoint && router.startPoint.equals(router.endPoint)){
+						router.startPoint = null;
+					}
+				}
+				if(router.startPoint && router.endPoint){
+					webPlan();
+				}
+			}
+			function routeMouse(idx,type){
+				if(type==0){//mouseover
+					var minx = 180;
+					var miny = 90;
+					var maxx = -180;
+					var maxy = -90;
+					var path = routes[idx].getPath();
+					for(var i=0;i<path.getLength();i++){
+						if(miny > path.getAt(i).lat())
+							miny = path.getAt(i).lat();
+						if(maxy < path.getAt(i).lat())
+							maxy = path.getAt(i).lat();
+						if(minx > path.getAt(i).lng())
+							minx = path.getAt(i).lng();
+						if(maxx < path.getAt(i).lng())
+							maxx = path.getAt(i).lng();
+					}
+					map.fitBounds(new google.maps.LatLngBounds(new google.maps.LatLng(miny,minx),new google.maps.LatLng(maxy,maxx)));
+					routes[idx].setMap(map);
+				}else if(type==1){//mouseout
+					routes[idx].setMap(null);
+				}
+			}
+			function webPlan(){
+				SSERouting.webPlan(router,function(result){
+					if(result){
+						var r = result.returnByWebPlan();
+						if(r){
+							routes = new Array;
+							var coords = new Array;
+							var html = '<br/><div class="ditem">总行程: '+r.dis+'米&nbsp;&nbsp;&nbsp;&nbsp;共用时:'+r.cost+'分钟</div><br/>';
+							var guids = r.guids;
+							for(var i=0;i<guids.length;i++){
+								var state = '';
+								if(guids[i].state=='A'){
+									state = '<strong style="color:#FF0000">[拥堵]</strong>';
+								}else if(guids[i].state=='B'){
+									state = '<strong style="color:#FFAA00">[缓行]</strong>';
+								}else{
+									state = '<strong style="color:#00FF00">[畅通]</strong>';
+								}
+								html += '<div class="ditem">'+i+':&nbsp;<a href="javascript:void(0);" onmouseover="routeMouse('+i+',0);" onmouseout="routeMouse('+i+',1);">'+guids[i].name+'</a>'+state+'行使'+guids[i].len+'米['+guids[i].cost+'秒]&nbsp;'+guids[i].turn+'</div>';
+
+								var itemcoords = new Array;
+								for(var j=0;j<guids[i].vertexes.length;j++){
+									var latlng = new google.maps.LatLng(guids[i].vertexes[j].lat, guids[i].vertexes[j].lon);
+									itemcoords.push(latlng);
+									coords.push(latlng);
+								}
+								var itemOpts = {
+									path: itemcoords,
+									strokeColor: '#ff0000',
+									strokeOpacity: 1.0,
+									strokeWeight: 2
+								};
+								routes.push(new google.maps.Polyline(itemOpts));
+							}
+							html += '<br/>';
+							document.getElementById('left').innerHTML = html;
+
+							if(routepoly) routepoly.setMap(null);
+							var polyOptions = {
+								path: coords,
+								strokeColor: '#0000ff',
+								strokeOpacity: 1.0,
+								strokeWeight: 3,
+								map: map
+							};
+							routepoly = new google.maps.Polyline(polyOptions);							
+							map.fitBounds(new google.maps.LatLngBounds(new google.maps.LatLng(r.miny,r.minx),new google.maps.LatLng(r.maxy,r.maxx)));
+						}else{
+							alert(result.faultString);
+						}
+					}
+				});
+			}
+			
+			function planSearch(){
+				pInit();
+				planSearchSet(document.getElementById('pStart').value, 0);
+				planSearchSet(document.getElementById('pEnd').value, 2);
+			}
+			function planSearchSet(keyword,type){
+				var filter = new SSEFilter;
+				filter.key = dkey;
+				filter.preference = 'POI';
+				filter.keyword = keyword;
+				filter.count = 2;
+				SSESearching.search(filter,function(result){
+					if(result){
+						var r = result.returnBySearch();
+						if(r){
+							var title = r[0].title;
+							var latlng = new google.maps.LatLng(r[0].wkt.lat, r[0].wkt.lon);							
+							var marker = new google.maps.Marker({
+								position: latlng,
+								title: title,
+								map: map
+							});
+							var infowindow = new google.maps.InfoWindow();
+							infowindow.setContent(title);
+							google.maps.event.addListener(marker, 'click', function() {
+								closeInfo();
+								infowindow.open(map,marker);
+							});
+							overlays.push(marker);
+							infowins.push(infowindow);
+							
+							setRouter(type,latlng.lat(),latlng.lng());
+						}else{
+							alert(result.faultString);
+						}
+					}
+				});
+			}
+			
+			/*****************************************************/
+			
+		</script>
+	</head>
+	<body onload="initialize()" onresize="resize()">
+		<div id="top" class="dtop">
+			<div><input type="text" value = "中关村" id="geoText"/><a href="javascript:geocoding();">Geocoding</a>&nbsp;&nbsp;<a href="javascript:reverseGeocoding();">reverseGeocoding</a></div>
+			<div><input type="text" value = "麦当劳 大厦" id="sText"/><select id="sType"><option value="POI">POI</option><option value="NET">Road</option></select><a href="javascript:search();">search</a>&nbsp;&nbsp;<a href="javascript:hotmap();">hotmap</a></div>
+			<div>Start:&nbsp;<input type="text" value = "上地" id="pStart"/>&nbsp;End:&nbsp;<input type="text" value = "西单" id="pEnd"/><a href="javascript:planSearch();">webPlan</a></div>
+			<div><a href="javascript:clear();">clear</a></div>
+		</div>
+		<div id="left" class="dleft"></div>
+		<div id="map" class="dmap"></div>
+	</body>
+</html>
+

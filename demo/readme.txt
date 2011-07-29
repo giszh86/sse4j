@@ -1,1 +1,1 @@
-depend on sse4j.ws[sse4j]
+depends on sse4j.ws[sse4j]

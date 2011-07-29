@@ -227,6 +227,7 @@
 
 				//Image
 				if(hotMapType) map.overlayMapTypes.removeAt(0);
+				clearHot();
 				var hotMapTypeOpts = {
 					getTileUrl: function(coord, zoom) {
 						var burl = HotMapUrl+'keyword='+txt+'&zoom='+zoom+'&y='+coord.x+'&x='+coord.y;
@@ -256,18 +257,20 @@
 						var latlng = SSEUtil.pixelToLL(x,y,size);
 						latlng = new google.maps.LatLng(latlng.lat,latlng.lon);
 
-						var title = json.tips[i].title;
-						for(var j=0;j<json.tips[i].subs.length;j++){
-							title += '\r\n'+json.tips[i].subs[j].title;
+						if(hotlays.length<1000){//cache limit
+							var title = json.tips[i].title;
+							for(var j=0;j<json.tips[i].subs.length;j++){
+								title += '\r\n'+json.tips[i].subs[j].title;
+							}
+							var marker = new google.maps.Marker({
+								icon:BaseUrl+'js/hot.png',
+								flat:true,
+								position: latlng,
+								title: title,
+								map: map
+							});
+							hotlays.push(marker);
 						}
-						var marker = new google.maps.Marker({
-							icon:BaseUrl+'js/hot.png',
-							flat:true,
-							position: latlng,
-							title: title,
-							map: map
-						});
-						hotlays.push(marker);
 					}
 				}
 			}

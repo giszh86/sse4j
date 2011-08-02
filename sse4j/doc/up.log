@@ -33,3 +33,8 @@ update WSBuilder class
 add org.sse.symbiote package solution(base framework sdk to crawl deep poi)
 
 --------------------------------------------------------------
+
+2011-7-28
+sse4j.ws support javascript client api(visit and resolve webservice interface)
+
+--------------------------------------------------------------

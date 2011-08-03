@@ -86,6 +86,6 @@ public class SECResult {
 	}
 
 	public static enum Type {
-		BAIDU, SOGOU, YOUDAO
+		BAIDU, SOGOU, YOUDAO, BING
 	}
 }

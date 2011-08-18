@@ -1,17 +1,17 @@
 ************************************************
-*********构建位置服务平台的相关开源资源*********
+******构建位置(地图)服务平台的相关开源资源******
 ************************************************
 
 ****************位置服务后台接口****************
 sse4j(Java): http://code.google.com/p/sse4j/
 
-****************地图互联网客户端****************
+****************互联网地图客户端****************
 openlayers(Javascript): http://openlayers.org/
 openscales(Flex): http://openscales.org/
 mapsui(Net): http://mapsui.codeplex.com/
 DeepEarth(Net): http://deepearth.codeplex.com/
 
-**************地图移动互联网客户端**************
+**************移动互联网地图客户端**************
 mapsui(Net): http://mapsui.codeplex.com/
 FreemapMobile(J2ME): http://wiki.openstreetmap.org/wiki/FreemapMobile/
 GpsDrive(C): http://www.gpsdrive.de/

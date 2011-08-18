@@ -1,0 +1,29 @@
+************************************************
+*********构建位置服务平台的相关开源资源*********
+************************************************
+
+****************位置服务后台接口****************
+sse4j(Java): http://code.google.com/p/sse4j/
+
+****************地图互联网客户端****************
+openlayers(Javascript): http://openlayers.org/
+openscales(Flex): http://openscales.org/
+mapsui(Net): http://mapsui.codeplex.com/
+DeepEarth(Net): http://deepearth.codeplex.com/
+
+**************地图移动互联网客户端**************
+mapsui(Net): http://mapsui.codeplex.com/
+FreemapMobile(J2ME): http://wiki.openstreetmap.org/wiki/FreemapMobile/
+GpsDrive(C): http://www.gpsdrive.de/
+Navit(C): http://www.navit-project.org/
+
+***************2-2.5D地图制图工具***************
+Mapnik(C++): http://mapnik.org/
+OpenMap(Java): http://openmap.bbn.com/
+
+*****************3D地图制图工具*****************
+OSGGIS(C++): http://wush.net/trac/osggis
+
+************************************************
+************************************************
+以上资源是本人认为可便利进行产品化包装的开源资源（开发投入相对少且质量优）！

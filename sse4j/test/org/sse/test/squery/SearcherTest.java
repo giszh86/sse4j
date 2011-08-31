@@ -25,7 +25,7 @@ public class SearcherTest {
 		filter.setGeometry(g);
 		List<Property> terms = new ArrayList<Property>();
 		// terms.add(new Property("KIND", "BJ"));
-		terms.add(new Property("NAMEC", "BJ"));
+		// terms.add(new Property("NAMEC", "BJ"));
 		terms.add(new Property("NAMEP", "BJ"));
 		// terms.add(new Property("ADDRESS", "BJ"));
 		filter.setProperties(terms);

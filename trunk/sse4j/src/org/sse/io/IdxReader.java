@@ -12,13 +12,11 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.MultiReader;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.search.DocIdSet;
-import org.apache.lucene.search.DocIdSetIterator;
+import org.apache.lucene.index.TermDocs;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TermsFilter;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.NIOFSDirectory;
@@ -150,19 +148,15 @@ public class IdxReader {
 		if (mReader == null || terms == null)
 			return null;
 		try {
-			TermsFilter tfilter = new TermsFilter();
+			List<Document> docs = new ArrayList<Document>();
 			for (Iterator<Term> i = terms.iterator(); i.hasNext();) {
 				Term term = i.next();
-				if (term != null)
-					tfilter.addTerm(term);
+				if (term != null) {
+					TermDocs td = mReader.termDocs(term);
+					while (td.next())
+						docs.add(mReader.document(td.doc()));
+				}
 			}
-			List<Document> docs = new ArrayList<Document>();
-			DocIdSet set = tfilter.getDocIdSet(mReader);
-			DocIdSetIterator di = set.iterator();
-			while (di.nextDoc() != DocIdSetIterator.NO_MORE_DOCS) {
-				docs.add(mReader.document(di.docID()));
-			}
-			tfilter = null;
 			terms = null;
 			return docs;
 		} catch (IOException e) {

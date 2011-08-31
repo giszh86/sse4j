@@ -5,6 +5,8 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
@@ -35,15 +37,13 @@ public class IdxParser {
 	private Analyzer stAnalyzer;
 
 	private static IdxParser instance;
-	private static Object lock = new Object();
+	private static Lock lock = new ReentrantLock();
 
 	public static IdxParser getInstance() {
 		if (instance == null) {
-			synchronized (lock) {
-				if (instance == null) {
-					instance = new IdxParser();
-				}
-			}
+			lock.lock();
+			instance = new IdxParser();
+			lock.unlock();
 		}
 		return instance;
 	}
@@ -94,64 +94,53 @@ public class IdxParser {
 			Analyzer analyzer, List<Term> terms) {
 		if (terms == null)
 			return null;
+		BooleanClause.Occur occur;
+		if (otype == OccurType.And) {
+			occur = BooleanClause.Occur.MUST;
+		} else if (otype == OccurType.Or) {
+			occur = BooleanClause.Occur.SHOULD;
+		} else {
+			occur = BooleanClause.Occur.MUST_NOT;
+		}
+
 		List<String> texts = new ArrayList<String>(terms.size());
 		List<String> fields = new ArrayList<String>(terms.size());
+		List<BooleanClause.Occur> flags = new ArrayList<BooleanClause.Occur>(
+				terms.size());
 		for (Iterator<Term> i = terms.iterator(); i.hasNext();) {
 			Term term = i.next();
 			if (term != null) {
 				texts.add(term.text());
 				fields.add(term.field());
+				flags.add(occur);
 			}
 		}
-		if (texts.size() == 0)
+		if (fields.size() == 0)
 			return null;
 
 		if (qtype == QueryType.Fuzzy) {
-			FuzzyLikeThisQuery query = new FuzzyLikeThisQuery(3, analyzer);
+			FuzzyLikeThisQuery query = new FuzzyLikeThisQuery(5, analyzer);
 			for (int i = 0; i < fields.size(); i++) {
 				query.addTerms(texts.get(i), fields.get(i), 0.7f, 0);
 			}
-			texts.clear();
-			fields.clear();
 			return query;
 		} else if (qtype == QueryType.IK) {
-			BooleanClause.Occur[] flags = new BooleanClause.Occur[fields.size()];
-			for (int i = 0; i < flags.length; i++)
-				if (otype == OccurType.And)
-					flags[i] = BooleanClause.Occur.MUST;
-				else if (otype == OccurType.Or)
-					flags[i] = BooleanClause.Occur.SHOULD;
-				else
-					flags[i] = BooleanClause.Occur.MUST_NOT;
 			try {
-				IKQueryParser.setMaxWordLength(true); // TODO
 				return IKQueryParser.parseMultiField(fields
 						.toArray(new String[fields.size()]), texts
-						.toArray(new String[texts.size()]), flags);
+						.toArray(new String[texts.size()]), flags
+						.toArray(new BooleanClause.Occur[flags.size()]));
 			} catch (IOException e) {
 				return null;
-			} finally {
-				texts.clear();
-				fields.clear();
 			}
 		} else {
-			BooleanClause.Occur[] flags = new BooleanClause.Occur[fields.size()];
-			for (int i = 0; i < flags.length; i++)
-				if (otype == OccurType.And)
-					flags[i] = BooleanClause.Occur.MUST;
-				else if (otype == OccurType.Or)
-					flags[i] = BooleanClause.Occur.SHOULD;
-				else
-					flags[i] = BooleanClause.Occur.MUST_NOT;
 			try {
 				return QueryParserUtil.parse(texts.toArray(new String[texts
 						.size()]), fields.toArray(new String[fields.size()]),
-						flags, analyzer);
+						flags.toArray(new BooleanClause.Occur[flags.size()]),
+						analyzer);
 			} catch (QueryNodeException e) {
 				return null;
-			} finally {
-				texts.clear();
-				fields.clear();
 			}
 		}
 	}

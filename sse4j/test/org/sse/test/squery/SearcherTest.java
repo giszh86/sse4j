@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.lucene.document.Document;
+import org.sse.util.MercatorUtil;
 import org.sse.squery.Filter;
 import org.sse.squery.Property;
 import org.sse.squery.Searcher;
@@ -16,21 +17,23 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 public class SearcherTest {
 
 	public static void main(String[] args) {
+		String path = "data/idx/110000/Poi";
 		Filter filter = new Filter();
 		GeometryFactory gf = new GeometryFactory();
-		Geometry g = gf.createPoint(new Coordinate(116.4, 39.9));
-		// filter.setGeometry(g);
+		Geometry g = gf.createPoint(new Coordinate(116.4, 39.9)).buffer(0.01);
+		MercatorUtil.toMercator(g, true);
+		filter.setGeometry(g);
 		List<Property> terms = new ArrayList<Property>();
-		terms.add(new Property("KIND", "XSGY"));
-		terms.add(new Property("NAMEC", "XSGY"));
-		terms.add(new Property("NAMEP", "XSGY"));
-		terms.add(new Property("ADDRESS", "XSGY"));
+		// terms.add(new Property("KIND", "BJ"));
+		terms.add(new Property("NAMEC", "BJ"));
+		terms.add(new Property("NAMEP", "BJ"));
+		// terms.add(new Property("ADDRESS", "BJ"));
 		filter.setProperties(terms);
 
 		List<Document> docs;
-		if (Searcher.getInstance().check(args[0], args[0], false)) {
+		if (Searcher.getInstance().check(path, path, false)) {
 			Date date1 = new Date();
-			docs = Searcher.getInstance().search(args[0], filter);
+			docs = Searcher.getInstance().search(path, filter);
 			System.out.println("c:"
 					+ ((new Date()).getTime() - date1.getTime()) + " s:"
 					+ docs.size());
@@ -41,8 +44,7 @@ public class SearcherTest {
 		}
 
 		Date date1 = new Date();
-		Searcher.getInstance().boxQuery(args[0],
-				g.buffer(0.01).getEnvelopeInternal());
+		Searcher.getInstance().boxQuery(path, g.getEnvelopeInternal());
 		System.out.println("c:" + ((new Date()).getTime() - date1.getTime()));
 	}
 

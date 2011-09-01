@@ -39,3 +39,11 @@ deploy v1.1
 sse4j.ws support javascript client api(visit and resolve webservice interface)
 
 --------------------------------------------------------------
+
+2011-9-1
+update third jar libraries to the lastest version
+change Spatial Index in poi search(use kdtree)
+update IdxReader/SQuery .. classes
+deploy v1.2
+
+--------------------------------------------------------------

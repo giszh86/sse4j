@@ -17,6 +17,7 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.util.Version;
+import org.sse.squery.Property;
 import org.sse.io.IdxParser;
 import org.sse.io.IdxReader;
 import org.sse.io.Enums.AnalyzerType;
@@ -26,15 +27,15 @@ import org.sse.io.Enums.QueryType;
 public class IdxReaderTest {
 	public static void main(String[] args) throws Exception {
 		IdxReader idx = new IdxReader("data/idx/110000/Poi");
-		// simple(idx.getReader());
-		query(idx);
+		// query(idx);
+		simple(idx.getReader());
 		// terms(idx);
 		idx.close();
 	}
 
 	static void query(IdxReader idx) throws IOException {
 		List<Document> docs;
-		List<Term> terms = new ArrayList<Term>();
+		List<Property> terms = new ArrayList<Property>();
 
 		Date date1 = new Date();
 		String addr = IdxParser.getInstance().tokenize("香山南路40号",
@@ -46,13 +47,11 @@ public class IdxReaderTest {
 		System.out.println(addr + "----2--"
 				+ ((new Date()).getTime() - date1.getTime()));
 
-		terms.add(new Term("ADDRESS", addr));
-		// terms.add(new Term("ADDRESS", "XS"));
-		// terms.add(new Term("NAMEC", "XS"));
-		terms.add(new Term("NAMEP", "XS"));
+		terms.add(new Property("ADDRESS", "XS", OccurType.And));
+		terms.add(new Property("NAMEC", "XS", OccurType.And));
+		terms.add(new Property("NAMEP", "XS", OccurType.And));
 
 		Query query1 = IdxParser.getInstance().createQuery(QueryType.Standard,
-				OccurType.And,
 				IdxParser.getInstance().getAnalyzer(AnalyzerType.SmartCN),
 				terms);
 		docs = idx.query(query1, null, 20);
@@ -64,8 +63,10 @@ public class IdxReaderTest {
 				+ ((new Date()).getTime() - date1.getTime()));
 
 		date1 = new Date();
+		for (int i = 0; i < terms.size(); i++) {
+			terms.get(i).setOtype(OccurType.Or);
+		}
 		query1 = IdxParser.getInstance().createQuery(QueryType.Standard,
-				OccurType.Or,
 				IdxParser.getInstance().getAnalyzer(AnalyzerType.SmartCN),
 				terms);
 		docs = idx.query(query1, null, 20);
@@ -77,8 +78,10 @@ public class IdxReaderTest {
 				+ ((new Date()).getTime() - date1.getTime()));
 
 		date1 = new Date();
+		for (int i = 0; i < terms.size(); i++) {
+			terms.get(i).setOtype(OccurType.Or);
+		}
 		query1 = IdxParser.getInstance().createQuery(QueryType.Fuzzy,
-				OccurType.Or,
 				IdxParser.getInstance().getAnalyzer(AnalyzerType.SmartCN),
 				terms);
 		docs = idx.query(query1, null, 20);
@@ -108,12 +111,13 @@ public class IdxReaderTest {
 			CorruptIndexException {
 		IndexSearcher searcher = new IndexSearcher(reader);
 
-		QueryParser parser = new QueryParser(Version.LUCENE_31, "ADDRESS",
-				new SmartChineseAnalyzer(Version.LUCENE_31, true));
-		Query query = parser.parse("中关村大街41号");
+		QueryParser parser = new QueryParser(Version.LUCENE_33, "ID",
+				new SmartChineseAnalyzer(Version.LUCENE_33, true));
+		Query query = parser.parse("[1 TO 20]");
 		TopDocs result = searcher.search(query, 20);
 		for (ScoreDoc doc : result.scoreDocs) {
-			System.out.println(reader.document(doc.doc).get("NAMEC") + "--"
+			System.out.println(reader.document(doc.doc).get("ID") + "--"
+					+ reader.document(doc.doc).get("NAMEC") + "--"
 					+ reader.document(doc.doc).get("ADDRESS") + "--"
 					+ reader.document(doc.doc).get("GEOMETRY") + "--"
 					+ doc.score);

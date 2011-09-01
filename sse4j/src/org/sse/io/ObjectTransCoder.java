@@ -12,7 +12,7 @@ import java.io.OutputStream;
  * @author dux(duxionggis@126.com)
  * 
  */
-class ObjectTransCoder {
+public class ObjectTransCoder {
 	class ContextObjectInputStream extends ObjectInputStream {
 		ClassLoader mLoader;
 

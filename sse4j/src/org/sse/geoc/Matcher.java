@@ -37,8 +37,8 @@ public class Matcher {
 		MercatorUtil.toMercator(point, true);
 		Envelope env = new Envelope(point.getX() - buf, point.getX() + buf,
 				point.getY() - buf, point.getY() + buf);
-		List<String> result = Searcher.getInstance().boxQuery(storage.getKey(),
-				env);
+		List<String> result = Searcher.getInstance().spatialFilter(
+				storage.getKey(), env);
 		if (result == null || result.size() == 0)
 			throw new Exception("not found!");
 		for (String id : result) {

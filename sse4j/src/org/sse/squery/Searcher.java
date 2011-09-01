@@ -5,15 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.Query;
 import org.sse.io.IdxReader;
-import org.sse.io.Sidxer;
 
 import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.index.SpatialIndex;
 
 /**
  * 
@@ -22,7 +22,7 @@ import com.vividsolutions.jts.index.SpatialIndex;
  */
 public class Searcher {
 	private static Searcher instance;
-	private static Object lock = new Object();
+	private static Lock lock = new ReentrantLock();
 	private Map<String, SQuery> queries;
 
 	protected Searcher() {
@@ -31,11 +31,9 @@ public class Searcher {
 
 	public static Searcher getInstance() {
 		if (instance == null) {
-			synchronized (lock) {
-				if (instance == null) {
-					instance = new Searcher();
-				}
-			}
+			lock.lock();
+			instance = new Searcher();
+			lock.unlock();
 		}
 		return instance;
 	}
@@ -53,12 +51,9 @@ public class Searcher {
 	 *            index reader object
 	 * @param tree
 	 *            spatial index object
-	 * @param extent
-	 *            spatial index's full extent
 	 */
-	public void put(String key, IdxReader reader, SpatialIndex tree,
-			Envelope extent) {
-		queries.put(key, new SQuery(reader, tree, extent));
+	public void put(String key, IdxReader reader, STree tree) {
+		queries.put(key, new SQuery(reader, tree));
 	}
 
 	/**
@@ -81,8 +76,7 @@ public class Searcher {
 				else
 					idxer.read(idxpath.split(",")[0] + ".sidx");
 				IdxReader reader = new IdxReader(idxpath);
-				queries.put(key, new SQuery(reader, idxer.getTree(), idxer
-						.getExtent()));
+				queries.put(key, new SQuery(reader, idxer.tree));
 			}
 		} catch (Exception e) {
 			return false;
@@ -102,19 +96,12 @@ public class Searcher {
 		return queries.get(key).query(query, count);
 	}
 
-	/**
-	 * equals SpatialIndex.query(Envelope)
-	 * 
-	 * @param key
-	 * @param env
-	 * @return SpatialIndex's value list
-	 */
-	public List boxQuery(String key, Envelope env) {
-		return queries.get(key).box(env);
-	}
-
 	public Envelope fullExtent(String key) {
 		return queries.get(key).getExtent();
+	}
+
+	public List spatialFilter(String key, Envelope envelope) {
+		return queries.get(key).spatialFilter(envelope);
 	}
 
 }

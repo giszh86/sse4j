@@ -13,13 +13,13 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
-import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.core.QueryNodeException;
 import org.apache.lucene.queryParser.standard.QueryParserUtil;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.FuzzyLikeThisQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
+import org.sse.squery.Property;
 import org.sse.io.Enums.AnalyzerType;
 import org.sse.io.Enums.OccurType;
 import org.sse.io.Enums.QueryType;
@@ -49,9 +49,9 @@ public class IdxParser {
 	}
 
 	private IdxParser() {
-		scAnalyzer = new SmartChineseAnalyzer(Version.LUCENE_31, true);
+		scAnalyzer = new SmartChineseAnalyzer(Version.LUCENE_33, true);
 		ikAnalyzer = new IKAnalyzer(true);
-		stAnalyzer = new StandardAnalyzer(Version.LUCENE_31);
+		stAnalyzer = new StandardAnalyzer(Version.LUCENE_33);
 	}
 
 	/**
@@ -70,11 +70,11 @@ public class IdxParser {
 		}
 
 		// if (type == AnalyzerType.SmartCN) {
-		// return new SmartChineseAnalyzer(Version.LUCENE_31, true);
+		// return new SmartChineseAnalyzer(Version.LUCENE_33, true);
 		// } else if (type == AnalyzerType.IK) {
 		// return new IKAnalyzer(true);
 		// } else {
-		// return new StandardAnalyzer(Version.LUCENE_31);
+		// return new StandardAnalyzer(Version.LUCENE_33);
 		// }
 	}
 
@@ -90,29 +90,21 @@ public class IdxParser {
 		return sb.toString().trim();
 	}
 
-	public Query createQuery(QueryType qtype, OccurType otype,
-			Analyzer analyzer, List<Term> terms) {
+	public Query createQuery(QueryType qtype, Analyzer analyzer,
+			List<Property> terms) {
 		if (terms == null)
 			return null;
-		BooleanClause.Occur occur;
-		if (otype == OccurType.And) {
-			occur = BooleanClause.Occur.MUST;
-		} else if (otype == OccurType.Or) {
-			occur = BooleanClause.Occur.SHOULD;
-		} else {
-			occur = BooleanClause.Occur.MUST_NOT;
-		}
 
 		List<String> texts = new ArrayList<String>(terms.size());
 		List<String> fields = new ArrayList<String>(terms.size());
 		List<BooleanClause.Occur> flags = new ArrayList<BooleanClause.Occur>(
 				terms.size());
-		for (Iterator<Term> i = terms.iterator(); i.hasNext();) {
-			Term term = i.next();
+		for (Iterator<Property> i = terms.iterator(); i.hasNext();) {
+			Property term = i.next();
 			if (term != null) {
-				texts.add(term.text());
-				fields.add(term.field());
-				flags.add(occur);
+				texts.add(term.getText());
+				fields.add(term.getField());
+				flags.add(this.toOccurType(term.getOtype()));
 			}
 		}
 		if (fields.size() == 0)
@@ -121,7 +113,7 @@ public class IdxParser {
 		if (qtype == QueryType.Fuzzy) {
 			FuzzyLikeThisQuery query = new FuzzyLikeThisQuery(5, analyzer);
 			for (int i = 0; i < fields.size(); i++) {
-				query.addTerms(texts.get(i), fields.get(i), 0.7f, 0);
+				query.addTerms(texts.get(i), fields.get(i), 0.6f, 0);
 			}
 			return query;
 		} else if (qtype == QueryType.IK) {
@@ -145,13 +137,24 @@ public class IdxParser {
 		}
 	}
 
-	public Query createQuery(QueryType qtype, OccurType otype, List<Term> terms) {
+	public Query createQuery(QueryType qtype, List<Property> terms) {
 		if (qtype == QueryType.IK) {
-			return createQuery(qtype, otype, getAnalyzer(AnalyzerType.IK),
-					terms);
+			return createQuery(qtype, getAnalyzer(AnalyzerType.IK), terms);
 		} else {
-			return createQuery(qtype, otype, getAnalyzer(AnalyzerType.SmartCN),
-					terms);
+			return createQuery(qtype, getAnalyzer(AnalyzerType.SmartCN), terms);
 		}
 	}
+
+	private BooleanClause.Occur toOccurType(OccurType otype) {
+		BooleanClause.Occur occur;
+		if (otype == OccurType.And) {
+			occur = BooleanClause.Occur.MUST;
+		} else if (otype == OccurType.Or) {
+			occur = BooleanClause.Occur.SHOULD;
+		} else {
+			occur = BooleanClause.Occur.MUST_NOT;
+		}
+		return occur;
+	}
+
 }

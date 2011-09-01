@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/jts-1.11.jar"/>
 	<classpathentry kind="lib" path="lib/gson-1.7.1.jar"/>
+	<classpathentry kind="lib" path="lib/jts-1.12.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/sse4j"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -24,9 +24,8 @@ public class SearcherTest {
 		MercatorUtil.toMercator(g, true);
 		filter.setGeometry(g);
 		List<Property> terms = new ArrayList<Property>();
-		// terms.add(new Property("KIND", "BJ"));
-		// terms.add(new Property("NAMEC", "BJ"));
-		terms.add(new Property("NAMEP", "BJ"));
+		terms.add(new Property("NAMEC", "宾馆"));
+		// terms.add(new Property("NAMEP", "BJ"));
 		// terms.add(new Property("ADDRESS", "BJ"));
 		filter.setProperties(terms);
 
@@ -44,7 +43,7 @@ public class SearcherTest {
 		}
 
 		Date date1 = new Date();
-		Searcher.getInstance().boxQuery(path, g.getEnvelopeInternal());
+		Searcher.getInstance().spatialFilter(path, g.getEnvelopeInternal());
 		System.out.println("c:" + ((new Date()).getTime() - date1.getTime()));
 	}
 

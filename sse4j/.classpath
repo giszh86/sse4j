@@ -2,14 +2,14 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
-	<classpathentry kind="lib" path="lib/jts-1.11.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/gson-1.7.1.jar"/>
 	<classpathentry kind="lib" path="lib/IKAnalyzer3.2.8.jar"/>
-	<classpathentry kind="lib" path="lib/lucene-core-3.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/lucene-memory-3.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/lucene-queries-3.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/lucene-queryparser-3.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/lucene-smartcn-3.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/jakarta-regexp-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/jts-1.12.jar"/>
+	<classpathentry kind="lib" path="lib/lucene-core-3.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/lucene-queries-3.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/lucene-queryparser-3.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/lucene-smartcn-3.3.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

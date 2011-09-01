@@ -146,13 +146,13 @@ public class IdxRouteStorage implements IStorage {
 	}
 
 	public List<Integer> queryNodes(Envelope env) {
-		return (List<Integer>) Searcher.getInstance().boxQuery(this.key_node,
-				env);
+		return (List<Integer>) Searcher.getInstance().spatialFilter(
+				this.key_node, env);
 	}
 
 	public List<Integer> queryEdges(Envelope env) {
-		return (List<Integer>) Searcher.getInstance().boxQuery(this.key_edge,
-				env);
+		return (List<Integer>) Searcher.getInstance().spatialFilter(
+				this.key_edge, env);
 	}
 
 }

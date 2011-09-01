@@ -2,7 +2,6 @@ package org.sse.squery;
 
 import java.util.List;
 
-import org.sse.io.Enums.OccurType;
 import org.sse.io.Enums.QueryType;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -17,7 +16,6 @@ public class Filter {
 	private List<Property> properties;
 	private int count = 50;
 	private QueryType qtype = QueryType.Fuzzy;
-	private OccurType otype = OccurType.Or;
 
 	public int getCount() {
 		return count;
@@ -56,14 +54,6 @@ public class Filter {
 
 	public void setQtype(QueryType qtype) {
 		this.qtype = qtype;
-	}
-
-	public OccurType getOtype() {
-		return otype;
-	}
-
-	public void setOtype(OccurType otype) {
-		this.otype = otype;
 	}
 
 }

@@ -4,16 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.lucene.document.Document;
+import org.sse.squery.STree;
 import org.sse.NaviConfig;
 import org.sse.geoc.DistPtyName;
 import org.sse.io.IdxReader;
 import org.sse.squery.Searcher;
 import org.sse.util.MercatorUtil;
 
-import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.index.SpatialIndex;
-import com.vividsolutions.jts.index.strtree.STRtree;
 
 /**
  * 
@@ -24,11 +22,10 @@ public class DistStorageBuilder implements IStorageBuilder {
 
 	@Override
 	public IStorage create(Map<String, String> map) throws Exception {
-		Envelope ext = null;
+		STree tree = new STree(false);
 		IdxReader reader = new IdxReader(map.get("item-path"));
 		Map<String, Geometry> geos = new HashMap<String, Geometry>(reader
 				.getReader().numDocs());
-		SpatialIndex idx = new STRtree();
 
 		// TODO Version=3.1 TermDocs Bug
 		// TermDocs docs = reader.getReader().termDocs();
@@ -48,15 +45,11 @@ public class DistStorageBuilder implements IStorageBuilder {
 			Document doc = reader.getReader().document(i);
 			Geometry g = MercatorUtil.toGeometry(doc.get(DistPtyName.GID),
 					NaviConfig.WGS);
-			idx.insert(g.getEnvelopeInternal(), doc.get(DistPtyName.OID));
+			tree.insert(g.getEnvelopeInternal(), doc.get(DistPtyName.OID));
 			geos.put(doc.get(DistPtyName.OID), g);
-			if (ext == null)
-				ext = g.getEnvelopeInternal();
-			else
-				ext.expandToInclude(g.getEnvelopeInternal());
 		}
 
-		Searcher.getInstance().put(map.get("item-path"), reader, idx, ext);
+		Searcher.getInstance().put(map.get("item-path"), reader, tree);
 		return new DistStorage(map.get("item-path"), geos);
 	}
 

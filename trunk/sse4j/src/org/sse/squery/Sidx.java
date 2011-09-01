@@ -1,4 +1,4 @@
-package org.sse.io;
+package org.sse.squery;
 
 import java.io.Serializable;
 

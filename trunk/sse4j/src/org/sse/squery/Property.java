@@ -1,5 +1,7 @@
 package org.sse.squery;
 
+import org.sse.io.Enums.OccurType;
+
 /**
  * 
  * @author dux(duxionggis@126.com)
@@ -8,6 +10,7 @@ package org.sse.squery;
 public class Property {
 	private String field;
 	private String text;
+	private OccurType otype = OccurType.Or;
 
 	public Property() {
 		this("", "");
@@ -16,6 +19,12 @@ public class Property {
 	public Property(String field, String text) {
 		this.field = field;
 		this.text = text;
+	}
+
+	public Property(String field, String text, OccurType otype) {
+		this.field = field;
+		this.text = text;
+		this.otype = otype;
 	}
 
 	public String getField() {
@@ -32,5 +41,13 @@ public class Property {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public OccurType getOtype() {
+		return otype;
+	}
+
+	public void setOtype(OccurType otype) {
+		this.otype = otype;
 	}
 }

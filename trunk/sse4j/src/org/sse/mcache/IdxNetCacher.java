@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.lucene.document.Document;
+import org.sse.squery.STree;
 import org.sse.NaviConfig;
 import org.sse.io.IdxReader;
 import org.sse.service.base.Edge;
@@ -18,10 +19,7 @@ import org.sse.service.base.NodePtyName;
 import org.sse.squery.Searcher;
 import org.sse.util.MercatorUtil;
 
-import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.index.SpatialIndex;
-import com.vividsolutions.jts.index.strtree.STRtree;
 
 /**
  * 
@@ -52,10 +50,9 @@ public class IdxNetCacher {
 
 	public Net create(String idxpath_node, String idxpath_edge)
 			throws IOException {
-		Envelope extent1 = null;
+		STree nodeTree = new STree(true);
 		IdxReader nodeReader = new IdxReader(idxpath_node);
 		List<Node> nodes = new ArrayList<Node>(nodeReader.getReader().numDocs());
-		SpatialIndex nodesIndex = new STRtree();
 
 		// TODO Version=3.1 TermDocs Bug
 		// TermDocs nodedocs = nodeReader.getReader().termDocs();
@@ -82,24 +79,17 @@ public class IdxNetCacher {
 					NaviConfig.WGS);
 			node.setX((int) g.getCoordinate().x);
 			node.setY((int) g.getCoordinate().y);
-			nodesIndex.insert(g.getEnvelopeInternal(), node.getId());
-			if (extent1 == null)
-				extent1 = g.getEnvelopeInternal();
-			else
-				extent1.expandToInclude(g.getEnvelopeInternal());
+			nodeTree.insert(g.getEnvelopeInternal(), node.getId());
 		}
-
 		Collections.sort(nodes, new NodeComparator());
-		((STRtree) nodesIndex).build();
-		Searcher.getInstance().put(idxpath_node, nodeReader, nodesIndex,
-				extent1);
+		nodeTree.build();
+		Searcher.getInstance().put(idxpath_node, nodeReader, nodeTree);
 
 		/******************************************************************************/
 
-		Envelope extent2 = null;
+		STree edgeTree = new STree(false);
 		IdxReader edgeReader = new IdxReader(idxpath_edge);
 		List<Edge> edges = new ArrayList<Edge>(edgeReader.getReader().numDocs());
-		SpatialIndex edgesIndex = new STRtree();
 
 		// TODO Version=3.1 TermDocs Bug
 		// TermDocs edgedocs = edgeReader.getReader().termDocs();
@@ -124,17 +114,11 @@ public class IdxNetCacher {
 			Edge edge = this.createEdge(doc);
 			edge.setLength((int) g.getLength());
 			edges.add(edge);
-			edgesIndex.insert(g.getEnvelopeInternal(), edge.getId());
-			if (extent2 == null)
-				extent2 = g.getEnvelopeInternal();
-			else
-				extent2.expandToInclude(g.getEnvelopeInternal());
+			edgeTree.insert(g.getEnvelopeInternal(), edge.getId());
 		}
-
 		Collections.sort(edges, new EdgeComparator());
-		((STRtree) edgesIndex).build();
-		Searcher.getInstance().put(idxpath_edge, edgeReader, edgesIndex,
-				extent2);
+		edgeTree.build();
+		Searcher.getInstance().put(idxpath_edge, edgeReader, edgeTree);
 
 		Net net = new Net();
 		net.setEdges(new CopyOnWriteArrayList<Edge>(edges));

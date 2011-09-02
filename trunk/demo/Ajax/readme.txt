@@ -1,1 +1,0 @@
-copy sse4j.html and js path to sse4j.ws[sse4j]

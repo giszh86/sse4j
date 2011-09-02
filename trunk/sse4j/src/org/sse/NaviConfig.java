@@ -30,7 +30,7 @@ public class NaviConfig {
 	public static boolean WGS = false;
 
 	public static void init() {
-		List<StorageType> types = new ArrayList<StorageType>(3);
+		List<StorageType> types = new ArrayList<StorageType>(4);
 		types.add(StorageType.NET);
 		types.add(StorageType.POI);
 		types.add(StorageType.BUS);

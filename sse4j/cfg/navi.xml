@@ -11,7 +11,7 @@
 	</netes>
 	<poies>
 		<poi key="110000">
-			<item name="" path="data/idx/110000/Poi" /><!-- support multipaths-->
+			<item name="" path="data/idx/110000/Poi" /><!-- support multipaths-->
 		</poi>
 	</poies>
 	<geoces>

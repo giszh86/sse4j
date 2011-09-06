@@ -9,17 +9,18 @@
 		.dmap{position:absolute;left:300px;background-color:#CCCCCC;}
 		.ditem{}
 		</style>
+		<!--<script type="text/javascript" src="http://localhost:8080/GSVR/gapi/api.js"></script-->
 		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-		<script type="text/javascript" src="./js/sse4j.js">
+		<script type="text/javascript" src="js/sse4j.js">
 		</script>
 		<script type="text/javascript">
 			var map;
-			var dzoom = 13;
+			var dzoom = 10;
 			var dkey = '110000';
 			function initialize() {
 				var latlng = new google.maps.LatLng(39.9, 116.4);
 				var myOptions = {
-					zoom: 12,
+					zoom: 10,
 					center: latlng,
 					mapTypeId: google.maps.MapTypeId.ROADMAP
 				}
@@ -149,11 +150,11 @@
 								if(filter.preference=='POI'){								
 									var lat = r[i].wkt.lat;
 									var lon = r[i].wkt.lon;
-									html += '<div class="ditem">'+i+'&nbsp;&nbsp;'+'<a href="javascript:poiInfo('+r[i].id+','+filter.key+','+i+');" onmouseover="sCenter('+lat+','+lon+');">'+r[i].title+'</a>'+'</div>';									
+									html += '<div class="ditem">'+i+'&nbsp;&nbsp;'+'<a href="#" onclick="poiInfo('+r[i].id+','+filter.key+','+i+');" onmouseover="sCenter('+lat+','+lon+');">'+r[i].title+'</a>'+'</div>';									
 								}else{
 									var lat = r[i].wkt[0].lat;
 									var lon = r[i].wkt[0].lon;									
-									html += '<div class="ditem">'+i+'&nbsp;&nbsp;'+'<a href="javascript:void(0);" onmouseover="sCenter('+lat+','+lon+');">'+r[i].title+'</a>'+'</div>';
+									html += '<div class="ditem">'+i+'&nbsp;&nbsp;'+'<a href="#" onmouseover="sCenter('+lat+','+lon+');">'+r[i].title+'</a>'+'</div>';
 
 									var coords = new Array;
 									for(var j=0;j<r[i].wkt.length;j++){						
@@ -196,7 +197,7 @@
 							closeInfo();						
 							var infowindow = new google.maps.InfoWindow();
 							var content = 'name: '+r.name+'<br/>kind: '+r.kind+'<br/>phone: '+r.phone+'<br/>address: '+r.address+'<br/>remark: '+r.remark+'<br/>';
-							content += '<a href="javascript:setRouter(0,'+latlng.lat()+','+latlng.lng()+');">Plan(Start)</a>&nbsp;&nbsp;<a href="javascript:setRouter(1,'+latlng.lat()+','+latlng.lng()+');">Plan(Via)</a>&nbsp;&nbsp;<a href="javascript:setRouter(2,'+latlng.lat()+','+latlng.lng()+');">Plan(End)</a>';
+							content += '<a href="#" onclick="setRouter(0,'+latlng.lat()+','+latlng.lng()+');">Plan(Start)</a>&nbsp;&nbsp;<a href="#" onclick="setRouter(1,'+latlng.lat()+','+latlng.lng()+');">Plan(Via)</a>&nbsp;&nbsp;<a href="#" onclick="setRouter(2,'+latlng.lat()+','+latlng.lng()+');">Plan(End)</a>';
 							infowindow.setContent(content);
 							infowindow.open(map,marker);
 							google.maps.event.addListener(marker, 'click', function() {
@@ -360,7 +361,7 @@
 								}else{
 									state = '<strong style="color:#00FF00">[畅通]</strong>';
 								}
-								html += '<div class="ditem">'+i+':&nbsp;<a href="javascript:void(0);" onmouseover="routeMouse('+i+',0);" onmouseout="routeMouse('+i+',1);">'+guids[i].name+'</a>'+state+'行使'+guids[i].len+'米['+guids[i].cost+'秒]&nbsp;'+guids[i].turn+'</div>';
+								html += '<div class="ditem">'+i+':&nbsp;<a href="#" onmouseover="routeMouse('+i+',0);" onmouseout="routeMouse('+i+',1);">'+guids[i].name+'</a>'+state+'行使'+guids[i].len+'米['+guids[i].cost+'秒]&nbsp;'+guids[i].turn+'</div>';
 
 								var itemcoords = new Array;
 								for(var j=0;j<guids[i].vertexes.length;j++){

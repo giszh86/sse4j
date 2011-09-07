@@ -3,6 +3,8 @@ package org.sse;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.sse.mcache.IStorage;
 import org.sse.mcache.StorageBuilderer;
@@ -24,15 +26,13 @@ public class StorageFactory {
 
 	private Map<StorageType, Map<String, IStorage>> storages;
 	private static StorageFactory instance;
-	private static Object lock = new Object();
+	private static Lock lock = new ReentrantLock();
 
 	public static StorageFactory getInstance() {
 		if (instance == null) {
-			synchronized (lock) {
-				if (instance == null) {
-					instance = new StorageFactory();
-				}
-			}
+			lock.lock();
+			instance = new StorageFactory();
+			lock.unlock();
 		}
 		return instance;
 	}

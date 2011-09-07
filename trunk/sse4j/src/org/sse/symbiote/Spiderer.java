@@ -12,6 +12,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.sse.symbiote.SECResult.Item;
 
@@ -22,17 +24,15 @@ import org.sse.symbiote.SECResult.Item;
  */
 public class Spiderer {
 	private static Spiderer instance;
-	private static Object lock = new Object();
+	private static Lock lock = new ReentrantLock();
 
 	ExecutorService es = null;
 
 	public static Spiderer getInstance() {
 		if (instance == null) {
-			synchronized (lock) {
-				if (instance == null) {
-					instance = new Spiderer();
-				}
-			}
+			lock.lock();
+			instance = new Spiderer();
+			lock.unlock();
 		}
 		return instance;
 	}

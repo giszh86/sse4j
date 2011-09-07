@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import javax.imageio.ImageIO;
 
 import org.apache.lucene.document.Document;
@@ -44,7 +47,7 @@ import com.vividsolutions.jts.io.WKTReader;
  */
 public class HotMapper {
 	private static HotMapper instance;
-	private static Object lock = new Object();
+	private static Lock lock = new ReentrantLock();
 
 	private BufferedImage icon;
 	private GeometryFactory gf;
@@ -53,11 +56,9 @@ public class HotMapper {
 
 	public static HotMapper getInstance() {
 		if (instance == null) {
-			synchronized (lock) {
-				if (instance == null) {
-					instance = new HotMapper();
-				}
-			}
+			lock.lock();
+			instance = new HotMapper();
+			lock.unlock();
 		}
 		return instance;
 	}

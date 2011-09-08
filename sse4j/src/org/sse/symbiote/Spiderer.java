@@ -55,7 +55,7 @@ public class Spiderer {
 		tasks.add(new SECBaidu(keyword));
 		tasks.add(new SECSogou(keyword));
 		tasks.add(new SECYoudao(keyword));
-		List<Future<SECResult>> fr = es.invokeAll(tasks, 10, TimeUnit.SECONDS);
+		List<Future<SECResult>> fr = es.invokeAll(tasks, 30, TimeUnit.SECONDS);
 		for (Iterator<Future<SECResult>> i = fr.iterator(); i.hasNext();) {
 			try {
 				SECResult r = i.next().get();

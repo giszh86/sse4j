@@ -68,7 +68,7 @@ class SQuery {
 					}
 				}
 			} else {
-				// TODO
+				IdxParser.spatialQuery(extent, bQuery);
 			}
 		}
 
@@ -98,8 +98,14 @@ class SQuery {
 		if (tree != null) {
 			return tree.spatialFilter(envelope);
 		} else {
-			// TODO
-			return null;
+			BooleanQuery bQuery = new BooleanQuery();
+			IdxParser.spatialQuery(envelope, bQuery);
+			List<Document> docs = this.query(bQuery, 500);
+			List<Integer> ids = new ArrayList<Integer>(docs.size());
+			for (Document doc : docs) {
+				ids.add(Integer.valueOf(doc.get(PtyName.OID)));
+			}
+			return ids;
 		}
 	}
 

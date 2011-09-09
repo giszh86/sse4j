@@ -30,7 +30,7 @@ public class SearcherTest {
 		filter.setProperties(terms);
 
 		List<Document> docs;
-		if (Searcher.getInstance().check(path, path, false)) {
+		if (Searcher.getInstance().check(path, path, false, false)) {
 			Date date1 = new Date();
 			docs = Searcher.getInstance().search(path, filter);
 			System.out.println("c:"

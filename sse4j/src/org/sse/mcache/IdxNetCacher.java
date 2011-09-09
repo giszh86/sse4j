@@ -19,6 +19,7 @@ import org.sse.service.base.NodePtyName;
 import org.sse.squery.Searcher;
 import org.sse.util.MercatorUtil;
 
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
@@ -48,9 +49,12 @@ public class IdxNetCacher {
 		}
 	}
 
-	public Net create(String idxpath_node, String idxpath_edge)
-			throws IOException {
-		STree nodeTree = new STree(true);
+	public Net create(String idxpath_node, boolean nodecache,
+			String idxpath_edge, boolean edgecache) throws IOException {
+		STree nodeTree = null;
+		if (nodecache) {
+			nodeTree = new STree(true);
+		}
 		IdxReader nodeReader = new IdxReader(idxpath_node);
 		List<Node> nodes = new ArrayList<Node>(nodeReader.getReader().numDocs());
 
@@ -58,55 +62,32 @@ public class IdxNetCacher {
 		// TermDocs nodedocs = nodeReader.getReader().termDocs();
 		// while (nodedocs.next()) {
 		// Document doc = nodeReader.getReader().document(nodedocs.doc());
-		// Node node = this.createNode(doc);
-		// nodes.add(node);
-		// Geometry g = MercatorUtil.toGeometry(doc.get(NodePtyName.GID),
-		// NaviConfig.WGS);
-		// node.setX((int) g.getCoordinate().x);
-		// node.setY((int) g.getCoordinate().y);
-		// nodesIndex.insert(g.getEnvelopeInternal(), node.getId());
-		// if (extent1 == null)
-		// extent1 = g.getEnvelopeInternal();
-		// else
-		// extent1.expandToInclude(g.getEnvelopeInternal());
 		// }
 		// nodedocs.close();
 		for (int i = 0; i < nodeReader.getReader().numDocs(); i++) {
 			Document doc = nodeReader.getReader().document(i);
 			Node node = this.createNode(doc);
 			nodes.add(node);
-			Geometry g = MercatorUtil.toGeometry(doc.get(NodePtyName.GID),
-					NaviConfig.WGS);
-			node.setX((int) g.getCoordinate().x);
-			node.setY((int) g.getCoordinate().y);
-			nodeTree.insert(g.getEnvelopeInternal(), node.getId());
+			if (nodecache) {
+				nodeTree.insert(new Envelope(node.getX(), node.getX(), node
+						.getY(), node.getY()), node.getId());
+			}
 		}
 		Collections.sort(nodes, new NodeComparator());
-		nodeTree.build();
+		if (nodecache) {
+			nodeTree.build();
+		}
 		Searcher.getInstance().put(idxpath_node, nodeReader, nodeTree);
 
 		/******************************************************************************/
 
-		STree edgeTree = new STree(false);
+		STree edgeTree = null;
+		if (edgecache) {
+			edgeTree = new STree(false);
+		}
 		IdxReader edgeReader = new IdxReader(idxpath_edge);
 		List<Edge> edges = new ArrayList<Edge>(edgeReader.getReader().numDocs());
 
-		// TODO Version=3.1 TermDocs Bug
-		// TermDocs edgedocs = edgeReader.getReader().termDocs();
-		// while (edgedocs.next()) {
-		// Document doc = edgeReader.getReader().document(edgedocs.doc());
-		// Geometry g = MercatorUtil.toGeometry(doc.get(EdgePtyName.GID),
-		// NaviConfig.WGS);
-		// Edge edge = this.createEdge(doc);
-		// edge.setLength((int) g.getLength());
-		// edges.add(edge);
-		// edgesIndex.insert(g.getEnvelopeInternal(), edge.getId());
-		// if (extent2 == null)
-		// extent2 = g.getEnvelopeInternal();
-		// else
-		// extent2.expandToInclude(g.getEnvelopeInternal());
-		// }
-		// edgedocs.close();
 		for (int i = 0; i < edgeReader.getReader().numDocs(); i++) {
 			Document doc = edgeReader.getReader().document(i);
 			Geometry g = MercatorUtil.toGeometry(doc.get(EdgePtyName.GID),
@@ -114,10 +95,14 @@ public class IdxNetCacher {
 			Edge edge = this.createEdge(doc);
 			edge.setLength((int) g.getLength());
 			edges.add(edge);
-			edgeTree.insert(g.getEnvelopeInternal(), edge.getId());
+			if (edgecache) {
+				edgeTree.insert(g.getEnvelopeInternal(), edge.getId());
+			}
 		}
 		Collections.sort(edges, new EdgeComparator());
-		edgeTree.build();
+		if (edgecache) {
+			edgeTree.build();
+		}
 		Searcher.getInstance().put(idxpath_edge, edgeReader, edgeTree);
 
 		Net net = new Net();
@@ -151,6 +136,8 @@ public class IdxNetCacher {
 		for (int i = 0; i < ids.length; i++)
 			edgeids[i] = Integer.valueOf(ids[i]).intValue();
 		node.setEdgeIds(edgeids);
+		node.setX(Integer.valueOf(doc.get(NodePtyName.CENX)));
+		node.setY(Integer.valueOf(doc.get(NodePtyName.CENY)));
 		return node;
 	}
 }

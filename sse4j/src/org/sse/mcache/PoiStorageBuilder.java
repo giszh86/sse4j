@@ -16,10 +16,11 @@ public class PoiStorageBuilder implements IStorageBuilder {
 	@Override
 	public IStorage create(Map<String, String> map) throws Exception {
 		Date date1 = new Date();
-		Searcher.getInstance().check(map.get("item-path"),
-				map.get("item-path"), NaviConfig.WGS);
+		String path = map.get("item-path");
+		boolean cache = map.get("item-cache").equalsIgnoreCase("true");
+		Searcher.getInstance().check(path, path, NaviConfig.WGS, cache);
 		System.out.println("P:" + ((new Date()).getTime() - date1.getTime()));
-		return new Storage(map.get("item-path"));
+		return new Storage(path);
 	}
 
 }

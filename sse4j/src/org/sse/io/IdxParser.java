@@ -16,15 +16,20 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.queryParser.core.QueryNodeException;
 import org.apache.lucene.queryParser.standard.QueryParserUtil;
 import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.FuzzyLikeThisQuery;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TermRangeQuery;
 import org.apache.lucene.util.Version;
+import org.sse.squery.PtyName;
 import org.sse.squery.Property;
 import org.sse.io.Enums.AnalyzerType;
 import org.sse.io.Enums.OccurType;
 import org.sse.io.Enums.QueryType;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 import org.wltea.analyzer.lucene.IKQueryParser;
+
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * 
@@ -143,6 +148,17 @@ public class IdxParser {
 		} else {
 			return createQuery(qtype, getAnalyzer(AnalyzerType.SmartCN), terms);
 		}
+	}
+	
+	public static void spatialQuery(Envelope envelope, BooleanQuery bQuery) {
+		Query minxQ = new TermRangeQuery(PtyName.CENX, String
+				.valueOf((int) envelope.getMinX()), String
+				.valueOf((int) envelope.getMaxX()), true, true);
+		Query minyQ = new TermRangeQuery(PtyName.CENY, String
+				.valueOf((int) envelope.getMinY()), String
+				.valueOf((int) envelope.getMaxY()), true, true);
+		bQuery.add(minxQ, BooleanClause.Occur.MUST);
+		bQuery.add(minyQ, BooleanClause.Occur.MUST);
 	}
 
 	private BooleanClause.Occur toOccurType(OccurType otype) {

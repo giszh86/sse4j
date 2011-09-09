@@ -9,4 +9,6 @@ public class PtyName {
 	public static String OID = "ID";
 	public static String GID = "GEOMETRY";
 	public static String TITLE = "NAMEC";
+	public static String CENX = "CENX";
+	public static String CENY = "CENY";
 }

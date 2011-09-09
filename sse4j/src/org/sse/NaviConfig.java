@@ -27,9 +27,10 @@ import org.sse.util.URLUtil;
 public class NaviConfig {
 	public static String BASE_KEY = "560000";
 	// public static boolean IDX = true;
-	public static boolean WGS = false;
+	public static boolean WGS = true;
 
 	public static void init() {
+		setWGS();
 		List<StorageType> types = new ArrayList<StorageType>(4);
 		types.add(StorageType.NET);
 		types.add(StorageType.POI);
@@ -42,6 +43,33 @@ public class NaviConfig {
 		}
 		types.clear();
 		types = null;
+	}
+
+	static void setWGS() {
+		XMLEventReader reader = null;
+		try {
+			reader = XMLInputFactory.newInstance().createXMLEventReader(
+					new BufferedReader(new FileReader(path())));
+			while (reader.hasNext()) {
+				XMLEvent e = reader.nextEvent();
+				if (e.isStartElement()) {
+					String start = e.asStartElement().getName().getLocalPart();
+					if (start.equals("navi")) {
+						String wgs = e.asStartElement().getAttributeByName(
+								QName.valueOf("wgs")).getValue();
+						NaviConfig.WGS = wgs.equalsIgnoreCase("true");
+						break;
+					}
+				}
+			}
+		} catch (Exception e) {
+		} finally {
+			try {
+				if (reader != null)
+					reader.close();
+			} catch (Exception e) {
+			}
+		}
 	}
 
 	static Map<String, Map<String, String>> getMap(String root, String element) {
@@ -68,7 +96,6 @@ public class NaviConfig {
 				if (reader != null)
 					reader.close();
 			} catch (Exception e) {
-				e.printStackTrace();
 				maps.clear();
 			}
 		}
@@ -98,6 +125,9 @@ public class NaviConfig {
 								.getValue());
 						map.put(local + "-path", e.asStartElement()
 								.getAttributeByName(QName.valueOf("path"))
+								.getValue());
+						map.put(local + "-cache", e.asStartElement()
+								.getAttributeByName(QName.valueOf("cache"))
 								.getValue());
 					}
 					if (e.isEndElement()

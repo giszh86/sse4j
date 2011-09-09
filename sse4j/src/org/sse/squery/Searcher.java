@@ -64,19 +64,29 @@ public class Searcher {
 	 * @param idxpath
 	 *            support multi-paths separated by ','
 	 * @param wgs
+	 *            WGS84
+	 * @param useCache
+	 *            cache SpatialIndex
 	 * @return
 	 */
-	public boolean check(String key, String idxpath, boolean wgs) {
+	public boolean check(String key, String idxpath, boolean wgs,
+			boolean useCache) {
 		try {
 			if (!queries.containsKey(key)) {
-				Sidxer idxer = new Sidxer();
-				File file = new File(idxpath.split(",")[0] + ".sidx");
-				if (!file.exists())
-					idxer.save(idxpath, PtyName.OID, wgs);
-				else
-					idxer.read(idxpath.split(",")[0] + ".sidx");
-				IdxReader reader = new IdxReader(idxpath);
-				queries.put(key, new SQuery(reader, idxer.tree));
+				if (useCache) {
+					Sidxer idxer = new Sidxer();
+					String path = idxpath.split(",")[0];
+					File file = new File(path + ".sidx");
+					if (!file.exists()) {
+						idxer.save(idxpath, PtyName.OID, wgs);
+					} else {
+						idxer.read(path + ".sidx");
+					}
+					queries.put(key, new SQuery(new IdxReader(idxpath),
+							idxer.tree));
+				} else {
+					queries.put(key, new SQuery(new IdxReader(idxpath), null));
+				}
 			}
 		} catch (Exception e) {
 			return false;

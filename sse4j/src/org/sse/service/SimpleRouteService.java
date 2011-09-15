@@ -47,7 +47,10 @@ public class SimpleRouteService implements IRouteService {
 				.getInstance().getStorage(key, StorageType.NET);
 		if (storage == null)
 			throw new Exception("not found network data!");
+		long t1 = System.currentTimeMillis();
 		List<RouteSegment> traces = this.run(storage, router);
+		System.out.println("plan:" + key + "--"
+				+ (System.currentTimeMillis() - t1));
 		return RouteSegmentManager.createDataSet(traces, router.getControls());
 	}
 

@@ -54,9 +54,9 @@ public class IdxParser {
 	}
 
 	private IdxParser() {
-		scAnalyzer = new SmartChineseAnalyzer(Version.LUCENE_33, true);
+		scAnalyzer = new SmartChineseAnalyzer(Version.LUCENE_34, true);
 		ikAnalyzer = new IKAnalyzer(true);
-		stAnalyzer = new StandardAnalyzer(Version.LUCENE_33);
+		stAnalyzer = new StandardAnalyzer(Version.LUCENE_34);
 	}
 
 	/**
@@ -75,11 +75,11 @@ public class IdxParser {
 		}
 
 		// if (type == AnalyzerType.SmartCN) {
-		// return new SmartChineseAnalyzer(Version.LUCENE_33, true);
+		// return new SmartChineseAnalyzer(Version.LUCENE_34, true);
 		// } else if (type == AnalyzerType.IK) {
 		// return new IKAnalyzer(true);
 		// } else {
-		// return new StandardAnalyzer(Version.LUCENE_33);
+		// return new StandardAnalyzer(Version.LUCENE_34);
 		// }
 	}
 

@@ -111,8 +111,8 @@ public class IdxReaderTest {
 			CorruptIndexException {
 		IndexSearcher searcher = new IndexSearcher(reader);
 
-		QueryParser parser = new QueryParser(Version.LUCENE_33, "ID",
-				new SmartChineseAnalyzer(Version.LUCENE_33, true));
+		QueryParser parser = new QueryParser(Version.LUCENE_34, "ID",
+				new SmartChineseAnalyzer(Version.LUCENE_34, true));
 		Query query = parser.parse("[1 TO 20]");
 		TopDocs result = searcher.search(query, 20);
 		for (ScoreDoc doc : result.scoreDocs) {

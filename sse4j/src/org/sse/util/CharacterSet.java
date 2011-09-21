@@ -1,5 +1,10 @@
 package org.sse.util;
 
+/**
+ * 
+ * @author dux(duxionggis@126.com)
+ * 
+ */
 public class CharacterSet {
 	public static void main(String[] arg) {
 		String cn = "谷歌地图";

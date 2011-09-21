@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * 
+ * @author dux(duxionggis@126.com)
+ * 
+ */
 class Tip {
 	static class TipPoiBase implements Serializable, Cloneable {
 		private static final long serialVersionUID = 1L;

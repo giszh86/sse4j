@@ -110,7 +110,7 @@ public class Edge extends BaseEdge {
 		if (pf == RouterPreference.Shortest) {
 			return this.length;
 		} else if (pf == RouterPreference.OnFoot) {
-			if (this.kind == 1 || this.type == 5)
+			if (this.kind == 1 || this.type == EdgeType.RD_IC)
 				return this.length * 10;
 			else
 				return this.length;

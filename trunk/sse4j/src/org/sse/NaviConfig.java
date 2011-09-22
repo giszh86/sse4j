@@ -25,7 +25,7 @@ import org.sse.util.URLUtil;
  * 
  */
 public class NaviConfig {
-	public static String BASE_KEY = "560000";
+	public static final String BASE_KEY = "560000";
 	// public static boolean IDX = true;
 	public static boolean WGS = true;
 
@@ -55,8 +55,9 @@ public class NaviConfig {
 				if (e.isStartElement()) {
 					String start = e.asStartElement().getName().getLocalPart();
 					if (start.equals("navi")) {
-						String wgs = e.asStartElement().getAttributeByName(
-								QName.valueOf("wgs")).getValue();
+						String wgs = e.asStartElement()
+								.getAttributeByName(QName.valueOf("wgs"))
+								.getValue();
 						NaviConfig.WGS = wgs.equalsIgnoreCase("true");
 						break;
 					}
@@ -110,10 +111,10 @@ public class NaviConfig {
 		while (reader.hasNext()) {
 			e = reader.nextEvent();
 			if (e.isStartElement()
-					&& e.asStartElement().getName().getLocalPart().equals(
-							element)) {
-				String key = e.asStartElement().getAttributeByName(
-						QName.valueOf("key")).getValue();
+					&& e.asStartElement().getName().getLocalPart()
+							.equals(element)) {
+				String key = e.asStartElement()
+						.getAttributeByName(QName.valueOf("key")).getValue();
 				map = new HashMap<String, String>();
 				while (reader.hasNext()) {
 					e = reader.nextEvent();

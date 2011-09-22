@@ -8,8 +8,8 @@ import org.sse.squery.PtyName;
  * 
  */
 public class NodePtyName extends PtyName {
-	public static String PID = "PID"; // parent id
-	public static String NODELINK = "LINKIDS";
-	public static String CROSSFLAG = "TYPE";
-	public static String LIGHTFLAG = "TLFLAG";
+	public static final String PID = "PID"; // parent id
+	public static final String NODELINK = "LINKIDS";
+	public static final String CROSSFLAG = "TYPE";
+	public static final String LIGHTFLAG = "TLFLAG";
 }

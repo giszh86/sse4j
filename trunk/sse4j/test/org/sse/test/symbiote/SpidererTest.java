@@ -7,11 +7,6 @@ import java.util.List;
 import org.sse.symbiote.Spiderer;
 import org.sse.symbiote.SECResult.Item;
 
-/**
- * 
- * @author dux(duxionggis@126.com)
- * 
- */
 public class SpidererTest {
 
 	public static void main(String[] args) throws Exception {

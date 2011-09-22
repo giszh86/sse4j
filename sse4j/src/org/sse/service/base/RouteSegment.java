@@ -41,7 +41,7 @@ public class RouteSegment {
 				&& attrib == seg.getAttrib() && kind == seg.getKind();
 		boolean b2 = name.equalsIgnoreCase(seg.getName())
 				&& kind == seg.getKind()
-				&& (seg.getAttrib() == 10 || attrib == 10);
+				&& (seg.getAttrib() == EdgeType.RD_CONN || attrib == EdgeType.RD_CONN);
 		return b1 || b2;
 	}
 

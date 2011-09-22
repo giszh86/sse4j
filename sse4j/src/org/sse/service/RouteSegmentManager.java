@@ -3,6 +3,7 @@ package org.sse.service;
 import java.util.*;
 
 import org.sse.geo.Point;
+import org.sse.service.base.EdgeType;
 import org.sse.service.base.RouteDataSet;
 import org.sse.service.base.RouteGuidance;
 import org.sse.service.base.RouteSegment;
@@ -46,8 +47,8 @@ class RouteSegmentManager {
 				speed = speeds / seg.getIds().size();// none weighted mean
 			}
 			seg.setSpeed((int) speed);
-			seg.setCost(Maths.getCost(seg.getLength(), speed, seg
-					.getLightFlag()));
+			seg.setCost(Maths.getCost(seg.getLength(), speed,
+					seg.getLightFlag()));
 			dis += seg.getLength();
 			cost += seg.getCost();
 			seg.setSAngle(Maths.getAngle(seg.getPoints(), 1));
@@ -85,19 +86,20 @@ class RouteSegmentManager {
 
 	static void setRouteName(RouteSegment rd) {
 		if (rd.getName().equals("")) {
-			if (rd.getAttrib() == 3) {
+			if (rd.getAttrib() == EdgeType.RD_SIDE) {
 				rd.setName("辅路");
-			} else if (rd.getAttrib() == 4) {
+			} else if (rd.getAttrib() == EdgeType.RD_ROUND) {
 				rd.setName("环岛");
-			} else if (rd.getAttrib() == 5 || rd.getAttrib() == 6) {
+			} else if (rd.getAttrib() == EdgeType.RD_IC
+					|| rd.getAttrib() == EdgeType.RD_JCT) {
 				rd.setName("匝道");
-			} else if (rd.getAttrib() == 7) {
+			} else if (rd.getAttrib() == EdgeType.RD_TURN) {
 				rd.setName("掉头专用道");
-			} else if (rd.getAttrib() == 8) {
+			} else if (rd.getAttrib() == EdgeType.RD_TURNL) {
 				rd.setName("左转专用道");
-			} else if (rd.getAttrib() == 9) {
+			} else if (rd.getAttrib() == EdgeType.RD_TURNR) {
 				rd.setName("右转专用道");
-			} else if (rd.getAttrib() == 10) {
+			} else if (rd.getAttrib() == EdgeType.RD_CONN) {
 				rd.setName("路口连接线");
 			} else {
 				rd.setName("无名路");
@@ -129,10 +131,10 @@ class RouteSegmentManager {
 			rd1.getPoints().addAll(0, rd2.getPoints());
 			rd1.getIds().addAll(0, rd2.getIds());
 		}
-		if (rd1.getAttrib() == 10)// crossing link
+		if (rd1.getAttrib() == EdgeType.RD_CONN)// crossing link
 			rd1.setAttrib(rd2.getAttrib());
 		rd1.setLength(rd1.getLength() + rd2.getLength());
-		if (rd1.getAttrib() == 4) // circle
+		if (rd1.getAttrib() == EdgeType.RD_ROUND) // circle
 			rd1.setCircleNum(rd1.getCircleNum() + 1);
 		return true;
 	}
@@ -176,18 +178,18 @@ class RouteSegmentManager {
 			else
 				temp.addAll(rd.getPoints().subList(1, rd.getPoints().size()));
 
-			if (rd.getAttrib() == 10 && index - 1 >= 0)
+			if (rd.getAttrib() == EdgeType.RD_CONN && (index - 1 >= 0))
 				rd = traces.get(index - 1);
 
 			index++;
 			RouteSegment rdNext = traces.get(index);
-			if (rdNext.getAttrib() != 10) {// crossing link
+			if (rdNext.getAttrib() != EdgeType.RD_CONN) {// crossing link
 				int tmpdegree = rdNext.getSAngle() - rd.getEAngle();
 				if (tmpdegree < 0)
 					tmpdegree += 360;
 				if (!rdNext.getName().equalsIgnoreCase(rd.getName())) {
 					ri.setNextName(rdNext.getName());
-					if (rd.getAttrib() == 4)
+					if (rd.getAttrib() == EdgeType.RD_ROUND)
 						ri.setTurn("从第" + (rd.getCircleNum() + 1) + "个路口");
 					setTurn(ri, rdNext.getSAngle(), tmpdegree);
 					// ri.setVertexes(toPts(temp));
@@ -197,7 +199,7 @@ class RouteSegmentManager {
 				} else {
 					if (tmpdegree >= 165 && tmpdegree < 195) {// turn round
 						ri.setNextName(rdNext.getName());
-						if (rd.getAttrib() == 4)
+						if (rd.getAttrib() == EdgeType.RD_ROUND)
 							ri.setTurn("从第" + (rd.getCircleNum() + 1) + "个路口");
 						setTurn(ri, rdNext.getSAngle(), tmpdegree);
 						// ri.setVertexes(toPts(temp));

@@ -43,7 +43,16 @@ sse4j.ws support javascript client api(visit and resolve webservice interface)
 2011-9-1
 update third jar libraries to the lastest version
 change Spatial Index in poi search(use kdtree)
-update IdxReader/SQuery .. classes
+update IdxReader/SQuery... classes
 deploy v1.2
+
+--------------------------------------------------------------
+
+2011-9-30
+update third jar libraries to the lastest version
+*** combine double indexes(lucene and spatial index) to single index ***
+*** change data structure to support single index ***
+update NaviConfig/IdxParser/SQuery... classes to support single index
+deploy v1.5 [v1.3/v1.4 skipped]
 
 --------------------------------------------------------------

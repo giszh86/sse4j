@@ -8,14 +8,14 @@ import org.sse.squery.PtyName;
  * 
  */
 public class EdgePtyName extends PtyName {
-	public static final String PID = "PID"; // parent id
-	public static final String SNODEID = "FJCID";
-	public static final String ENODEID = "TJCID";
-	public static final String DIRECTION = "DF";
-	public static final String KIND = "FC";
-	public static final String TOLL = "TOLL";
-	public static final String TYPE = "FW";
-	public static final String NAMEC = "NAMEC";
-	public static final String NAMEP = "NAMEP";
-	public static final String LANES = "LANES";
+	public static String PID = "PID"; // parent id
+	public static String SNODEID = "FJCID";
+	public static String ENODEID = "TJCID";
+	public static String DIRECTION = "DF";
+	public static String KIND = "FC";
+	public static String TOLL = "TOLL";
+	public static String TYPE = "FW";
+	public static String NAMEC = "NAMEC";
+	public static String NAMEP = "NAMEP";
+	public static String LANES = "LANES";
 }

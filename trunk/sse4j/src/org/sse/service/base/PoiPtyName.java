@@ -8,10 +8,10 @@ import org.sse.squery.PtyName;
  * 
  */
 public class PoiPtyName extends PtyName {
-	public static final String NAMEC = "NAMEC";
-	public static final String NAMEP = "NAMEP";
-	public static final String KIND = "KIND";
-	public static final String TYPE = "TYPE";
-	public static final String TEL = "TEL";
-	public static final String ADDRESS = "ADDRESS";
+	public static String NAMEC = "NAMEC";
+	public static String NAMEP = "NAMEP";
+	public static String KIND = "KIND";
+	public static String TYPE = "TYPE";
+	public static String TEL = "TEL";
+	public static String ADDRESS = "ADDRESS";
 }

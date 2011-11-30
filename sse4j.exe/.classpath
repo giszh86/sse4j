@@ -4,6 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/gson-1.7.1.jar"/>
 	<classpathentry kind="lib" path="lib/jts-1.12.jar"/>
+	<classpathentry kind="lib" path="lib/openjump-1.4.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/sse4j"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

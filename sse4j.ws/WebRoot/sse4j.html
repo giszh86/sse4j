@@ -43,8 +43,7 @@
 				}
 			}
 
-			var overlays = new Array;
-			var hotlays = new Array;
+			var overlays = new Array;			
 			function clear(){
 				if(hotMapType){
 					map.overlayMapTypes.removeAt(0);
@@ -57,9 +56,7 @@
 				overlays = new Array;
 			}
 			function clearHot(){
-				for(var i=0;i<hotlays.length;i++)
-					hotlays[i].setMap(null);
-				hotlays = new Array;
+				document.getElementById('hmaps').innerHTML = '';
 			}
 			
 			var infowins = new Array;
@@ -215,7 +212,25 @@
 			}
 
 			/*****************************************************/
-
+			function HotMapType(tileSize, text) {
+			    this.tileSize = tileSize;
+			    this.text = text;
+			
+			    this.getTile = function (coord, zoom, ownerDoc) {
+			    	var burl = HotMapUrl + 'keyword=' + this.text + '&zoom=' + zoom + '&y=' + coord.x + '&x='+coord.y;
+			        var hotkey = 'hot_' + zoom + '_' + coord.x + '_' + coord.y;			        
+			    	var div = ownerDoc.createElement('DIV');
+			        div.innerHTML = "<img style='width:" + this.tileSize.width + "px;height:" + this.tileSize.height + "px;border:0px' src='" + burl + "&type=img' usemap='#" + hotkey + "'/>";
+			        div.style.width = this.tileSize.width + 'px';
+			        div.style.height = this.tileSize.height + 'px';
+			        div.style.borderStyle = 'solid';
+			        div.style.borderWidth = '0px';
+			        
+			        SSEUtil.createJS(burl+'&type=js');
+			        return div;
+			    };
+			}
+			
 			var hotMapType = null;			
 			function hotmap(){
 				var prefer = document.getElementById('sType').value;
@@ -228,20 +243,8 @@
 
 				//Image
 				if(hotMapType) map.overlayMapTypes.removeAt(0);
-				clearHot();
-				var hotMapTypeOpts = {
-					getTileUrl: function(coord, zoom) {
-						var burl = HotMapUrl+'keyword='+txt+'&zoom='+zoom+'&y='+coord.x+'&x='+coord.y;
-						SSEUtil.createJS(burl+'&type=js');
-					    return burl+'&type=img';
-					},
-					tileSize: new google.maps.Size(256,256),
-					isPng: true,
-					maxZoom: 17,
-					minZoom: 10,
-					name: "HotMap"
-				};
-				hotMapType = new google.maps.ImageMapType(hotMapTypeOpts);
+				clearHot();				
+				hotMapType = new HotMapType(new google.maps.Size(256,256),txt);
 				map.overlayMapTypes.insertAt(0,hotMapType);
 			}
 			
@@ -249,30 +252,19 @@
 			 * @param json {zoom,x,y,tips([{x,y,id,title,subs([{id,title}])}])}
 			 */
 			function hotMapTip(json){
-				if(json){
-					var tile = 256;
-					var size = tile<<json.zoom;
+				if(json){					
+					var hotkey = 'hot_' + json.zoom + '_' + json.x + '_' + json.y;					
+					var html = '<map id="'+hotkey+'">';
 					for(var i=0;i<json.tips.length;i++){
-						var x = json.x*tile + json.tips[i].x;
-						var y = json.y*tile + json.tips[i].y + 4;
-						var latlng = SSEUtil.pixelToLL(x,y,size);
-						latlng = new google.maps.LatLng(latlng.lat,latlng.lon);
-
-						if(hotlays.length<1000){//cache limit
-							var title = json.tips[i].title;
-							for(var j=0;j<json.tips[i].subs.length;j++){
-								title += '\r\n'+json.tips[i].subs[j].title;
-							}
-							var marker = new google.maps.Marker({
-								icon:BaseUrl+'js/hot.png',
-								flat:true,
-								position: latlng,
-								title: title,
-								map: map
-							});
-							hotlays.push(marker);
+						var title = json.tips[i].title;
+						for(var j=0;j<json.tips[i].subs.length;j++){
+							title += '\r\n'+json.tips[i].subs[j].title;
 						}
+						var coords = json.tips[i].x + ',' + json.tips[i].y + ',4'; 
+						html += '<area shape="circle" coords="' + coords + '" href ="#" title="' + title + '" />';
 					}
+					html += '</map>';					
+					document.getElementById('hmaps').innerHTML += html;
 				}
 			}
 				
@@ -449,6 +441,7 @@
 		</div>
 		<div id="left" class="dleft"></div>
 		<div id="map" class="dmap"></div>
+		<div id="hmaps" style="display: none;"></div>
 	</body>
 </html>
 

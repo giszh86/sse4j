@@ -3,6 +3,11 @@ package org.sse.exe;
 import com.vividsolutions.jump.feature.FeatureCollection;
 import com.vividsolutions.jump.io.*;
 
+/**
+ * 
+ * @author dux(duxionggis@126.com)
+ * 
+ */
 public class ShpReader {
 
 	public static void main(String[] args) throws Exception {

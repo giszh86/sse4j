@@ -191,10 +191,12 @@
 								title: r.name,
 								map: map
 							});
-							closeInfo();						
+							closeInfo();
 							var infowindow = new google.maps.InfoWindow();
 							var content = 'name: '+r.name+'<br/>kind: '+r.kind+'<br/>phone: '+r.phone+'<br/>address: '+r.address+'<br/>remark: '+r.remark+'<br/>';
-							content += '<a href="#" onclick="setRouter(0,'+latlng.lat()+','+latlng.lng()+');">Plan(Start)</a>&nbsp;&nbsp;<a href="#" onclick="setRouter(1,'+latlng.lat()+','+latlng.lng()+');">Plan(Via)</a>&nbsp;&nbsp;<a href="#" onclick="setRouter(2,'+latlng.lat()+','+latlng.lng()+');">Plan(End)</a>';
+							content += '<a href="#" onclick="setRouter(0,'+latlng.lat()+','+latlng.lng()+');">Plan(Start)</a>&nbsp;&nbsp;<a href="#" onclick="setRouter(1,'+latlng.lat()+','+latlng.lng()+');">Plan(Via)</a>&nbsp;&nbsp;<a href="#" onclick="setRouter(2,'+latlng.lat()+','+latlng.lng()+');">Plan(End)</a><br/>';
+							content += '<br/><a href="servlet/TCrawling?keyword=' + encodeURI(r.name) + '" target="_blank">关联信息</a>';
+							
 							infowindow.setContent(content);
 							infowindow.open(map,marker);
 							google.maps.event.addListener(marker, 'click', function() {

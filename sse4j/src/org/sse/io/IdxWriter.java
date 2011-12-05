@@ -72,7 +72,7 @@ public class IdxWriter {
 	 */
 	public IndexWriter build(String idxPath) {
 		try {
-			IndexWriterConfig cfg = new IndexWriterConfig(Version.LUCENE_33,
+			IndexWriterConfig cfg = new IndexWriterConfig(Version.LUCENE_34,
 					analyzer);
 			cfg.setRAMBufferSizeMB(64);
 			IndexWriter writer = new IndexWriter(FSDirectory.open(new File(

@@ -73,14 +73,6 @@ public class IdxParser {
 		} else {
 			return stAnalyzer;
 		}
-
-		// if (type == AnalyzerType.SmartCN) {
-		// return new SmartChineseAnalyzer(Version.LUCENE_34, true);
-		// } else if (type == AnalyzerType.IK) {
-		// return new IKAnalyzer(true);
-		// } else {
-		// return new StandardAnalyzer(Version.LUCENE_34);
-		// }
 	}
 
 	public String tokenize(String word, AnalyzerType type) throws IOException {

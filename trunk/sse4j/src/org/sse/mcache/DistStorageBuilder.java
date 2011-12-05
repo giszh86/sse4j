@@ -48,7 +48,7 @@ public class DistStorageBuilder implements IStorageBuilder {
 			tree.insert(g.getEnvelopeInternal(), doc.get(DistPtyName.OID));
 			geos.put(doc.get(DistPtyName.OID), g);
 		}
-
+		tree.build();
 		Searcher.getInstance().put(map.get("item-path"), reader, tree);
 		return new DistStorage(map.get("item-path"), geos);
 	}

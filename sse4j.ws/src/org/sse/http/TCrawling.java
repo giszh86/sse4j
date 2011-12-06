@@ -14,8 +14,7 @@ import org.sse.symbiote.Spiderer;
 import org.sse.symbiote.SECResult.Item;
 
 /**
- * Test class
- * Desc: http://<server>:<port>/sse4j/servlet/Crawling?keyword=
+ * Test class Desc: http://<server>:<port>/sse4j/servlet/Crawling?keyword=
  * 
  * @author dux(duxionggis@126.com)
  * 
@@ -42,7 +41,7 @@ public class TCrawling extends HttpServlet {
 					if (index >= 10)
 						break;
 					Item item = ii.next();
-					out.println("</br><a href=\"" + item.getHref()
+					out.println("<a href=\"" + item.getHref()
 							+ "\" target=\"_blank\">" + item.getTitle()
 							+ "</a></br>");
 					index += 1;

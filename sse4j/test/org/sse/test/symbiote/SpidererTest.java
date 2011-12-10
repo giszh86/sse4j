@@ -13,8 +13,7 @@ public class SpidererTest {
 		String key = "sse4j";
 		String ekey = URLEncoder.encode(key, "UTF-8");
 		System.out.println(ekey + "_" + URLEncoder.encode(ekey, "UTF-8"));
-		// new SECGoogle(ekey).call();
-
+		
 		List<Item> result = Spiderer.getInstance().crawl(ekey);
 		for (Iterator<Item> ii = result.iterator(); ii.hasNext();) {
 			Item item = ii.next();

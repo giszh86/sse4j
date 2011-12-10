@@ -52,8 +52,7 @@ public class Spiderer {
 	public List<Item> crawl(String keyword) throws InterruptedException {
 		List<Item> result = new LinkedList<Item>();
 		ConcurrentLinkedQueue<Callable<SECResult>> tasks = new ConcurrentLinkedQueue<Callable<SECResult>>();
-		tasks.add(new SECBaidu(keyword));
-		tasks.add(new SECSogou(keyword));
+		// TODO
 		List<Future<SECResult>> fr = es.invokeAll(tasks, 30, TimeUnit.SECONDS);
 		for (Iterator<Future<SECResult>> i = fr.iterator(); i.hasNext();) {
 			try {

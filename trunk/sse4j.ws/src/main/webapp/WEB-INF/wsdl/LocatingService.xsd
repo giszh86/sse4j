@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.sse.org/" targetNamespace="http://ws.sse.org/" version="1.0">
+
+  <xs:element name="geocoding" type="tns:geocoding"/>
+
+  <xs:element name="geocodingResponse" type="tns:geocodingResponse"/>
+
+  <xs:element name="reverseGeocoding" type="tns:reverseGeocoding"/>
+
+  <xs:element name="reverseGeocodingResponse" type="tns:reverseGeocodingResponse"/>
+
+  <xs:complexType name="reverseGeocoding">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:wsPointF"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wsPointF">
+    <xs:sequence>
+      <xs:element name="x" type="xs:float"/>
+      <xs:element name="y" type="xs:float"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="reverseGeocodingResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:wsResult"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wsResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="faultString" type="xs:string"/>
+      <xs:element minOccurs="0" name="jsonString" type="xs:string"/>
+      <xs:element name="resultCode" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="geocoding">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:wsFilterGeoc"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="wsFilterGeoc">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="address" type="xs:string"/>
+      <xs:element minOccurs="0" name="key" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="geocodingResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:wsResult"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

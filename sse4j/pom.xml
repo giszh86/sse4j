@@ -4,6 +4,7 @@
   	<artifactId>sse4j</artifactId>
   	<version>1.6.0</version>
   	<packaging>jar</packaging>
+  	
   	<name>sse4j</name>
 	<url>http://maven.apache.org</url>
 	<properties>

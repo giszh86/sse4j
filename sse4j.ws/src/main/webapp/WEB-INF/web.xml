@@ -16,12 +16,6 @@
 		<servlet-name>HotTile</servlet-name>
 		<servlet-class>org.sse.http.HotTile</servlet-class>
 	</servlet>
-	<servlet>
-		<description>TCrawl</description>
-		<display-name>TCrawl</display-name>
-		<servlet-name>TCrawling</servlet-name>
-		<servlet-class>org.sse.http.TCrawling</servlet-class>
-	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>RoutingService</servlet-name>
@@ -43,10 +37,7 @@
 		<servlet-name>HotTile</servlet-name>
 		<url-pattern>/servlet/HotTile</url-pattern>
 	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>TCrawling</servlet-name>
-		<url-pattern>/servlet/TCrawling</url-pattern>
-	</servlet-mapping>
+
 	<welcome-file-list>
 		<welcome-file>sse4j.html</welcome-file>
 	</welcome-file-list>

@@ -49,8 +49,8 @@ public strictfp class Google {
 	}
 
 	public static void pixelToTile(EarthPos pos) {
-		pos.xLon = (int) (pos.xLon / 256);
-		pos.yLat = (int) (pos.yLat / 256);
+		pos.xLon = (int) Math.floor(pos.xLon / getSize());
+		pos.yLat = (int) Math.floor(pos.yLat / getSize());
 	}
 
 	public static EarthPos pixelToDegree(int x, int y, int zoom) {

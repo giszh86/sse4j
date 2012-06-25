@@ -2,27 +2,27 @@
 <navi wgs="false">
 	<netes>
 		<net key="110000">
-			<junction name="" path="data/idx/110000/Junction" cache="false" />
-			<pathline name="" path="data/idx/110000/Pathline" cache="false" />
+			<junction name="" path="d:/data/idx/110000/Junction" cache="false" />
+			<pathline name="" path="d:/data/idx/110000/Pathline" cache="false" />
 		</net>
 		<!--net key="560000">
-			<junction name="" path="data/idx/560000/Junction" cache="false" />
-			<pathline name="" path="data/idx/560000/Pathline" cache="true" />
+			<junction name="" path="d:/data/idx/560000/Junction" cache="false" />
+			<pathline name="" path="d:/data/idx/560000/Pathline" cache="true" />
 		</net-->		
 	</netes>
 	<poies>
 		<poi key="110000">
-			<item name="" path="data/idx/110000/Poi" cache="false" /><!-- support multipaths-->
+			<item name="" path="d:/data/idx/110000/Poi" cache="false" /><!-- support multipaths-->
 		</poi>
 	</poies>
 	<geoces>
 		<!--geoc key="560000">
-			<item name="110000" path="data/idx/geoc/110000" cache="false" />
+			<item name="110000" path="d:/data/idx/geoc/110000" cache="false" />
 		</geoc-->
 	</geoces>
 	<distes>
 		<dist key="560000">
-			<item name="" path="data/idx/dist" cache="true" />
+			<item name="" path="d:/data/idx/dist" cache="true" />
 		</dist>
 	</distes>
 	<buses>		

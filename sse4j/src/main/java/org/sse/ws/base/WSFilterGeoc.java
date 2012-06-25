@@ -2,6 +2,8 @@ package org.sse.ws.base;
 
 import java.io.Serializable;
 
+import com.google.gson.Gson;
+
 /**
  * 
  * @author dux(duxionggis@126.com)
@@ -34,6 +36,10 @@ public class WSFilterGeoc implements Serializable {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	
+	public String toString() {
+		return new Gson().toJson(this);
 	}
 
 }

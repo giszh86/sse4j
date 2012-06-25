@@ -13,6 +13,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 /**
+ * Desc: xml=&gzip={true,false}
  * 
  * @author dux(duxionggis@126.com)
  * 
@@ -44,16 +45,19 @@ public class Searching extends HttpServlet {
 	// </ws:search>
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		// 1 get parameters
+		String xml = request.getParameter("xml");
+		// System.out.println(xml);
+		String gzip = request.getParameter("gzip");
+		boolean zip = (gzip == null ? true : gzip.equalsIgnoreCase("true"));		
 		try {
-			// 1 get parameters			
-			String xml = request.getParameter("xml");
 			// 2 write
-			GZipWriter.write(this.excute(XmlParser.getDocument(xml)), response);
+			GZipWriter.write(this.excute(XmlParser.getDocument(xml)), response, zip);
 		} catch (Exception ex) {
 			WSResult result = new WSResult();
 			result.setResultCode(0);
 			result.setFaultString(ex.getMessage());
-			GZipWriter.write(result, response);
+			GZipWriter.write(result, response, zip);
 		}
 	}
 

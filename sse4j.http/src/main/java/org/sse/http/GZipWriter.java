@@ -3,6 +3,7 @@ package org.sse.http;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.zip.GZIPOutputStream;
 
 import javax.servlet.http.HttpServletResponse;
@@ -17,15 +18,17 @@ import org.sse.ws.base.WSResult;
 class GZipWriter {
 	public final static String charset = "UTF-8";
 	private final static String contentTypeZip = "application/zip";
+	private final static String contentTypeXml = "text/xml";
 
 	// <return>
-	// 	<faultString></faultString>
-	// 	<jsonString></jsonString>
-	// 	<resultCode></resultCode>
+	//   <faultString></faultString>
+	// 	 <jsonString></jsonString>
+	// 	 <resultCode></resultCode>
 	// </return>
-	public static void write(WSResult result, HttpServletResponse response)
+	public static void write(WSResult result, HttpServletResponse response, boolean zip)
 			throws IOException {
-		StringBuffer sb = new StringBuffer();
+		StringBuffer sb = new StringBuffer();	
+		sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		if (result == null) {
 			sb.append("<return><faultString>null</faultString>");
 			sb.append("<jsonString></jsonString>");
@@ -40,21 +43,28 @@ class GZipWriter {
 		}
 
 		response.setCharacterEncoding(charset);
-		response.setHeader("Content-disposition", "attachment;filename="
-				+ System.currentTimeMillis() + ".zip");
-		response.setContentType(contentTypeZip);
-		OutputStream ops = response.getOutputStream();
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		GZIPOutputStream gos = new GZIPOutputStream(bos);
-		gos.write(sb.toString().getBytes(charset));
-		gos.finish();
-		gos.close();
+		if (zip) {
+			response.setHeader("Content-disposition", "attachment;filename="
+					+ System.currentTimeMillis() + ".zip");
+			response.setContentType(contentTypeZip);
+			OutputStream ops = response.getOutputStream();
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			GZIPOutputStream gos = new GZIPOutputStream(bos);
+			gos.write(sb.toString().getBytes(charset));
+			gos.finish();
+			gos.close();
 
-		response.setContentLength(bos.size());
-		ops.write(bos.toByteArray());
-		bos.flush();
-		bos.close();
-		ops.flush();
-		ops.close();
+			response.setContentLength(bos.size());
+			ops.write(bos.toByteArray());
+			bos.flush();
+			bos.close();
+			ops.flush();
+			ops.close();
+		} else {
+			response.setContentType(contentTypeXml);
+			PrintWriter out = response.getWriter();
+			out.print(sb.toString());
+			out.close();
+		}
 	}
 }

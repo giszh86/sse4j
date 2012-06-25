@@ -69,7 +69,7 @@
 						
 			function geocoding(){
 				var key = dkey;
-				var address = document.getElementById('geoText').value;				
+				var address = encodeURI(document.getElementById('geoText').value);	
 				SSELocating.geocoding(key,address,function(result){
 					if(result){
 						var r = result.returnByGeocoding();
@@ -132,7 +132,7 @@
 				var filter = new SSEFilter;
 				filter.key = dkey;
 				filter.preference = document.getElementById('sType').value;
-				filter.keyword = document.getElementById('sText').value;
+				filter.keyword = encodeURI(document.getElementById('sText').value);
 				filter.count = 50;
 				//filter.distance = 5000;
 				//filter.geometryWKT = 'POINT(116.4 39.9)';
@@ -219,7 +219,7 @@
 			    this.text = text;
 			
 			    this.getTile = function (coord, zoom, ownerDoc) {
-			    	var burl = HotMapUrl + 'keyword=' + this.text + '&zoom=' + zoom + '&y=' + coord.x + '&x='+coord.y;
+			    	var burl = HotMapUrl + 'keyword=' + this.text + '&zoom=' + zoom + '&y=' + coord.x + '&x='+coord.y + '&key=' + dkey;
 			        var hotkey = 'hot_' + zoom + '_' + coord.x + '_' + coord.y;			        
 			    	var div = ownerDoc.createElement('DIV');
 			        div.innerHTML = "<img style='width:" + this.tileSize.width + "px;height:" + this.tileSize.height + "px;border:0px' src='" + burl + "&type=img' usemap='#" + hotkey + "'/>";
@@ -236,12 +236,11 @@
 			var hotMapType = null;			
 			function hotmap(){
 				var prefer = document.getElementById('sType').value;
-				var txt = document.getElementById('sText').value;
+				var txt = encodeURI(document.getElementById('sText').value);
 				if(prefer!='POI' && txt!=''){
 					alert('POI Selected and input!');
 					return;
 				}
-				txt = encodeURI(txt);
 
 				//Image
 				if(hotMapType) map.overlayMapTypes.removeAt(0);
@@ -400,7 +399,7 @@
 				var filter = new SSEFilter;
 				filter.key = dkey;
 				filter.preference = 'POI';
-				filter.keyword = keyword;
+				filter.keyword = encodeURI(keyword);
 				filter.count = 2;
 				SSESearching.search(filter,function(result){
 					if(result){

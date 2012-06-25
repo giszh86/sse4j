@@ -6,8 +6,6 @@
 		<listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
 	</listener>
 	<servlet>
-		<description>JAX-WS endpoint - RoutingService</description>
-		<display-name>RoutingService</display-name>
 		<servlet-name>RoutingService</servlet-name>
 		<servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>

@@ -62,3 +62,9 @@ change to maven project
 fixed bug in org.sse.map.HotMapper
 
 --------------------------------------------------------------
+
+2012-6-25
+update sse4j.http to support gzip=false
+deploy v1.6.0
+
+--------------------------------------------------------------

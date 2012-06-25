@@ -12,7 +12,7 @@ import java.util.zip.GZIPInputStream;
 public class HttpTest {
 
 	public static void main(String[] args) throws IOException {
-		URL url = new URL("http://localhost:8080/sse4j/servlet/Searching");
+		URL url = new URL("http://localhost:8080/sse4j/servlet/HotTile");
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setDoInput(true);
 		conn.setDoOutput(true);
@@ -26,7 +26,7 @@ public class HttpTest {
 		// send
 		DataOutputStream out = new DataOutputStream(conn.getOutputStream());
 		// "xml=<ws:poiInfo><arg0><id>200</id><key>110000</key></arg0></ws:poiInfo>";
-		String xml = "xml=<ws:search><arg0><count>50</count><distance></distance><geometryWKT></geometryWKT><key>110000</key><keyword>";
+		String xml = "xml=<?xml version=\"1.0\" encoding=\"UTF-8\"?><ws:search><arg0><count>50</count><distance></distance><geometryWKT></geometryWKT><key>110000</key><keyword>";
 		xml += URLEncoder.encode("中关村北大街", "utf-8");
 		xml += "</keyword><preference>POI</preference></arg0></ws:search>";
 		out.writeBytes(xml);

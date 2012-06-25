@@ -2,6 +2,8 @@ package org.sse.ws.base;
 
 import java.io.Serializable;
 
+import com.google.gson.Gson;
+
 /**
  * 
  * @author dux(duxionggis@126.com)
@@ -34,6 +36,10 @@ public class WSFilterPoi implements Serializable {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	public String toString() {
+		return new Gson().toJson(this);
 	}
 
 }

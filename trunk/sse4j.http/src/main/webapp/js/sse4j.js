@@ -1,11 +1,11 @@
 var BaseUrl = 'http://localhost:8080/sse4j/';
-var LocatingWSDL = BaseUrl+'LocatingPort?wsdl';
-var SearchingWSDL = BaseUrl+'SearchingPort?wsdl';
-var RoutingWSDL = BaseUrl+'RoutingPort?wsdl';
-var MatchingWSDL = BaseUrl+'MatchingPort?wsdl';
+var LocatingUrl = BaseUrl+'servlet/Locating?gzip=false';
+var SearchingUrl = BaseUrl+'servlet/Searching?gzip=false';
+var RoutingUrl = BaseUrl+'servlet/Routing?gzip=false';
+var MatchingUrl = BaseUrl+'servlet/Matching?gzip=false';
 var HotMapUrl = BaseUrl+'servlet/HotTile?';
-var SoapStart = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.sse.org/"><soapenv:Header/><soapenv:Body>';
-var SoapEnd = '</soapenv:Body></soapenv:Envelope>';
+var UrlStart = '<?xml version="1.0" encoding="UTF-8"?>';
+var UrlEnd = '';
 
 /***************************************************************************/
 function SSEUtil(){	
@@ -36,7 +36,7 @@ SSEUtil.requestOnready = function(xml, wsdl, func){
 			alert(e1);
 			return;
 		}
-		request.setRequestHeader("Content-Type", "text/xml;charset=utf-8");
+		request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 		request.send(xml);
 		request.onreadystatechange = function(){
 			if (request.readyState==4 && request.status==200){
@@ -267,20 +267,22 @@ function SSEResult(faultString,resultCode,jsonString){
 var SSELocating = {
 	"geocoding":function(key,address,func){
 		if(key && address){
-			var xml = SoapStart + '<ws:geocoding>';
+			var xml = UrlStart + '<ws:geocoding>';
 			xml +='<arg0><key>'+key+'</key><address>'+address+'</address></arg0>';
-			xml += '</ws:geocoding>' + SoapEnd;
-			SSEUtil.requestOnready(xml,LocatingWSDL,func);
+			xml += '</ws:geocoding>' + UrlEnd;
+			xml = 'xml=' + xml;
+			SSEUtil.requestOnready(xml,LocatingUrl,func);
 		}else{
 			alert("input null!");
 		}
 	},
 	"reverseGeocoding":function(pt,func){
 		if(pt){
-			var xml = SoapStart + '<ws:reverseGeocoding>';
+			var xml = UrlStart + '<ws:reverseGeocoding>';
 			xml += '<arg0><x>'+pt.lon+'</x><y>'+pt.lat+'</y></arg0>';
-			xml += '</ws:reverseGeocoding>' + SoapEnd;
-			SSEUtil.requestOnready(xml,LocatingWSDL,func);
+			xml += '</ws:reverseGeocoding>' + UrlEnd;
+			xml = 'xml=' + xml;
+			SSEUtil.requestOnready(xml,LocatingUrl,func);
 		}else{
 			alert("input null!");
 		}
@@ -290,24 +292,26 @@ var SSELocating = {
 var SSESearching = {
 	"search":function(filter,func){
 		if(filter && filter.key && filter.preference){
-			var xml = SoapStart + '<ws:search><arg0>';
+			var xml = UrlStart + '<ws:search><arg0>';
 			xml += '<key>'+filter.key+'</key><preference>'+filter.preference+'</preference>';			
 			if(filter.keyword)xml+='<keyword>'+filter.keyword+'</keyword>';
 			if(filter.count)xml+='<count>'+filter.count+'</count>';
 			if(filter.distance)xml+='<distance>'+filter.distance+'</distance>';
 			if(filter.geometryWKT)xml+='<geometryWKT>'+filter.geometryWKT+'</geometryWKT>';
-			xml += '</arg0></ws:search>' + SoapEnd;
-			SSEUtil.requestOnready(xml,SearchingWSDL,func);
+			xml += '</arg0></ws:search>' + UrlEnd;
+			xml = 'xml=' + xml;
+			SSEUtil.requestOnready(xml,SearchingUrl,func);
 		}else{
 			alert("input null!");
 		}
 	},
 	"poiInfo":function(key,id,func){
 		if(id && key){
-			var xml = SoapStart + '<ws:poiInfo><arg0>';
+			var xml = UrlStart + '<ws:poiInfo><arg0>';
 			xml += '<key>'+key+'</key><id>'+id+'</id>';
-			xml += '</arg0></ws:poiInfo>' + SoapEnd;
-			SSEUtil.requestOnready(xml,SearchingWSDL,func);
+			xml += '</arg0></ws:poiInfo>' + UrlEnd;
+			xml = 'xml=' + xml;
+			SSEUtil.requestOnready(xml,SearchingUrl,func);
 		}else{
 			alert("input null!");
 		}
@@ -317,7 +321,7 @@ var SSESearching = {
 var SSERouting = {
 	"webPlan":function(router,func){
 		if(router && router.preference && router.startPoint && router.endPoint){
-			var xml = SoapStart + '<ws:webPlan><arg0>';
+			var xml = UrlStart + '<ws:webPlan><arg0>';
 			xml += '<preference>'+router.preference+'</preference>';
 			xml += '<startPoint><x>'+router.startPoint.lon+'</x><y>'+router.startPoint.lat+'</y></startPoint>';
 			xml += '<endPoint><x>'+router.endPoint.lon+'</x><y>'+router.endPoint.lat+'</y></endPoint>';
@@ -328,8 +332,9 @@ var SSERouting = {
 					if(p)xml+='<viaPoints><x>'+p.lon+'</x><y>'+p.lat+'</y></viaPoints>';
 				}
 			}
-			xml += '</arg0></ws:webPlan>' + SoapEnd;
-			SSEUtil.requestOnready(xml,RoutingWSDL,func);
+			xml += '</arg0></ws:webPlan>' + UrlEnd;
+			xml = 'xml=' + xml;
+			SSEUtil.requestOnready(xml,RoutingUrl,func);
 		}else{
 			alert("input null!");
 		}

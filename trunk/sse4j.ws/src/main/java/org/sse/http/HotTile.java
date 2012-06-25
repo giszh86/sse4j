@@ -37,8 +37,8 @@ public class HotTile extends HttpServlet {
 		String keyword = request.getParameter("keyword");
 		if (x != null && y != null && zoom != null && type != null
 				&& keyword != null) {
-			response.setCharacterEncoding("UTF-8");
 			try {
+				// TODO old method
 				String path = HotMapper.getInstance().createHotmap(
 						Integer.valueOf(zoom), Integer.valueOf(y),
 						Integer.valueOf(x), keyword,
@@ -48,14 +48,32 @@ public class HotTile extends HttpServlet {
 					request.getRequestDispatcher(path + ".png").forward(
 							request, response);
 				} else {
-					response.setContentType("application/javascript");
+					response.setContentType("application/javascript;charset=UTF-8");
 					request.getRequestDispatcher(path + ".js").forward(request,
 							response);
 				}
+
+				// TODO new method
+				// if (type.equalsIgnoreCase("img")) {
+				// response.setContentType("image/png");
+				// BufferedImage bi = HotMapper.getInstance().getTile(
+				// Integer.valueOf(zoom), Integer.valueOf(y),
+				// Integer.valueOf(x), keyword,
+				// request.getParameter("key"));
+				// ImageIO.write(bi, "png", response.getOutputStream());
+				// } else {
+				// response.setContentType("application/javascript;charset=UTF-8");
+				// String json = HotMapper.getInstance().getTileJS(
+				// Integer.valueOf(zoom), Integer.valueOf(y),
+				// Integer.valueOf(x), keyword,
+				// request.getParameter("key"));
+				// PrintWriter out = response.getWriter();
+				// out.print(json);
+				// out.close();
+				// }
 			} catch (Exception e) {
-				logger.severe(e.getMessage() + "\n x=" + x + "&y=" + y
-						+ "&zoom=" + zoom + "&keyword=" + keyword + "&type="
-						+ type);
+				logger.severe("error in x=" + x + "&y=" + y + "&zoom=" + zoom
+						+ "&keyword=" + keyword + "&type=" + type);
 			}
 		} else {
 			logger.warning("x=" + x + "&y=" + y + "&zoom=" + zoom + "&keyword="

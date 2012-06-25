@@ -66,7 +66,8 @@ public class HotMapper {
 	protected HotMapper() {
 		try {
 			gf = new GeometryFactory();
-			icon = ImageIO.read(HotMapper.class.getResource("hot.png"));
+			icon = ImageIO.read(Thread.currentThread().getContextClassLoader()
+					.getResource("hot.png"));
 			outpath = URLUtil.getClassPathFile(HotMapper.class).getParentFile()
 					.getParentFile().getPath();
 			if (outpath.startsWith("file:"))
@@ -93,7 +94,9 @@ public class HotMapper {
 	 * @param keyword
 	 * @param key
 	 *            citycode[in navi.xml]
+	 * 
 	 * @return common path
+	 * 
 	 * @throws Exception
 	 */
 	public synchronized String createHotmap(int zoom, int x, int y,
@@ -208,5 +211,176 @@ public class HotMapper {
 		result = null;
 
 		return path;
+	}
+
+	/**
+	 * 
+	 * @param zoom
+	 *            10 ~ 17
+	 * @param x
+	 *            0 ~ Pow(2,zoom)-1
+	 * @param y
+	 *            0 ~ Pow(2,zoom)-1
+	 * @param keyword
+	 * @param key
+	 *            citycode[in navi.xml]
+	 * 
+	 * @return BufferedImage
+	 * 
+	 * @throws Exception
+	 */
+	public BufferedImage getTile(int zoom, int x, int y, String keyword,
+			String key) throws Exception {
+		BufferedImage image = new BufferedImage(Google.getSize(),
+				Google.getSize(), BufferedImage.TYPE_4BYTE_ABGR);
+		// tile extent
+		int bufx = icon.getWidth() / 2;
+		int bufy = icon.getHeight() / 2;
+		EarthPos min = Google.pixelToDegree(x * Google.getSize() - bufx,
+				(y + 1) * Google.getSize() + bufy, zoom);
+		EarthPos max = Google.pixelToDegree((x + 1) * Google.getSize() + bufx,
+				y * Google.getSize() - bufy, zoom);
+		Coordinate[] coords = new Coordinate[5];
+		coords[0] = new Coordinate(min.xLon, min.yLat);
+		coords[1] = new Coordinate(min.xLon, max.yLat);
+		coords[2] = new Coordinate(max.xLon, max.yLat);
+		coords[3] = new Coordinate(max.xLon, min.yLat);
+		coords[4] = new Coordinate(min.xLon, min.yLat);
+		Geometry extent = gf.createPolygon(gf.createLinearRing(coords), null);
+		MercatorUtil.toMercator(extent, true);
+		// search
+		String keypath = null;
+		if (key == null || key.isEmpty()) {
+			District dis = new Matcher().districtMatch(gf
+					.createPoint(new Coordinate(min.xLon, min.yLat)));
+			keypath = StorageFactory.getInstance()
+					.getStorage(dis.getCityCode(), StorageType.POI).getKey();
+		} else {
+			keypath = StorageFactory.getInstance()
+					.getStorage(key, StorageType.POI).getKey();
+		}
+		Filter filter = new Filter();
+		List<Property> ptyes = new ArrayList<Property>(1);
+		ptyes.add(new Property(PtyName.TITLE, keyword));
+		filter.setProperties(ptyes);
+		filter.setCount(count);
+		filter.setGeometry(extent);
+		List<Document> result = Searcher.getInstance().search(keypath, filter);
+
+		// create image
+		if (result != null && result.size() > 0) {
+			Graphics2D graph = (Graphics2D) image.getGraphics();
+			WKTReader reader = new WKTReader();
+			for (Iterator<Document> i = result.iterator(); i.hasNext();) {
+				Document doc = i.next();
+
+				Geometry g = reader.read(doc.get(PtyName.GID));
+				EarthPos gp = new EarthPos(g.getCoordinate().x,
+						g.getCoordinate().y);
+				if (!NaviConfig.WGS) {
+					gp = Google.googToDegree(g.getCoordinate().x,
+							g.getCoordinate().y);
+				}
+				gp = Google.degreeToPixel(gp.xLon, gp.yLat, zoom);
+				gp.xLon = gp.xLon - x * Google.getSize();
+				gp.yLat = gp.yLat - y * Google.getSize();
+				int px = (int) gp.xLon - icon.getWidth() / 2;
+				int py = (int) gp.yLat - icon.getHeight() / 2;
+				graph.drawImage(icon, null, px, py);
+			}
+		}
+		return image;
+	}
+
+	/**
+	 * 
+	 * @param zoom
+	 *            10 ~ 17
+	 * @param x
+	 *            0 ~ Pow(2,zoom)-1
+	 * @param y
+	 *            0 ~ Pow(2,zoom)-1
+	 * @param keyword
+	 * @param key
+	 *            citycode[in navi.xml]
+	 * 
+	 * @return js string
+	 * 
+	 * @throws Exception
+	 */
+	public String getTileJS(int zoom, int x, int y, String keyword, String key)
+			throws Exception {
+		// tile extent
+		EarthPos min = Google.pixelToDegree(x * Google.getSize(), (y + 1)
+				* Google.getSize(), zoom);
+		EarthPos max = Google.pixelToDegree((x + 1) * Google.getSize(), y
+				* Google.getSize(), zoom);
+		Coordinate[] coords = new Coordinate[5];
+		coords[0] = new Coordinate(min.xLon, min.yLat);
+		coords[1] = new Coordinate(min.xLon, max.yLat);
+		coords[2] = new Coordinate(max.xLon, max.yLat);
+		coords[3] = new Coordinate(max.xLon, min.yLat);
+		coords[4] = new Coordinate(min.xLon, min.yLat);
+		Geometry extent = gf.createPolygon(gf.createLinearRing(coords), null);
+		MercatorUtil.toMercator(extent, true);
+		// search
+		String keypath = null;
+		if (key == null || key.isEmpty()) {
+			District dis = new Matcher().districtMatch(gf
+					.createPoint(new Coordinate(min.xLon, min.yLat)));
+			keypath = StorageFactory.getInstance()
+					.getStorage(dis.getCityCode(), StorageType.POI).getKey();
+		} else {
+			keypath = StorageFactory.getInstance()
+					.getStorage(key, StorageType.POI).getKey();
+		}
+		Filter filter = new Filter();
+		List<Property> ptyes = new ArrayList<Property>(1);
+		ptyes.add(new Property(PtyName.TITLE, keyword));
+		filter.setProperties(ptyes);
+		filter.setCount(count);
+		filter.setGeometry(extent);
+		List<Document> result = Searcher.getInstance().search(keypath, filter);
+
+		LinkedList<TipPoi> tips = new LinkedList<TipPoi>();
+		// create js
+		if (result != null && result.size() > 0) {
+			WKTReader reader = new WKTReader();
+			for (Iterator<Document> i = result.iterator(); i.hasNext();) {
+				Document doc = i.next();
+
+				TipPoi tp = new TipPoi();
+				tp.setId(doc.get(PtyName.OID));
+				tp.setTitle(doc.get(PtyName.TITLE));
+
+				Geometry g = reader.read(doc.get(PtyName.GID));
+				EarthPos gp = new EarthPos(g.getCoordinate().x,
+						g.getCoordinate().y);
+				if (!NaviConfig.WGS) {
+					gp = Google.googToDegree(g.getCoordinate().x,
+							g.getCoordinate().y);
+				}
+				gp = Google.degreeToPixel(gp.xLon, gp.yLat, zoom);
+				gp.xLon = gp.xLon - x * Google.getSize();
+				gp.yLat = gp.yLat - y * Google.getSize();
+				tp.setX((int) gp.xLon);
+				tp.setY((int) gp.yLat);
+
+				int index = tips.indexOf(tp);
+				if (index >= 0) {
+					tips.get(index).addSub(tp);
+				} else {
+					tips.add(tp);
+				}
+			}
+		}
+
+		TipTile tt = new TipTile();
+		tt.setZoom(zoom);
+		tt.setX(x);
+		tt.setY(y);
+		tt.setTips(tips);
+
+		return ("hotMapTip(" + new Gson().toJson(tt) + ");");
 	}
 }

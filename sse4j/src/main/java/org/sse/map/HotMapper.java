@@ -66,8 +66,7 @@ public class HotMapper {
 	protected HotMapper() {
 		try {
 			gf = new GeometryFactory();
-			icon = ImageIO.read(Thread.currentThread().getContextClassLoader()
-					.getResource("hot.png"));
+			icon = ImageIO.read(HotMapper.class.getResource("hot.png"));
 			outpath = URLUtil.getClassPathFile(HotMapper.class).getParentFile()
 					.getParentFile().getPath();
 			if (outpath.startsWith("file:"))

@@ -46,7 +46,7 @@ import com.vividsolutions.jts.io.WKTReader;
  * 
  */
 public class HotMapper {
-	private static HotMapper instance;
+	private static HotMapper[] instances;
 	private static Lock lock = new ReentrantLock();
 
 	private BufferedImage icon;
@@ -55,12 +55,16 @@ public class HotMapper {
 	private int count = 2500; // TODO 2500
 
 	public static HotMapper getInstance() {
-		if (instance == null) {
+		int idx = ((int) (Math.random() * 1e6)) % 5;
+		if (instances == null) {
 			lock.lock();
-			instance = new HotMapper();
+			instances = new HotMapper[5];
+			for (int i = 0; i < 5; i++) {
+				instances[i] = new HotMapper();
+			}
 			lock.unlock();
 		}
-		return instance;
+		return instances[idx];
 	}
 
 	protected HotMapper() {

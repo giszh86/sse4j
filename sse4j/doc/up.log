@@ -71,5 +71,6 @@ deploy v1.6.0
 
 2012-7-26
 change org.sse.io.IdxReader to support multi searcher
+delete kdtree in org.sse.squery.STree
 
 --------------------------------------------------------------

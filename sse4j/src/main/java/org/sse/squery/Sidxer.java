@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.lucene.document.Document;
+import org.apache.lucene.index.TermDocs;
 import org.sse.io.IdxReader;
 import org.sse.io.ObjectTransCoder;
 import org.sse.util.MercatorUtil;
@@ -32,16 +33,18 @@ class Sidxer {
 	 * @param wgs
 	 * @throws IOException
 	 */
-	void save(String idxpath, String keyname, boolean wgs)
-			throws IOException {		
+	void save(String idxpath, String keyname, boolean wgs) throws IOException {
 		IdxReader reader = new IdxReader(idxpath);
 		List<Sidx> lsidx = new ArrayList<Sidx>();
 		tree = null;
-		for (int i = 0; i < reader.getReader().numDocs(); i++) {
-			Document doc = reader.getReader().document(i);
+		// TODO Version=3.1 TermDocs Bug
+		TermDocs docs = reader.getReader(0).termDocs(null);
+		while (docs.next()) {
+			Document doc = reader.getReader(0).document(docs.doc());
 			if (tree == null) {
-				boolean isPt = MercatorUtil.toGeometry(doc.get(PtyName.GID),
-						wgs).getGeometryType().equalsIgnoreCase("Point");
+				boolean isPt = MercatorUtil
+						.toGeometry(doc.get(PtyName.GID), wgs)
+						.getGeometryType().equalsIgnoreCase("Point");
 				tree = new STree(isPt);
 			}
 			Sidx sidx = new Sidx();
@@ -53,9 +56,10 @@ class Sidxer {
 			sidx.setY2((float) env.getMaxY());
 			sidx.setKey(doc.get(keyname));
 			lsidx.add(sidx);
-			
+
 			tree.insert(env, sidx.getKey());
 		}
+		docs.close();
 		reader.close();
 		tree.build();
 
@@ -64,7 +68,7 @@ class Sidxer {
 		ObjectTransCoder otc = new ObjectTransCoder();
 		otc.encode(fos, lsidx);
 		fos.close();
-		lsidx = null;		
+		lsidx = null;
 	}
 
 	void read(String sidxpath) throws IOException {
@@ -73,7 +77,7 @@ class Sidxer {
 		List<Sidx> lsidx = (List<Sidx>) otc.decode(fis);
 		fis.close();
 
-		tree = null;		
+		tree = null;
 		for (Iterator<Sidx> i = lsidx.iterator(); i.hasNext();) {
 			Sidx key = i.next();
 			if (tree == null) {

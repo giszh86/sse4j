@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.lucene.document.Document;
+import org.apache.lucene.index.TermDocs;
 import org.sse.squery.STree;
 import org.sse.NaviConfig;
 import org.sse.io.IdxReader;
@@ -54,23 +55,22 @@ public class IdxNetCacher {
 			nodeTree = new STree(true);
 		}
 		IdxReader nodeReader = new IdxReader(idxpath_node);
-		List<Node> nodes = new ArrayList<Node>(nodeReader.getReader().numDocs());
+		List<Node> nodes = new ArrayList<Node>(nodeReader.getReader(0)
+				.numDocs());
 
 		// TODO Version=3.1 TermDocs Bug
-		// TermDocs nodedocs = nodeReader.getReader().termDocs();
-		// while (nodedocs.next()) {
-		// Document doc = nodeReader.getReader().document(nodedocs.doc());
-		// }
-		// nodedocs.close();
-		for (int i = 0; i < nodeReader.getReader().numDocs(); i++) {
-			Document doc = nodeReader.getReader().document(i);
+		TermDocs nodedocs = nodeReader.getReader(0).termDocs(null);
+		while (nodedocs.next()) {
+			Document doc = nodeReader.getReader(0).document(nodedocs.doc());
 			Node node = this.createNode(doc);
 			nodes.add(node);
 			if (nodecache) {
-				nodeTree.insert(new Envelope(node.getX(), node.getX(), node
-						.getY(), node.getY()), node.getId());
+				nodeTree.insert(
+						new Envelope(node.getX(), node.getX(), node.getY(),
+								node.getY()), node.getId());
 			}
 		}
+		nodedocs.close();
 		Collections.sort(nodes, new NodeComparator());
 		if (nodecache) {
 			nodeTree.build();
@@ -84,10 +84,13 @@ public class IdxNetCacher {
 			edgeTree = new STree(false);
 		}
 		IdxReader edgeReader = new IdxReader(idxpath_edge);
-		List<Edge> edges = new ArrayList<Edge>(edgeReader.getReader().numDocs());
+		List<Edge> edges = new ArrayList<Edge>(edgeReader.getReader(0)
+				.numDocs());
 
-		for (int i = 0; i < edgeReader.getReader().numDocs(); i++) {
-			Document doc = edgeReader.getReader().document(i);
+		// TODO Version=3.1 TermDocs Bug
+		TermDocs edgedocs = edgeReader.getReader(0).termDocs(null);
+		while (edgedocs.next()) {
+			Document doc = edgeReader.getReader(0).document(edgedocs.doc());
 			Geometry g = MercatorUtil.toGeometry(doc.get(EdgePtyName.GID),
 					NaviConfig.WGS);
 			Edge edge = this.createEdge(doc);
@@ -97,6 +100,7 @@ public class IdxNetCacher {
 				edgeTree.insert(g.getEnvelopeInternal(), edge.getId());
 			}
 		}
+		edgedocs.close();
 		Collections.sort(edges, new EdgeComparator());
 		if (edgecache) {
 			edgeTree.build();

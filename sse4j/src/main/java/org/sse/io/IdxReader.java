@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.MultiReader;
@@ -18,7 +15,6 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.NIOFSDirectory;
 
 /**
@@ -27,9 +23,7 @@ import org.apache.lucene.store.NIOFSDirectory;
  * 
  */
 public class IdxReader {
-	private IndexReader mReader = null;
-	private IndexSearcher mSearcher = null;
-	private ExecutorService es = null;
+	private IndexSearcher[] mis = null;
 
 	/**
 	 * 
@@ -38,45 +32,56 @@ public class IdxReader {
 	 * @throws IOException
 	 */
 	public IdxReader(String idxPath) throws IOException {
-		this(idxPath.split(","), true);
-	}
-
-	public IdxReader(String[] idxPaths, boolean win) throws IOException {
-		IndexReader[] readers = new IndexReader[idxPaths.length];
-		for (int i = 0; i < idxPaths.length; i++) {
-			// use NIOFSDirectory under linux
-			if (win) {
-				readers[i] = IndexReader.open(FSDirectory.open(new File(
-						idxPaths[i])));
-			} else {
-				readers[i] = IndexReader.open(NIOFSDirectory.open(new File(
-						idxPaths[i])));
-			}
-		}
-
-		mReader = new MultiReader(readers, false);
-		if (readers.length > 1) {
-			es = Executors.newCachedThreadPool();
-			mSearcher = new IndexSearcher(mReader, es);
-		} else {
-			mSearcher = new IndexSearcher(mReader);
-		}
+		this(idxPath.split(","), 4);
 	}
 
 	/**
 	 * 
+	 * @param idxPaths
+	 *            lucene path
+	 * @param threads
+	 *            >0 && <=64
+	 * @throws IOException
+	 */
+	public IdxReader(String[] idxPaths, int threads) throws IOException {
+		if (threads <= 0 || threads > 64) {
+			throw new IOException("threads>0 && threads<=64");
+		}
+		mis = new IndexSearcher[threads];
+		for (int j = 0; j < threads; j++) {
+			IndexReader[] readers = new IndexReader[idxPaths.length];
+			for (int i = 0; i < idxPaths.length; i++) {
+				readers[i] = IndexReader.open(NIOFSDirectory.open(new File(
+						idxPaths[i])));
+			}
+			mis[j] = new IndexSearcher(new MultiReader(readers, false));
+		}
+	}
+
+	// /**
+	// *
+	// * @return MultiReader object
+	// */
+	// public IndexReader getReader() {
+	// int idx = (int) (System.currentTimeMillis() % mis.length);
+	// return mis[idx].getIndexReader();
+	// }
+
+	/**
+	 * 
+	 * @param index
 	 * @return MultiReader object
 	 */
-	public IndexReader getReader() {
-		return mReader;
+	public IndexReader getReader(int index) {
+		if (index < 0)
+			index = 0;
+		return mis[index % mis.length].getIndexReader();
 	}
 
 	public void close() {
 		try {
-			mSearcher.close();
-			mReader.close();
-			if (es != null)
-				es.shutdown();
+			for (IndexSearcher s : mis)
+				s.close();
 		} catch (IOException e) {
 		}
 	}
@@ -118,16 +123,16 @@ public class IdxReader {
 	 * @return
 	 */
 	public List<Document> query(Query query, Filter filter, int count) {
-		if (mReader == null)
-			return null;
 		if (count < 1)
 			count = 50;
 		List<Document> docs = new ArrayList<Document>();
 		try {
-			// mSearcher.search(query, filter, n, sort); // Sort(SortField())
-			TopDocs result = mSearcher.search(query, filter, count);
+			int idx = (int) (System.currentTimeMillis() % mis.length);
+			// mis[idx].search(query, filter, n, sort); // Sort(SortField())
+			TopDocs result = mis[idx].search(query, filter, count);
+			// result.totalHits;
 			for (ScoreDoc doc : result.scoreDocs) {
-				docs.add(mReader.document(doc.doc));
+				docs.add(mis[idx].doc(doc.doc));
 			}
 			filter = null;
 			query = null;
@@ -145,9 +150,11 @@ public class IdxReader {
 	 * @return
 	 */
 	public List<Document> query(List<Term> terms) {
-		if (mReader == null || terms == null)
+		if (terms == null || terms.size() == 0)
 			return null;
 		try {
+			int idx = (int) (System.currentTimeMillis() % mis.length);
+			IndexReader mReader = getReader(idx);
 			List<Document> docs = new ArrayList<Document>();
 			for (Iterator<Term> i = terms.iterator(); i.hasNext();) {
 				Term term = i.next();
@@ -155,6 +162,7 @@ public class IdxReader {
 					TermDocs td = mReader.termDocs(term);
 					while (td.next())
 						docs.add(mReader.document(td.doc()));
+					td.close();
 				}
 			}
 			terms = null;

@@ -28,7 +28,7 @@ public class IdxReaderTest {
 	public static void main(String[] args) throws Exception {
 		IdxReader idx = new IdxReader("data/idx/110000/Poi");
 		// query(idx);
-		simple(idx.getReader());
+		simple(idx.getReader(0));
 		// terms(idx);
 		idx.close();
 	}

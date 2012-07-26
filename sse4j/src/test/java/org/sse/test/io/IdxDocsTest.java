@@ -11,19 +11,15 @@ public class IdxDocsTest {
 		IdxReader reader = new IdxReader(
 				"data/idx/110000/Poi,data/idx/110000/Poi");
 
-		for (int i = 0; i < reader.getReader().numDocs(); i++) {
-			System.out.println(reader.getReader().document(i));
-		}
-
 		// TODO
-		TermDocs docs = reader.getReader().termDocs();
+		TermDocs docs = reader.getReader(0).termDocs();
 		while (docs.next()) {
-			reader.getReader().document(docs.doc());
+			reader.getReader(0).document(docs.doc());
 		}
 		docs.close();
 
-		System.out.println("Num:" + reader.getReader().numDocs() + " max:"
-				+ reader.getReader().maxDoc());
+		System.out.println("Num:" + reader.getReader(0).numDocs() + " max:"
+				+ reader.getReader(0).maxDoc());
 	}
 
 }

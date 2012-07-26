@@ -68,3 +68,8 @@ update sse4j.http to support gzip=false
 deploy v1.6.0
 
 --------------------------------------------------------------
+
+2012-7-26
+change org.sse.io.IdxReader to support multi searcher
+
+--------------------------------------------------------------

@@ -2,7 +2,7 @@
   	<modelVersion>4.0.0</modelVersion>
   	<groupId>sse4j</groupId>
   	<artifactId>sse4j.ws</artifactId>
-  	<version>1.6.0</version>
+  	<version>1.7.0</version>
   	<packaging>war</packaging>
   	
   	<name>sse4j.ws</name>  
@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>sse4j</groupId>
 			<artifactId>sse4j</artifactId>
-			<version>1.6.0</version>			
+			<version>1.7.0</version>			
 		</dependency>
 	</dependencies>
 	

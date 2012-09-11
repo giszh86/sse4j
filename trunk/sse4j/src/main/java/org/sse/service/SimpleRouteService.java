@@ -25,7 +25,6 @@ import com.vividsolutions.jts.geom.Point;
  * route plan depends on city district
  * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class SimpleRouteService implements IRouteService {
 	private double buffer = 500; // meter
@@ -37,25 +36,21 @@ public class SimpleRouteService implements IRouteService {
 	public RouteDataSet plan(Router router, String key) throws Exception {
 		MercatorUtil.toMercator(router.getStartPoint(), true);
 		MercatorUtil.toMercator(router.getEndPoint(), true);
-		double dis = Maths.getDistance(router.getStartPoint().getX(), router
-				.getStartPoint().getY(), router.getEndPoint().getX(), router
-				.getEndPoint().getY());
+		double dis = Maths.getDistance(router.getStartPoint().getX(), router.getStartPoint().getY(), router
+				.getEndPoint().getX(), router.getEndPoint().getY());
 		if (dis < 100)
 			throw new Exception("destination is near!");
 
-		IdxRouteStorage storage = (IdxRouteStorage) StorageFactory
-				.getInstance().getStorage(key, StorageType.NET);
+		IdxRouteStorage storage = (IdxRouteStorage) StorageFactory.getInstance().getStorage(key, StorageType.NET);
 		if (storage == null)
 			throw new Exception("not found network data!");
 		long t1 = System.currentTimeMillis();
 		List<RouteSegment> traces = this.run(storage, router);
-		System.out.println("plan:" + key + "--"
-				+ (System.currentTimeMillis() - t1));
+		System.out.println("plan:" + key + "--" + (System.currentTimeMillis() - t1));
 		return RouteSegmentManager.createDataSet(traces, router.getControls());
 	}
 
-	private List<RouteSegment> run(IdxRouteStorage storage, Router router)
-			throws Exception {
+	private List<RouteSegment> run(IdxRouteStorage storage, Router router) throws Exception {
 		List<RouteSegment> result = new LinkedList<RouteSegment>();
 		result.add(null);
 
@@ -79,8 +74,7 @@ public class SimpleRouteService implements IRouteService {
 		nids.add(end.getId());
 
 		float coef = 1.0f;
-		if (router.getPreference() == RouterPreference.Fastest
-				|| router.getPreference() == RouterPreference.Cheapest)
+		if (router.getPreference() == RouterPreference.Fastest || router.getPreference() == RouterPreference.Cheapest)
 			coef = 0.06f;// 0.04 0.12
 		List<Integer> roadIds = new LinkedList<Integer>();
 		List<Integer> nodeIds = new LinkedList<Integer>();
@@ -88,9 +82,8 @@ public class SimpleRouteService implements IRouteService {
 		for (int i = nids.size() - 1; i > 0; i--) {
 			boolean via = (i != nids.size() - 1);
 			int startNodeId = nids.get(i - 1);
-			LinkedNode trace = new AStar().find(startNodeId, nids.get(i),
-					storage.getNodes(), storage.getEdges(), coef, router
-							.getPreference());
+			LinkedNode trace = new AStar().find(startNodeId, nids.get(i), storage.getNodes(), storage.getEdges(), coef,
+					router.getPreference());
 			while (trace != null && trace.id != startNodeId) {
 				roadIds.add(trace.preEdgeId);
 				nodeIds.add(trace.preNode.id);
@@ -105,16 +98,14 @@ public class SimpleRouteService implements IRouteService {
 		return result;
 	}
 
-	private void setSegments(IdxRouteStorage storage,
-			List<RouteSegment> result, List<Integer> roadIds,
+	private void setSegments(IdxRouteStorage storage, List<RouteSegment> result, List<Integer> roadIds,
 			List<Integer> nodeIds, List<Boolean> vias) {
 		Map<Integer, RouteEdge> roads = storage.getRouteEdges(roadIds);
 		Iterator<Integer> ri = roadIds.iterator();
 		Iterator<Integer> ni = nodeIds.iterator();
 		Iterator<Boolean> vi = vias.iterator();
 		for (; (ri.hasNext() && ni.hasNext() && vi.hasNext());) {
-			RouteSegment seg = this.createSegment(storage, ni.next(),
-					vi.next(), roads.get(ri.next()));
+			RouteSegment seg = this.createSegment(storage, ni.next(), vi.next(), roads.get(ri.next()));
 			if (!RouteSegmentManager.combine(result.get(0), seg, false))
 				result.add(0, seg);
 		}
@@ -124,8 +115,7 @@ public class SimpleRouteService implements IRouteService {
 		vias = null;
 	}
 
-	private RouteSegment createSegment(IdxRouteStorage storage, int preNodeId,
-			boolean via, RouteEdge edge) {
+	private RouteSegment createSegment(IdxRouteStorage storage, int preNodeId, boolean via, RouteEdge edge) {
 		RouteSegment seg = new RouteSegment();
 		seg.getIds().add(edge.getId());
 		seg.setKind(edge.getKind());
@@ -133,13 +123,11 @@ public class SimpleRouteService implements IRouteService {
 		seg.setLength(edge.getLength());
 		seg.setName(edge.getName());
 		if (edge.getStartNodeId() == preNodeId) {
-			seg.setLightFlag(storage.getNodes().get(edge.getEndNodeId() - 1)
-					.getLightFlag());
+			seg.setLightFlag(storage.getNodes().get(edge.getEndNodeId() - 1).getLightFlag());
 			for (org.sse.geo.Point pt : edge.getPoints())
 				seg.getPoints().add(pt);
 		} else if (edge.getEndNodeId() == preNodeId) {
-			seg.setLightFlag(storage.getNodes().get(edge.getStartNodeId() - 1)
-					.getLightFlag());
+			seg.setLightFlag(storage.getNodes().get(edge.getStartNodeId() - 1).getLightFlag());
 			for (org.sse.geo.Point pt : edge.getPoints())
 				seg.getPoints().add(0, pt);
 		}

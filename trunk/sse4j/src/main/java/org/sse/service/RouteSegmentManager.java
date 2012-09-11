@@ -11,13 +11,10 @@ import org.sse.service.base.TrafficCtl;
 import org.sse.util.Maths;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 class RouteSegmentManager {
-	static RouteDataSet createDataSet(List<RouteSegment> result,
-			List<TrafficCtl> controls) {
+	static RouteDataSet createDataSet(List<RouteSegment> result, List<TrafficCtl> controls) {
 		RouteDataSet dataset = new RouteDataSet();
 		if (result == null || result.size() == 0)
 			return dataset;
@@ -47,8 +44,7 @@ class RouteSegmentManager {
 				speed = speeds / seg.getIds().size();// none weighted mean
 			}
 			seg.setSpeed((int) speed);
-			seg.setCost(Maths.getCost(seg.getLength(), speed,
-					seg.getLightFlag()));
+			seg.setCost(Maths.getCost(seg.getLength(), speed, seg.getLightFlag()));
 			dis += seg.getLength();
 			cost += seg.getCost();
 			seg.setSAngle(Maths.getAngle(seg.getPoints(), 1));
@@ -85,13 +81,12 @@ class RouteSegmentManager {
 	}
 
 	static void setRouteName(RouteSegment rd) {
-		if (rd.getName().equals("")) {
+		if (rd.getName().isEmpty()) {
 			if (rd.getAttrib() == EdgeType.RD_SIDE) {
 				rd.setName("辅路");
 			} else if (rd.getAttrib() == EdgeType.RD_ROUND) {
 				rd.setName("环岛");
-			} else if (rd.getAttrib() == EdgeType.RD_IC
-					|| rd.getAttrib() == EdgeType.RD_JCT) {
+			} else if (rd.getAttrib() == EdgeType.RD_IC || rd.getAttrib() == EdgeType.RD_JCT) {
 				rd.setName("匝道");
 			} else if (rd.getAttrib() == EdgeType.RD_TURN) {
 				rd.setName("掉头专用道");
@@ -112,8 +107,7 @@ class RouteSegmentManager {
 			return false;
 		if (!rd1.equalsIgnore(rd2))
 			return false;
-		double tmpdegree = Maths.getAngle(rd2.getPoints(), 1)
-				- Maths.getAngle(rd1.getPoints(), 2);
+		double tmpdegree = Maths.getAngle(rd2.getPoints(), 1) - Maths.getAngle(rd1.getPoints(), 2);
 		if (tmpdegree < 0)
 			tmpdegree += 360;
 		if (tmpdegree >= 165 && tmpdegree < 195) // turn round
@@ -140,7 +134,6 @@ class RouteSegmentManager {
 	}
 
 	/**
-	 * 
 	 * @param traces
 	 * @return
 	 */
@@ -222,8 +215,7 @@ class RouteSegmentManager {
 				if (temp.size() == 0)
 					temp.addAll(rd.getPoints());
 				else
-					temp.addAll(rd.getPoints()
-							.subList(1, rd.getPoints().size()));
+					temp.addAll(rd.getPoints().subList(1, rd.getPoints().size()));
 				// ri.setVertexes(toPts(temp));
 				ri.setPoints(toArrayPts(temp));
 				ris.add(ri);

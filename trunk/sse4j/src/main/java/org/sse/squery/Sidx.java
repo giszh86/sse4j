@@ -3,9 +3,7 @@ package org.sse.squery;
 import java.io.Serializable;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class Sidx implements Serializable {
 	private static final long serialVersionUID = 1L;

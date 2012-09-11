@@ -6,9 +6,7 @@ import org.sse.service.PoiService;
 import org.sse.service.SimpleRouteService;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class ServiceFactory {
 	public static IPoiService getPoiService() {

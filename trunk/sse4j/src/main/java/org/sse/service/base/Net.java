@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class Net implements Serializable {
 	private static final long serialVersionUID = 1L;

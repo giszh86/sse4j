@@ -3,9 +3,7 @@ package org.sse.ws.base;
 import java.io.Serializable;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class WSResult implements Serializable {
 	private static final long serialVersionUID = 1L;

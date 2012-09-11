@@ -3,9 +3,7 @@ package org.sse.ws.base;
 import java.io.Serializable;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class WSFilterRM implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -17,7 +15,6 @@ public class WSFilterRM implements Serializable {
 	}
 
 	/**
-	 * 
 	 * @param startPoint
 	 *            起点[WGS84]
 	 */
@@ -30,7 +27,6 @@ public class WSFilterRM implements Serializable {
 	}
 
 	/**
-	 * 
 	 * @param endPoint
 	 *            终点[WGS84]
 	 */

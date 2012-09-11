@@ -1,9 +1,7 @@
 package org.sse.util;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class CharacterSet {
 	public static void main(String[] arg) {
@@ -15,8 +13,8 @@ public class CharacterSet {
 		System.out.println(CharacterSet.toUnicode(cn, true));
 	}
 
-	private static final char[] hexDigit = { '0', '1', '2', '3', '4', '5', '6',
-			'7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+	private static final char[] hexDigit = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+			'F' };
 
 	private static char toHex(int nibble) {
 		return hexDigit[(nibble & 0xF)];
@@ -110,8 +108,7 @@ public class CharacterSet {
 	 *            转换的缓存字符数组。
 	 * @return 完成转换，返回编码前的特殊字符串。
 	 */
-	public static String fromUnicode(char[] in, int off, int len,
-			char[] convtBuf) {
+	public static String fromUnicode(char[] in, int off, int len, char[] convtBuf) {
 		if (convtBuf.length < len) {
 			int newLen = len * 2;
 			if (newLen < 0) {
@@ -163,8 +160,7 @@ public class CharacterSet {
 							value = (value << 4) + 10 + aChar - 'A';
 							break;
 						default:
-							throw new IllegalArgumentException(
-									"Malformed \\uxxxx encoding.");
+							throw new IllegalArgumentException("Malformed \\uxxxx encoding.");
 						}
 					}
 					out[outLen++] = (char) value;

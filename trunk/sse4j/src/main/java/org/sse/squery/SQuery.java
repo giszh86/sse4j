@@ -16,9 +16,7 @@ import org.sse.io.IdxReader;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 class SQuery {
 	private IdxReader reader;
@@ -36,8 +34,7 @@ class SQuery {
 			return null;
 
 		BooleanQuery bQuery = new BooleanQuery();
-		Query tQuery = IdxParser.getInstance().createQuery(filter.getQtype(),
-				filter.getProperties());
+		Query tQuery = IdxParser.getInstance().createQuery(filter.getQtype(), filter.getProperties());
 		if (tQuery != null) {
 			if (tQuery instanceof BooleanQuery) {
 				bQuery = (BooleanQuery) tQuery;
@@ -55,15 +52,13 @@ class SQuery {
 					if (tQuery == null) {
 						List<Term> tterms = new ArrayList<Term>(ids.size());
 						for (Iterator i = ids.iterator(); i.hasNext();) {
-							tterms.add(new Term(PtyName.OID, i.next()
-									.toString()));
+							tterms.add(new Term(PtyName.OID, i.next().toString()));
 						}
 						return reader.query(tterms);
 					} else {
 						tfilter = new TermsFilter();
 						for (Iterator i = ids.iterator(); i.hasNext();) {
-							tfilter.addTerm(new Term(PtyName.OID, i.next()
-									.toString()));
+							tfilter.addTerm(new Term(PtyName.OID, i.next().toString()));
 						}
 					}
 				}
@@ -100,7 +95,7 @@ class SQuery {
 		} else {
 			BooleanQuery bQuery = new BooleanQuery();
 			IdxParser.spatialQuery(envelope, bQuery);
-			List<Document> docs = this.query(bQuery, 500);
+			List<Document> docs = this.query(bQuery, 500);// TODO
 			List<Integer> ids = new ArrayList<Integer>(docs.size());
 			for (Document doc : docs) {
 				ids.add(Integer.valueOf(doc.get(PtyName.OID)));

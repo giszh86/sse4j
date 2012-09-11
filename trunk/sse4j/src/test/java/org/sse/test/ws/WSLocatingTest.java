@@ -12,8 +12,7 @@ public class WSLocatingTest {
 		new Routing();
 		Thread.sleep(10000);
 
-		WSResult result = new Locating().reverseGeocoding(new WSPointF(116.4f,
-				39.9f));
+		WSResult result = new Locating().reverseGeocoding(new WSPointF(116.4f, 39.9f));
 		System.out.println(result.getJsonString());
 
 		WSFilterGeoc geoc = new WSFilterGeoc();

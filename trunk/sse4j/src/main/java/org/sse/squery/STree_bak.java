@@ -9,9 +9,7 @@ import com.vividsolutions.jts.index.kdtree.KdTree;
 import com.vividsolutions.jts.index.strtree.STRtree;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class STree_bak {
 	private Object sidx = null;

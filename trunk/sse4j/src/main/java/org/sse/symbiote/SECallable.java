@@ -6,9 +6,7 @@ import java.net.URL;
 import java.util.concurrent.Callable;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 abstract class SECallable implements Callable<SECResult> {
 	String keyword = "";
@@ -26,8 +24,7 @@ abstract class SECallable implements Callable<SECResult> {
 		SECResult result = new SECResult();
 
 		URL uri = new URL(url + keyword);
-		BufferedReader reader = new BufferedReader(new InputStreamReader(uri
-				.openStream(), charset));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(uri.openStream(), charset));
 		String s;
 		StringBuffer sb = new StringBuffer();
 		while ((s = reader.readLine()) != null) {
@@ -43,8 +40,7 @@ abstract class SECallable implements Callable<SECResult> {
 			fromIndex = startIndex + startSprit.length();
 			int endIndex = sb.indexOf(endSprit, fromIndex);
 			if (endIndex > startIndex && startIndex >= 0) {
-				String link = sb.substring(startIndex, endIndex
-						+ endSprit.length());
+				String link = sb.substring(startIndex, endIndex + endSprit.length());
 				// System.out.println(link);
 				result.addLink(this.buildItem(link, source, rank));
 				fromIndex = endIndex + endSprit.length();
@@ -57,8 +53,7 @@ abstract class SECallable implements Callable<SECResult> {
 		return result;
 	}
 
-	SECResult.Item buildItem(String link, String source, int rank)
-			throws Exception {
+	SECResult.Item buildItem(String link, String source, int rank) throws Exception {
 		SECResult.Item item = new SECResult.Item();
 		item.setSource(source);
 		item.setRank(rank);

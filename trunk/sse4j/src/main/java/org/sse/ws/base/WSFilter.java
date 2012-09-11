@@ -5,9 +5,7 @@ import java.io.Serializable;
 import com.google.gson.Gson;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class WSFilter implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -51,15 +49,13 @@ public class WSFilter implements Serializable {
 	 * @param geometryWKT
 	 *            WKT format geometry string[WGS84]
 	 *            <p>
-	 *            POINT(0 0) LineString(0 0, 1 1, 2 2) POLYGON((0 0, 1 1, 2 2, 0
-	 *            0))
+	 *            POINT(0 0) LineString(0 0, 1 1, 2 2) POLYGON((0 0, 1 1, 2 2, 0 0))
 	 */
 	public void setGeometryWKT(String geometryWKT) {
 		this.geometryWKT = geometryWKT;
 	}
 
 	/**
-	 * 
 	 * @return POI, NET, DIST
 	 */
 	public String getPreference() {
@@ -67,7 +63,6 @@ public class WSFilter implements Serializable {
 	}
 
 	/**
-	 * 
 	 * @param preference
 	 *            POI, NET, DIST
 	 */
@@ -110,28 +105,24 @@ public class WSFilter implements Serializable {
 	}
 
 	/**
-	 * 
-	 * 
 	 * @return 查询关键字
 	 *         <p>
-	 *         NAMEC(香山公园) or NAMEP(XSGY) or ADDRESS(香山) or KIND(2010101)
+	 *         NAMEC(香山公园) or NAMEP(XSGY) or ADDRESS(香山) or KIND(010101)
 	 */
 	public String getKeyword() {
 		return keyword;
 	}
 
 	/**
-	 * 
-	 * 
 	 * @param fields
 	 *            查询关键字
 	 *            <p>
-	 *            NAMEC(香山公园) or NAMEP(XSGY) or ADDRESS(香山) or KIND(2010101)
+	 *            NAMEC(香山公园) or NAMEP(XSGY) or ADDRESS(香山) or KIND(010101)
 	 */
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
-	
+
 	public String toString() {
 		return new Gson().toJson(this);
 	}

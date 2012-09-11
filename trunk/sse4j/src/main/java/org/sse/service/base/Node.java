@@ -4,7 +4,6 @@ package org.sse.service.base;
  * Node
  * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class Node extends BaseNode {
 	private static final long serialVersionUID = 1L;
@@ -18,7 +17,6 @@ public class Node extends BaseNode {
 	}
 
 	/**
-	 * 
 	 * @param lightFlag
 	 *            红绿灯标识 0:无 1:有
 	 */

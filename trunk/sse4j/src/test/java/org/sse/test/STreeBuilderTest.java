@@ -18,12 +18,10 @@ public class STreeBuilderTest {
 				tree1.insert(new Envelope(i, i + 1, j, j + 1), i * 10000 + j);
 			}
 		tree1.build();
-		System.out.println("rtree build:"
-				+ ((new Date()).getTime() - date1.getTime()));
+		System.out.println("rtree build:" + ((new Date()).getTime() - date1.getTime()));
 		date1 = new Date();
 		System.out.println(tree1.query(env).size());
-		System.out.println("rtree query:"
-				+ ((new Date()).getTime() - date1.getTime()));
+		System.out.println("rtree query:" + ((new Date()).getTime() - date1.getTime()));
 
 		// tree1 = null;
 		// Quadtree tree2 = new Quadtree();

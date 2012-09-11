@@ -7,9 +7,7 @@ import org.sse.NaviConfig;
 import org.sse.squery.Searcher;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class PoiStorageBuilder implements IStorageBuilder {
 

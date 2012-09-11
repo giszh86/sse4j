@@ -5,22 +5,18 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 
 /**
- * 
  * @author sunyujia(sunyujia@yahoo.cn)
  * @date Sep 21, 2008 12:31:23 PM
  */
 public class URLUtil {
 	/**
-	 * 
 	 * Description:取得当前类所在的文件
 	 * 
 	 * @param clazz
 	 * @return
 	 */
 	public static File getClassFile(Class clazz) {
-		URL path = clazz.getResource(clazz.getName().substring(
-				clazz.getName().lastIndexOf(".") + 1)
-				+ ".class");
+		URL path = clazz.getResource(clazz.getName().substring(clazz.getName().lastIndexOf(".") + 1) + ".class");
 		if (path == null) {
 			String name = clazz.getName().replaceAll("[.]", "/");
 			path = clazz.getResource("/" + name + ".class");
@@ -29,7 +25,6 @@ public class URLUtil {
 	}
 
 	/**
-	 * 
 	 * Description:同getClassFile 解决中文编码问题
 	 * 
 	 * @param clazz
@@ -37,8 +32,7 @@ public class URLUtil {
 	 */
 	public static String getClassFilePath(Class clazz) {
 		try {
-			return java.net.URLDecoder.decode(getClassFile(clazz)
-					.getAbsolutePath(), "UTF-8");
+			return java.net.URLDecoder.decode(getClassFile(clazz).getAbsolutePath(), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return "";
@@ -46,7 +40,6 @@ public class URLUtil {
 	}
 
 	/**
-	 * 
 	 * Description:取得当前类所在的ClassPath目录
 	 * 
 	 * @param clazz
@@ -63,7 +56,6 @@ public class URLUtil {
 	}
 
 	/**
-	 * 
 	 * Description: 同getClassPathFile 解决中文编码问题
 	 * 
 	 * @param clazz
@@ -71,8 +63,7 @@ public class URLUtil {
 	 */
 	public static String getClassPath(Class clazz) {
 		try {
-			return java.net.URLDecoder.decode(getClassPathFile(clazz)
-					.getAbsolutePath(), "UTF-8");
+			return java.net.URLDecoder.decode(getClassPathFile(clazz).getAbsolutePath(), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return "";

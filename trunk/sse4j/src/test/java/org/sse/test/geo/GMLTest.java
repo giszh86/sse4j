@@ -32,11 +32,9 @@ public class GMLTest {
 		coords[7] = new Coordinate(6, 1);
 		List<Coordinate> lcoords = new ArrayList<Coordinate>();
 		lcoords.add(coords[0]);
-		double range = (coords[1].y - coords[0].y)
-				/ (coords[1].x - coords[0].x);
+		double range = (coords[1].y - coords[0].y) / (coords[1].x - coords[0].x);
 		for (int j = 1; j < coords.length - 1; j++) {
-			double cur = (coords[j + 1].y - coords[j].y)
-					/ (coords[j + 1].x - coords[j].x);
+			double cur = (coords[j + 1].y - coords[j].y) / (coords[j + 1].x - coords[j].x);
 			if (Math.abs(cur - range) > 0.01) {
 				lcoords.add(coords[j]);
 			} else {
@@ -48,8 +46,8 @@ public class GMLTest {
 		System.out.println(lcoords);
 
 		System.out.println(3.0 / 0.0);
-		
-		System.out.println(Integer.toHexString(257));		
+
+		System.out.println(Integer.toHexString(257));
 	}
 
 }

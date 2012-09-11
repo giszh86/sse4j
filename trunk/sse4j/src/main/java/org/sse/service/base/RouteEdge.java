@@ -8,7 +8,6 @@ import org.sse.geo.Point;
  * Route Edge
  * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class RouteEdge extends Edge {
 	private static final long serialVersionUID = 1L;
@@ -24,7 +23,6 @@ public class RouteEdge extends Edge {
 	}
 
 	/**
-	 * 
 	 * @param edgeId
 	 *            道路编号
 	 */
@@ -37,7 +35,6 @@ public class RouteEdge extends Edge {
 	}
 
 	/**
-	 * 
 	 * @param name
 	 *            路段名
 	 */

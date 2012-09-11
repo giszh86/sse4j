@@ -5,9 +5,7 @@ import java.io.Serializable;
 import com.google.gson.Gson;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class WSFilterGeoc implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -37,7 +35,7 @@ public class WSFilterGeoc implements Serializable {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
+
 	public String toString() {
 		return new Gson().toJson(this);
 	}

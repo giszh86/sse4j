@@ -19,34 +19,29 @@ import com.vividsolutions.jts.geom.Point;
  * road or district or gps match
  * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class Matcher {
 	private double buf = 50; // meter
 
 	/**
-	 * 
 	 * @param point
 	 *            [WGS84]
 	 * @return
 	 * @throws Exception
 	 */
 	public District districtMatch(Point point) throws Exception {
-		DistStorage storage = (DistStorage) StorageFactory.getInstance()
-				.getStorage(NaviConfig.BASE_KEY, StorageType.DIST);
+		DistStorage storage = (DistStorage) StorageFactory.getInstance().getStorage(NaviConfig.BASE_KEY,
+				StorageType.DIST);
 		MercatorUtil.toMercator(point, true);
-		Envelope env = new Envelope(point.getX() - buf, point.getX() + buf,
-				point.getY() - buf, point.getY() + buf);
-		List<String> result = Searcher.getInstance().spatialFilter(
-				storage.getKey(), env);
+		Envelope env = new Envelope(point.getX() - buf, point.getX() + buf, point.getY() - buf, point.getY() + buf);
+		List<String> result = Searcher.getInstance().spatialFilter(storage.getKey(), env);
 		if (result == null || result.size() == 0)
 			throw new Exception("not found!");
 		for (String id : result) {
 			if (storage.getGeos().get(id).contains(point)) {
 				List<Term> terms = new ArrayList<Term>(1);
 				terms.add(new Term(DistPtyName.OID, id));
-				List<Document> docs = Searcher.getInstance().search(
-						storage.getKey(), terms);
+				List<Document> docs = Searcher.getInstance().search(storage.getKey(), terms);
 
 				District dis = new District();
 				dis.setCityCode(docs.get(0).get(DistPtyName.CITYCODE));
@@ -61,15 +56,12 @@ public class Matcher {
 	}
 
 	/**
-	 * 
 	 * @param from
 	 *            [WGS84]
 	 * @param to
 	 *            [WGS84]
 	 * @return {"ID":"","TITLE":"","WKT":""}
-	 * 
 	 * @throws Exception
-	 * 
 	 */
 	public String roadMatch(Point from, Point to) throws Exception {
 		// TODO

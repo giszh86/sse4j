@@ -1,9 +1,7 @@
 package org.sse.util;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class EarthPos {
 	public double xLon;

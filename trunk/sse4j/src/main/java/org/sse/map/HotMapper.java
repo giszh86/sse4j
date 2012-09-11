@@ -41,9 +41,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.io.WKTReader;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class HotMapper {
 	private static HotMapper[] instances;
@@ -71,8 +69,7 @@ public class HotMapper {
 		try {
 			gf = new GeometryFactory();
 			icon = ImageIO.read(HotMapper.class.getResource("hot.png"));
-			outpath = URLUtil.getClassPathFile(HotMapper.class).getParentFile()
-					.getParentFile().getPath();
+			outpath = URLUtil.getClassPathFile(HotMapper.class).getParentFile().getParentFile().getPath();
 			if (outpath.startsWith("file:"))
 				outpath = outpath.substring(5);
 			outpath = URLDecoder.decode(outpath, "UTF-8");
@@ -80,14 +77,12 @@ public class HotMapper {
 			if (!file.exists())
 				file.mkdirs();
 			TipPoi.setLimitCount(25);
-			TipPoi.setBufferSize(icon.getWidth() / 3 + 1,
-					icon.getHeight() / 3 + 1);
+			TipPoi.setBufferSize(icon.getWidth() / 3 + 1, icon.getHeight() / 3 + 1);
 		} catch (IOException e) {
 		}
 	}
 
 	/**
-	 * 
 	 * @param zoom
 	 *            10 ~ 17
 	 * @param x
@@ -97,13 +92,10 @@ public class HotMapper {
 	 * @param keyword
 	 * @param key
 	 *            citycode[in navi.xml]
-	 * 
 	 * @return common path
-	 * 
 	 * @throws Exception
 	 */
-	public synchronized String createHotmap(int zoom, int x, int y,
-			String keyword, String key) throws Exception {
+	public synchronized String createHotmap(int zoom, int x, int y, String keyword, String key) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < keyword.length(); i = i + 2) {
 			long c = keyword.charAt(i);
@@ -113,8 +105,7 @@ public class HotMapper {
 			sb.append(Long.toHexString(c));
 		}
 		// make path
-		String path = "/cache/" + sb.toString() + "/" + zoom + "/" + x + "/"
-				+ y;
+		String path = "/cache/" + sb.toString() + "/" + zoom + "/" + x + "/" + y;
 		File jsfile = new File(outpath + path + ".js");
 		File imgfile = new File(outpath + path + ".png");
 		if (jsfile.exists() && imgfile.exists()) {
@@ -125,10 +116,8 @@ public class HotMapper {
 		// tile extent
 		int bufx = icon.getWidth() / 2;
 		int bufy = icon.getHeight() / 2;
-		EarthPos min = Google.pixelToDegree(x * Google.getSize() - bufx,
-				(y + 1) * Google.getSize() + bufy, zoom);
-		EarthPos max = Google.pixelToDegree((x + 1) * Google.getSize() + bufx,
-				y * Google.getSize() - bufy, zoom);
+		EarthPos min = Google.pixelToDegree(x * Google.getSize() - bufx, (y + 1) * Google.getSize() + bufy, zoom);
+		EarthPos max = Google.pixelToDegree((x + 1) * Google.getSize() + bufx, y * Google.getSize() - bufy, zoom);
 		Coordinate[] coords = new Coordinate[5];
 		coords[0] = new Coordinate(min.xLon, min.yLat);
 		coords[1] = new Coordinate(min.xLon, max.yLat);
@@ -140,13 +129,10 @@ public class HotMapper {
 		// search
 		String keypath = null;
 		if (key == null || key.isEmpty()) {
-			District dis = new Matcher().districtMatch(gf
-					.createPoint(new Coordinate(min.xLon, min.yLat)));
-			keypath = StorageFactory.getInstance()
-					.getStorage(dis.getCityCode(), StorageType.POI).getKey();
+			District dis = new Matcher().districtMatch(gf.createPoint(new Coordinate(min.xLon, min.yLat)));
+			keypath = StorageFactory.getInstance().getStorage(dis.getCityCode(), StorageType.POI).getKey();
 		} else {
-			keypath = StorageFactory.getInstance()
-					.getStorage(key, StorageType.POI).getKey();
+			keypath = StorageFactory.getInstance().getStorage(key, StorageType.POI).getKey();
 		}
 		Filter filter = new Filter();
 		List<Property> ptyes = new ArrayList<Property>(1);
@@ -157,8 +143,7 @@ public class HotMapper {
 		List<Document> result = Searcher.getInstance().search(keypath, filter);
 
 		LinkedList<TipPoi> tips = new LinkedList<TipPoi>();
-		BufferedImage image = new BufferedImage(Google.getSize(),
-				Google.getSize(), BufferedImage.TYPE_4BYTE_ABGR);
+		BufferedImage image = new BufferedImage(Google.getSize(), Google.getSize(), BufferedImage.TYPE_4BYTE_ABGR);
 		// create image and js
 		if (result != null && result.size() > 0) {
 			Graphics2D graph = (Graphics2D) image.getGraphics();
@@ -171,11 +156,9 @@ public class HotMapper {
 				tp.setTitle(doc.get(PtyName.TITLE));
 
 				Geometry g = reader.read(doc.get(PtyName.GID));
-				EarthPos gp = new EarthPos(g.getCoordinate().x,
-						g.getCoordinate().y);
+				EarthPos gp = new EarthPos(g.getCoordinate().x, g.getCoordinate().y);
 				if (!NaviConfig.WGS) {
-					gp = Google.googToDegree(g.getCoordinate().x,
-							g.getCoordinate().y);
+					gp = Google.googToDegree(g.getCoordinate().x, g.getCoordinate().y);
 				}
 				gp = Google.degreeToPixel(gp.xLon, gp.yLat, zoom);
 				gp.xLon = gp.xLon - x * Google.getSize();
@@ -186,8 +169,7 @@ public class HotMapper {
 				int py = tp.getY() - icon.getHeight() / 2;
 				graph.drawImage(icon, null, px, py);
 
-				if (px >= 0 && py >= 0 && px <= Google.getSize()
-						&& py <= Google.getSize()) {
+				if (px >= 0 && py >= 0 && px <= Google.getSize() && py <= Google.getSize()) {
 					int index = tips.indexOf(tp);
 					if (index >= 0) {
 						tips.get(index).addSub(tp.clone());
@@ -200,8 +182,7 @@ public class HotMapper {
 		// System.out.println("r:" + result.size() + " t:" + tips.size());
 		// save image and js
 		ImageIO.write(image, "png", imgfile);
-		BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
-				new FileOutputStream(jsfile), "UTF-8"));
+		BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(jsfile), "UTF-8"));
 		TipTile tt = new TipTile();
 		tt.setZoom(zoom);
 		tt.setX(x);
@@ -217,7 +198,6 @@ public class HotMapper {
 	}
 
 	/**
-	 * 
 	 * @param zoom
 	 *            10 ~ 17
 	 * @param x
@@ -227,22 +207,16 @@ public class HotMapper {
 	 * @param keyword
 	 * @param key
 	 *            citycode[in navi.xml]
-	 * 
 	 * @return BufferedImage
-	 * 
 	 * @throws Exception
 	 */
-	public BufferedImage getTile(int zoom, int x, int y, String keyword,
-			String key) throws Exception {
-		BufferedImage image = new BufferedImage(Google.getSize(),
-				Google.getSize(), BufferedImage.TYPE_4BYTE_ABGR);
+	public BufferedImage getTile(int zoom, int x, int y, String keyword, String key) throws Exception {
+		BufferedImage image = new BufferedImage(Google.getSize(), Google.getSize(), BufferedImage.TYPE_4BYTE_ABGR);
 		// tile extent
 		int bufx = icon.getWidth() / 2;
 		int bufy = icon.getHeight() / 2;
-		EarthPos min = Google.pixelToDegree(x * Google.getSize() - bufx,
-				(y + 1) * Google.getSize() + bufy, zoom);
-		EarthPos max = Google.pixelToDegree((x + 1) * Google.getSize() + bufx,
-				y * Google.getSize() - bufy, zoom);
+		EarthPos min = Google.pixelToDegree(x * Google.getSize() - bufx, (y + 1) * Google.getSize() + bufy, zoom);
+		EarthPos max = Google.pixelToDegree((x + 1) * Google.getSize() + bufx, y * Google.getSize() - bufy, zoom);
 		Coordinate[] coords = new Coordinate[5];
 		coords[0] = new Coordinate(min.xLon, min.yLat);
 		coords[1] = new Coordinate(min.xLon, max.yLat);
@@ -254,13 +228,10 @@ public class HotMapper {
 		// search
 		String keypath = null;
 		if (key == null || key.isEmpty()) {
-			District dis = new Matcher().districtMatch(gf
-					.createPoint(new Coordinate(min.xLon, min.yLat)));
-			keypath = StorageFactory.getInstance()
-					.getStorage(dis.getCityCode(), StorageType.POI).getKey();
+			District dis = new Matcher().districtMatch(gf.createPoint(new Coordinate(min.xLon, min.yLat)));
+			keypath = StorageFactory.getInstance().getStorage(dis.getCityCode(), StorageType.POI).getKey();
 		} else {
-			keypath = StorageFactory.getInstance()
-					.getStorage(key, StorageType.POI).getKey();
+			keypath = StorageFactory.getInstance().getStorage(key, StorageType.POI).getKey();
 		}
 		Filter filter = new Filter();
 		List<Property> ptyes = new ArrayList<Property>(1);
@@ -278,11 +249,9 @@ public class HotMapper {
 				Document doc = i.next();
 
 				Geometry g = reader.read(doc.get(PtyName.GID));
-				EarthPos gp = new EarthPos(g.getCoordinate().x,
-						g.getCoordinate().y);
+				EarthPos gp = new EarthPos(g.getCoordinate().x, g.getCoordinate().y);
 				if (!NaviConfig.WGS) {
-					gp = Google.googToDegree(g.getCoordinate().x,
-							g.getCoordinate().y);
+					gp = Google.googToDegree(g.getCoordinate().x, g.getCoordinate().y);
 				}
 				gp = Google.degreeToPixel(gp.xLon, gp.yLat, zoom);
 				gp.xLon = gp.xLon - x * Google.getSize();
@@ -296,7 +265,6 @@ public class HotMapper {
 	}
 
 	/**
-	 * 
 	 * @param zoom
 	 *            10 ~ 17
 	 * @param x
@@ -306,18 +274,13 @@ public class HotMapper {
 	 * @param keyword
 	 * @param key
 	 *            citycode[in navi.xml]
-	 * 
 	 * @return js string
-	 * 
 	 * @throws Exception
 	 */
-	public String getTileJS(int zoom, int x, int y, String keyword, String key)
-			throws Exception {
+	public String getTileJS(int zoom, int x, int y, String keyword, String key) throws Exception {
 		// tile extent
-		EarthPos min = Google.pixelToDegree(x * Google.getSize(), (y + 1)
-				* Google.getSize(), zoom);
-		EarthPos max = Google.pixelToDegree((x + 1) * Google.getSize(), y
-				* Google.getSize(), zoom);
+		EarthPos min = Google.pixelToDegree(x * Google.getSize(), (y + 1) * Google.getSize(), zoom);
+		EarthPos max = Google.pixelToDegree((x + 1) * Google.getSize(), y * Google.getSize(), zoom);
 		Coordinate[] coords = new Coordinate[5];
 		coords[0] = new Coordinate(min.xLon, min.yLat);
 		coords[1] = new Coordinate(min.xLon, max.yLat);
@@ -329,13 +292,10 @@ public class HotMapper {
 		// search
 		String keypath = null;
 		if (key == null || key.isEmpty()) {
-			District dis = new Matcher().districtMatch(gf
-					.createPoint(new Coordinate(min.xLon, min.yLat)));
-			keypath = StorageFactory.getInstance()
-					.getStorage(dis.getCityCode(), StorageType.POI).getKey();
+			District dis = new Matcher().districtMatch(gf.createPoint(new Coordinate(min.xLon, min.yLat)));
+			keypath = StorageFactory.getInstance().getStorage(dis.getCityCode(), StorageType.POI).getKey();
 		} else {
-			keypath = StorageFactory.getInstance()
-					.getStorage(key, StorageType.POI).getKey();
+			keypath = StorageFactory.getInstance().getStorage(key, StorageType.POI).getKey();
 		}
 		Filter filter = new Filter();
 		List<Property> ptyes = new ArrayList<Property>(1);
@@ -357,11 +317,9 @@ public class HotMapper {
 				tp.setTitle(doc.get(PtyName.TITLE));
 
 				Geometry g = reader.read(doc.get(PtyName.GID));
-				EarthPos gp = new EarthPos(g.getCoordinate().x,
-						g.getCoordinate().y);
+				EarthPos gp = new EarthPos(g.getCoordinate().x, g.getCoordinate().y);
 				if (!NaviConfig.WGS) {
-					gp = Google.googToDegree(g.getCoordinate().x,
-							g.getCoordinate().y);
+					gp = Google.googToDegree(g.getCoordinate().x, g.getCoordinate().y);
 				}
 				gp = Google.degreeToPixel(gp.xLon, gp.yLat, zoom);
 				gp.xLon = gp.xLon - x * Google.getSize();

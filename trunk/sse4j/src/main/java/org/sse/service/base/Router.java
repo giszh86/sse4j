@@ -11,7 +11,6 @@ import com.vividsolutions.jts.geom.Point;
  * Route Input Reference
  * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class Router {
 	private Point startPoint;
@@ -36,7 +35,6 @@ public class Router {
 	}
 
 	/**
-	 * 
 	 * @param startPoint
 	 *            起点[WGS84]
 	 */
@@ -49,7 +47,6 @@ public class Router {
 	}
 
 	/**
-	 * 
 	 * @param endPoint
 	 *            终点[WGS84]
 	 */
@@ -62,7 +59,6 @@ public class Router {
 	}
 
 	/**
-	 * 
 	 * @param viaPoints
 	 *            途径点[WGS84]
 	 */
@@ -75,7 +71,6 @@ public class Router {
 	}
 
 	/**
-	 * 
 	 * @param barriers
 	 *            障碍[WGS84][Point LineString Polygon LineRing]
 	 */
@@ -88,7 +83,6 @@ public class Router {
 	}
 
 	/**
-	 * 
 	 * @param controls
 	 *            交通管制
 	 */
@@ -101,7 +95,6 @@ public class Router {
 	}
 
 	/**
-	 * 
 	 * @param preference
 	 *            寻路方式
 	 */

@@ -3,9 +3,7 @@ package org.sse.ws.base;
 import java.io.Serializable;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class WSRouter implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -20,7 +18,6 @@ public class WSRouter implements Serializable {
 	}
 
 	/**
-	 * 
 	 * @param startPoint
 	 *            起点[WGS84]
 	 */
@@ -33,7 +30,6 @@ public class WSRouter implements Serializable {
 	}
 
 	/**
-	 * 
 	 * @param endPoint
 	 *            终点[WGS84]
 	 */
@@ -46,7 +42,6 @@ public class WSRouter implements Serializable {
 	}
 
 	/**
-	 * 
 	 * @param preference
 	 *            Fastest,Shortest,Cheapest,OnFoot
 	 */
@@ -59,7 +54,6 @@ public class WSRouter implements Serializable {
 	}
 
 	/**
-	 * 
 	 * @param viaPoints
 	 *            途径点[WGS84]
 	 */

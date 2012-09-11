@@ -7,7 +7,6 @@ import java.util.List;
  * Route(Trip) dataset
  * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class RouteDataSet {
 	private int distance;
@@ -29,7 +28,6 @@ public class RouteDataSet {
 	}
 
 	/**
-	 * 
 	 * @param distance
 	 *            总路程[米]
 	 */
@@ -42,7 +40,6 @@ public class RouteDataSet {
 	}
 
 	/**
-	 * 
 	 * @param cost
 	 *            总花费[秒]
 	 */

@@ -24,9 +24,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class IdxNetCacher {
 
@@ -48,15 +46,14 @@ public class IdxNetCacher {
 		}
 	}
 
-	public Net create(String idxpath_node, boolean nodecache,
-			String idxpath_edge, boolean edgecache) throws IOException {
+	public Net create(String idxpath_node, boolean nodecache, String idxpath_edge, boolean edgecache)
+			throws IOException {
 		STree nodeTree = null;
 		if (nodecache) {
 			nodeTree = new STree(true);
 		}
 		IdxReader nodeReader = new IdxReader(idxpath_node);
-		List<Node> nodes = new ArrayList<Node>(nodeReader.getReader(0)
-				.numDocs());
+		List<Node> nodes = new ArrayList<Node>(nodeReader.getReader(0).numDocs());
 
 		// TODO Version=3.1 TermDocs Bug
 		TermDocs nodedocs = nodeReader.getReader(0).termDocs(null);
@@ -65,9 +62,7 @@ public class IdxNetCacher {
 			Node node = this.createNode(doc);
 			nodes.add(node);
 			if (nodecache) {
-				nodeTree.insert(
-						new Envelope(node.getX(), node.getX(), node.getY(),
-								node.getY()), node.getId());
+				nodeTree.insert(new Envelope(node.getX(), node.getX(), node.getY(), node.getY()), node.getId());
 			}
 		}
 		nodedocs.close();
@@ -84,15 +79,13 @@ public class IdxNetCacher {
 			edgeTree = new STree(false);
 		}
 		IdxReader edgeReader = new IdxReader(idxpath_edge);
-		List<Edge> edges = new ArrayList<Edge>(edgeReader.getReader(0)
-				.numDocs());
+		List<Edge> edges = new ArrayList<Edge>(edgeReader.getReader(0).numDocs());
 
 		// TODO Version=3.1 TermDocs Bug
 		TermDocs edgedocs = edgeReader.getReader(0).termDocs(null);
 		while (edgedocs.next()) {
 			Document doc = edgeReader.getReader(0).document(edgedocs.doc());
-			Geometry g = MercatorUtil.toGeometry(doc.get(EdgePtyName.GID),
-					NaviConfig.WGS);
+			Geometry g = MercatorUtil.toGeometry(doc.get(EdgePtyName.GID), NaviConfig.WGS);
 			Edge edge = this.createEdge(doc);
 			edge.setLength((int) g.getLength());
 			edges.add(edge);
@@ -116,14 +109,11 @@ public class IdxNetCacher {
 	private Edge createEdge(Document doc) {
 		Edge edge = new Edge();
 		edge.setId(Integer.valueOf(doc.get(EdgePtyName.OID)).intValue());
-		edge.setStartNodeId(Integer.valueOf(doc.get(EdgePtyName.SNODEID))
-				.intValue());
-		edge.setEndNodeId(Integer.valueOf(doc.get(EdgePtyName.ENODEID))
-				.intValue());
+		edge.setStartNodeId(Integer.valueOf(doc.get(EdgePtyName.SNODEID)).intValue());
+		edge.setEndNodeId(Integer.valueOf(doc.get(EdgePtyName.ENODEID)).intValue());
 		edge.setKind(Integer.valueOf(doc.get(EdgePtyName.KIND)).shortValue());
 		edge.setType(Integer.valueOf(doc.get(EdgePtyName.TYPE)).shortValue());
-		edge.setDirection(Integer.valueOf(doc.get(EdgePtyName.DIRECTION))
-				.shortValue());
+		edge.setDirection(Integer.valueOf(doc.get(EdgePtyName.DIRECTION)).shortValue());
 		edge.setToll(Integer.valueOf(doc.get(EdgePtyName.TOLL)).shortValue());
 		return edge;
 	}
@@ -131,8 +121,7 @@ public class IdxNetCacher {
 	private Node createNode(Document doc) {
 		Node node = new Node();
 		node.setId(Integer.valueOf(doc.get(NodePtyName.OID)).intValue());
-		node.setLightFlag(Integer.valueOf(doc.get(NodePtyName.LIGHTFLAG))
-				.shortValue());
+		node.setLightFlag(Integer.valueOf(doc.get(NodePtyName.LIGHTFLAG)).shortValue());
 		String[] ids = doc.get(NodePtyName.NODELINK).split("\\|");
 		int[] edgeids = new int[ids.length];
 		for (int i = 0; i < ids.length; i++)

@@ -12,7 +12,6 @@ import com.google.gson.Gson;
  * road match depends on city district
  * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class Matching {
 
@@ -27,8 +26,7 @@ public class Matching {
 		WSResult result = new WSResult();
 		try {
 			result.setResultCode(1);
-			result.setJsonString(new Gson().toJson(new Matcher()
-					.districtMatch(WSBuilder.toPt(point))));
+			result.setJsonString(new Gson().toJson(new Matcher().districtMatch(WSBuilder.toPt(point))));
 		} catch (Exception e) {
 			result.setResultCode(0);
 			result.setFaultString(e.getMessage());
@@ -46,8 +44,8 @@ public class Matching {
 		WSResult result = new WSResult();
 		try {
 			result.setResultCode(1);
-			result.setJsonString(new Matcher().roadMatch(WSBuilder.toPt(filter
-					.getStartPoint()), WSBuilder.toPt(filter.getEndPoint())));
+			result.setJsonString(new Matcher().roadMatch(WSBuilder.toPt(filter.getStartPoint()),
+					WSBuilder.toPt(filter.getEndPoint())));
 		} catch (Exception e) {
 			result.setResultCode(0);
 			result.setFaultString(e.getMessage());

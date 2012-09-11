@@ -21,17 +21,14 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class WSBuilder {
 	public static Router router(WSRouter wsRouter) {
 		Router router = new Router();
 		router.setStartPoint(toPt(wsRouter.getStartPoint()));
 		router.setEndPoint(toPt(wsRouter.getEndPoint()));
-		router.setPreference(Enum.valueOf(RouterPreference.class, wsRouter
-				.getPreference()));
+		router.setPreference(Enum.valueOf(RouterPreference.class, wsRouter.getPreference()));
 		if (wsRouter.getViaPoints() != null) {
 			List<Point> vias = new ArrayList<Point>();
 			for (WSPointF p : wsRouter.getViaPoints())
@@ -56,23 +53,19 @@ public class WSBuilder {
 			}
 			filter.setProperties(ptyes);
 		}
-		if (wsFilter.getGeometryWKT() != null
-				&& !wsFilter.getGeometryWKT().trim().isEmpty()) {
-			Geometry g = MercatorUtil.toGeometry(wsFilter.getGeometryWKT(),
-					true);
+		if (wsFilter.getGeometryWKT() != null && !wsFilter.getGeometryWKT().trim().isEmpty()) {
+			Geometry g = MercatorUtil.toGeometry(wsFilter.getGeometryWKT(), true);
 			filter.setGeometry(g);
 		}
 		// filter.setQtype(QueryType.Standard);
 		filter.setCount(wsFilter.getCount());
 		if (wsFilter.getDistance() > 0) {
-			filter.setGeometry(filter.getGeometry().buffer(
-					wsFilter.getDistance()));
+			filter.setGeometry(filter.getGeometry().buffer(wsFilter.getDistance()));
 		}
 		return filter;
 	}
 
-	public static WSRouteDataSet build(RouteDataSet ds, boolean webplan)
-			throws Exception {
+	public static WSRouteDataSet build(RouteDataSet ds, boolean webplan) throws Exception {
 		WSRouteDataSet ws = new WSRouteDataSet();
 		ws.setDis(ds.getDistance());
 		ws.setCost(ds.getCost() / 60);
@@ -109,8 +102,7 @@ public class WSBuilder {
 		return ws;
 	}
 
-	private static WSRouteGuid buildGuid(RouteGuidance guid, boolean webplan,
-			int centx, int centy) {
+	private static WSRouteGuid buildGuid(RouteGuidance guid, boolean webplan, int centx, int centy) {
 		WSRouteGuid result = new WSRouteGuid();
 		result.setCost(guid.getCost());
 		// result.setIcon(guid.getIcon());

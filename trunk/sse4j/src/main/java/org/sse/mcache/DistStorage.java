@@ -5,9 +5,7 @@ import java.util.Map;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class DistStorage extends Storage {
 	private Map<String, Geometry> geos;

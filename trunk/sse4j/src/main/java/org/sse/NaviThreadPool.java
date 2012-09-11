@@ -5,9 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 class NaviThreadPool {
 	private static List<Thread> threads = new LinkedList<Thread>();
@@ -40,8 +38,7 @@ class NaviThreadPool {
 	static boolean runnable(String key) {
 		for (Iterator<Thread> i = threads.iterator(); i.hasNext();) {
 			Thread e = i.next();
-			if (e.getName().equalsIgnoreCase(key)
-					&& e.getState() == Thread.State.RUNNABLE) {
+			if (e.getName().equalsIgnoreCase(key) && e.getState() == Thread.State.RUNNABLE) {
 				return true;
 			}
 		}

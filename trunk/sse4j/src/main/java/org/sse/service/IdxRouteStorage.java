@@ -24,17 +24,14 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.operation.distance.DistanceOp;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class IdxRouteStorage implements IStorage {
 	private String key_edge;
 	private String key_node;
 	private Net net;
 
-	public IdxRouteStorage(String key_node, String key_edge, Net net)
-			throws Exception {
+	public IdxRouteStorage(String key_node, String key_edge, Net net) throws Exception {
 		this.key_edge = key_edge;
 		this.key_node = key_node;
 		this.net = net;
@@ -64,19 +61,16 @@ public class IdxRouteStorage implements IStorage {
 		RouteNode node = null;
 		if (pt == null)
 			return node;
-		List<Integer> result = this.queryNodes(pt.buffer(buffer)
-				.getEnvelopeInternal());
+		List<Integer> result = this.queryNodes(pt.buffer(buffer).getEnvelopeInternal());
 		if (result == null || result.size() == 0)
-			result = this.queryNodes(pt.buffer(buffer * 5)
-					.getEnvelopeInternal());
+			result = this.queryNodes(pt.buffer(buffer * 5).getEnvelopeInternal());
 		if (result == null || result.size() == 0)
 			return node;
 		double min = Double.MAX_VALUE;
 		int minid = 0;
 		for (int id : result) {
-			double dis = DistanceOp.distance(pt, MercatorUtil.toJTSPoint(
-					getNodes().get(id - 1).getX(), getNodes().get(id - 1)
-							.getY()));
+			double dis = DistanceOp.distance(pt,
+					MercatorUtil.toJTSPoint(getNodes().get(id - 1).getX(), getNodes().get(id - 1).getY()));
 			if (dis < min) {
 				min = dis;
 				minid = id;
@@ -89,8 +83,7 @@ public class IdxRouteStorage implements IStorage {
 
 	protected RouteNode createNode(Document doc) {
 		RouteNode result = new RouteNode();
-		result.setType(Integer.valueOf(doc.get(NodePtyName.CROSSFLAG))
-				.shortValue());
+		result.setType(Integer.valueOf(doc.get(NodePtyName.CROSSFLAG)).shortValue());
 		int id = Integer.valueOf(doc.get(NodePtyName.OID));
 		Node node = net.getNodes().get(id - 1);
 		result.setId(node.getId());
@@ -104,8 +97,7 @@ public class IdxRouteStorage implements IStorage {
 	protected RouteEdge createEdge(Document doc) {
 		RouteEdge result = new RouteEdge();
 		result.setName(doc.get(EdgePtyName.NAMEC));
-		result.setPoints(MercatorUtil.toPoints(MercatorUtil.toGeometry(doc
-				.get(EdgePtyName.GID), NaviConfig.WGS), false));
+		result.setPoints(MercatorUtil.toPoints(MercatorUtil.toGeometry(doc.get(EdgePtyName.GID), NaviConfig.WGS), false));
 		int id = Integer.valueOf(doc.get(EdgePtyName.OID));
 		Edge edge = net.getEdges().get(id - 1);
 		result.setId(edge.getId());
@@ -122,8 +114,7 @@ public class IdxRouteStorage implements IStorage {
 	protected RouteEdge getRouteEdge(int edgeid) {
 		List<Term> terms = new ArrayList<Term>(1);
 		terms.add(new Term(EdgePtyName.OID, edgeid + ""));
-		List<Document> docs = Searcher.getInstance().search(this.key_edge,
-				terms);
+		List<Document> docs = Searcher.getInstance().search(this.key_edge, terms);
 		return this.createEdge(docs.get(0));
 	}
 
@@ -131,10 +122,8 @@ public class IdxRouteStorage implements IStorage {
 		List<Term> terms = new ArrayList<Term>(roadIds.size());
 		for (Integer id : roadIds)
 			terms.add(new Term(EdgePtyName.OID, id.toString()));
-		List<Document> docs = Searcher.getInstance().search(this.key_edge,
-				terms);
-		Map<Integer, RouteEdge> map = new HashMap<Integer, RouteEdge>(roadIds
-				.size());
+		List<Document> docs = Searcher.getInstance().search(this.key_edge, terms);
+		Map<Integer, RouteEdge> map = new HashMap<Integer, RouteEdge>(roadIds.size());
 		for (Document doc : docs) {
 			RouteEdge edge = this.createEdge(doc);
 			map.put(edge.getId(), edge);
@@ -145,13 +134,11 @@ public class IdxRouteStorage implements IStorage {
 	}
 
 	public List<Integer> queryNodes(Envelope env) {
-		return (List<Integer>) Searcher.getInstance().spatialFilter(
-				this.key_node, env);
+		return (List<Integer>) Searcher.getInstance().spatialFilter(this.key_node, env);
 	}
 
 	public List<Integer> queryEdges(Envelope env) {
-		return (List<Integer>) Searcher.getInstance().spatialFilter(
-				this.key_edge, env);
+		return (List<Integer>) Searcher.getInstance().spatialFilter(this.key_edge, env);
 	}
 
 }

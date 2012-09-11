@@ -22,12 +22,10 @@ import com.vividsolutions.jts.geom.Geometry;
  * POI search depends on city district
  * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class PoiService implements IPoiService {
 	public List<Poi> search(Filter filter, String key) throws Exception {
-		Storage storage = (Storage) StorageFactory.getInstance().getStorage(
-				key, StorageType.POI);
+		Storage storage = (Storage) StorageFactory.getInstance().getStorage(key, StorageType.POI);
 		if (storage == null)
 			throw new Exception("not found poi data!");
 		if (filter == null)
@@ -36,8 +34,7 @@ public class PoiService implements IPoiService {
 			return null;
 		Geometry geo = filter.getGeometry();
 		MercatorUtil.toMercator(geo, true);
-		List<Document> docs = Searcher.getInstance().search(storage.getKey(),
-				filter);
+		List<Document> docs = Searcher.getInstance().search(storage.getKey(), filter);
 		if (docs != null && docs.size() > 0) {
 			List<Poi> pois = new ArrayList<Poi>();
 
@@ -54,14 +51,12 @@ public class PoiService implements IPoiService {
 	}
 
 	public Poi tipInfo(String id, String key) throws Exception {
-		Storage storage = (Storage) StorageFactory.getInstance().getStorage(
-				key, StorageType.POI);
+		Storage storage = (Storage) StorageFactory.getInstance().getStorage(key, StorageType.POI);
 		if (storage == null)
 			throw new Exception("not found poi data!");
 		List<Term> terms = new ArrayList<Term>();
 		terms.add(new Term(PoiPtyName.OID, id));
-		List<Document> docs = Searcher.getInstance().search(storage.getKey(),
-				terms);
+		List<Document> docs = Searcher.getInstance().search(storage.getKey(), terms);
 		if (docs != null && docs.size() > 0) {
 			Poi poi = new Poi();
 			poi.setId(docs.get(0).get(PoiPtyName.OID));
@@ -71,8 +66,8 @@ public class PoiService implements IPoiService {
 			poi.setRemark(docs.get(0).get(PoiPtyName.NAMEP));
 			poi.setAddress(docs.get(0).get(PoiPtyName.ADDRESS));
 			poi.setVertex(MercatorUtil.toPoint(
-					MercatorUtil.toGeometry(docs.get(0).get(PoiPtyName.GID),
-							NaviConfig.WGS).getCoordinate(), false).toString());
+					MercatorUtil.toGeometry(docs.get(0).get(PoiPtyName.GID), NaviConfig.WGS).getCoordinate(), false)
+					.toString());
 
 			return poi;
 		} else {
@@ -81,8 +76,7 @@ public class PoiService implements IPoiService {
 	}
 
 	public String jsonSearch(Filter filter, String key) throws Exception {
-		Storage storage = (Storage) StorageFactory.getInstance().getStorage(
-				key, StorageType.POI);
+		Storage storage = (Storage) StorageFactory.getInstance().getStorage(key, StorageType.POI);
 		if (storage == null)
 			throw new Exception("not found poi data!");
 		if (filter == null)
@@ -91,8 +85,7 @@ public class PoiService implements IPoiService {
 			throw new Exception("not found!");
 		Geometry geo = filter.getGeometry();
 		MercatorUtil.toMercator(geo, true);
-		List<Document> docs = Searcher.getInstance().search(storage.getKey(),
-				filter);
+		List<Document> docs = Searcher.getInstance().search(storage.getKey(), filter);
 		if (docs != null && docs.size() > 0) {
 			// geometry intersection
 			int count = 1;
@@ -101,8 +94,7 @@ public class PoiService implements IPoiService {
 			sb.append("[");
 			for (Iterator<Document> i = docs.iterator(); i.hasNext();) {
 				Document doc = i.next();
-				Geometry g = MercatorUtil.toGeometry(doc.get(PoiPtyName.GID),
-						NaviConfig.WGS);
+				Geometry g = MercatorUtil.toGeometry(doc.get(PoiPtyName.GID), NaviConfig.WGS);
 				if ((geo != null && geo.intersects(g)) || (geo == null)) {
 					poi.setId(doc.get(PoiPtyName.OID));
 					poi.setName(doc.get(PoiPtyName.NAMEC));
@@ -110,8 +102,7 @@ public class PoiService implements IPoiService {
 					poi.setPhone(doc.get(PoiPtyName.TEL));
 					poi.setRemark(doc.get(PoiPtyName.NAMEP));
 					poi.setAddress(doc.get(PoiPtyName.ADDRESS));
-					poi.setVertex(MercatorUtil
-							.toPoint(g.getCoordinate(), false).toString());
+					poi.setVertex(MercatorUtil.toPoint(g.getCoordinate(), false).toString());
 
 					sb.append(poi.toString());
 					sb.append(",");
@@ -128,8 +119,7 @@ public class PoiService implements IPoiService {
 	}
 
 	private void add(List<Poi> pois, Document doc, Geometry geo) {
-		Geometry g = MercatorUtil.toGeometry(doc.get(PoiPtyName.GID),
-				NaviConfig.WGS);
+		Geometry g = MercatorUtil.toGeometry(doc.get(PoiPtyName.GID), NaviConfig.WGS);
 		if ((geo != null && geo.intersects(g)) || (geo == null)) {
 			Poi poi = new Poi();
 			poi.setId(doc.get(PoiPtyName.OID));
@@ -138,8 +128,7 @@ public class PoiService implements IPoiService {
 			poi.setPhone(doc.get(PoiPtyName.TEL));
 			poi.setRemark(doc.get(PoiPtyName.NAMEP));
 			poi.setAddress(doc.get(PoiPtyName.ADDRESS));
-			poi.setVertex(MercatorUtil.toPoint(g.getCoordinate(), false)
-					.toString());
+			poi.setVertex(MercatorUtil.toPoint(g.getCoordinate(), false).toString());
 			pois.add(poi);
 		}
 	}

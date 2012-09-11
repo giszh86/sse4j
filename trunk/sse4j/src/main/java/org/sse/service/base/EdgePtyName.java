@@ -3,9 +3,7 @@ package org.sse.service.base;
 import org.sse.squery.PtyName;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class EdgePtyName extends PtyName {
 	public static String PID = "PID"; // parent id

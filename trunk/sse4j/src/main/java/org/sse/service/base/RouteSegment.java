@@ -9,7 +9,6 @@ import org.sse.geo.Point;
  * Route(Trip) Segment
  * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class RouteSegment {
 	private String name;
@@ -37,10 +36,8 @@ public class RouteSegment {
 	}
 
 	public boolean equalsIgnore(RouteSegment seg) {
-		boolean b1 = name.equalsIgnoreCase(seg.getName())
-				&& attrib == seg.getAttrib() && kind == seg.getKind();
-		boolean b2 = name.equalsIgnoreCase(seg.getName())
-				&& kind == seg.getKind()
+		boolean b1 = name.equalsIgnoreCase(seg.getName()) && attrib == seg.getAttrib() && kind == seg.getKind();
+		boolean b2 = name.equalsIgnoreCase(seg.getName()) && kind == seg.getKind()
 				&& (seg.getAttrib() == EdgeType.RD_CONN || attrib == EdgeType.RD_CONN);
 		return b1 || b2;
 	}
@@ -99,7 +96,6 @@ public class RouteSegment {
 	}
 
 	/**
-	 * 
 	 * @param length
 	 *            长度[米]
 	 */
@@ -112,7 +108,6 @@ public class RouteSegment {
 	}
 
 	/**
-	 * 
 	 * @param speed
 	 *            车速[公里/小时]
 	 */
@@ -125,7 +120,6 @@ public class RouteSegment {
 	}
 
 	/**
-	 * 
 	 * @param cost
 	 *            花费[秒]
 	 */
@@ -154,7 +148,6 @@ public class RouteSegment {
 	}
 
 	/**
-	 * 
 	 * @param circleNum
 	 *            环岛出口序号
 	 */
@@ -167,7 +160,6 @@ public class RouteSegment {
 	}
 
 	/**
-	 * 
 	 * @param lightFlag
 	 *            道路终点红绿灯标识
 	 */

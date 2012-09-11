@@ -5,9 +5,7 @@ import java.io.Serializable;
 import com.google.gson.Gson;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class WSFilterPoi implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -37,7 +35,7 @@ public class WSFilterPoi implements Serializable {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	public String toString() {
 		return new Gson().toJson(this);
 	}

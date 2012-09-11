@@ -15,24 +15,20 @@ import org.sse.util.MercatorUtil;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class DistStorageBuilder implements IStorageBuilder {
 
 	public IStorage create(Map<String, String> map) throws Exception {
 		STree tree = new STree(false);
 		IdxReader reader = new IdxReader(map.get("item-path"));
-		Map<String, Geometry> geos = new HashMap<String, Geometry>(reader
-				.getReader(0).numDocs());
+		Map<String, Geometry> geos = new HashMap<String, Geometry>(reader.getReader(0).numDocs());
 
 		// TODO Version=3.1 TermDocs Bug
 		TermDocs docs = reader.getReader(0).termDocs(null);
 		while (docs.next()) {
 			Document doc = reader.getReader(0).document(docs.doc());
-			Geometry g = MercatorUtil.toGeometry(doc.get(DistPtyName.GID),
-					NaviConfig.WGS);
+			Geometry g = MercatorUtil.toGeometry(doc.get(DistPtyName.GID), NaviConfig.WGS);
 			tree.insert(g.getEnvelopeInternal(), doc.get(DistPtyName.OID));
 			geos.put(doc.get(DistPtyName.OID), g);
 		}

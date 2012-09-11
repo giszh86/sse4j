@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.Vector;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public strictfp class Google {
 	private static List<Double> Ac;
@@ -43,8 +41,7 @@ public strictfp class Google {
 		double d = Zc.get(zoom);
 		double e = Math.round(d + lon * Bc.get(zoom));
 		double f = minmax(Math.sin((Math.PI / 180.0) * lat), -0.9999, 0.9999);
-		double g = Math.round(d + 0.5 * Math.log((1 + f) / (1 - f))
-				* -Cc.get(zoom));
+		double g = Math.round(d + 0.5 * Math.log((1 + f) / (1 - f)) * -Cc.get(zoom));
 		return new EarthPos(e, g);
 	}
 
@@ -57,14 +54,12 @@ public strictfp class Google {
 		double e = Zc.get(zoom);
 		double f = (x - e) / Bc.get(zoom);
 		double g = (y - e) / -Cc.get(zoom);
-		double h = (180.0 / Math.PI)
-				* (2 * Math.atan(Math.exp(g)) - 0.5 * Math.PI);
+		double h = (180.0 / Math.PI) * (2 * Math.atan(Math.exp(g)) - 0.5 * Math.PI);
 		return new EarthPos(f, h);
 	}
 
 	public static EarthPos degreeToGoog(double lon, double lat) {
-		double a = Math.log(Math.tan((90 + lat) * Math.PI / 360))
-				/ (Math.PI / 180);
+		double a = Math.log(Math.tan((90 + lat) * Math.PI / 360)) / (Math.PI / 180);
 		double custLat = a * 20037508.342789 / 180;
 		double custLon = lon;
 		custLon = custLon * 20037508.342789 / 180;
@@ -75,9 +70,7 @@ public strictfp class Google {
 		double lat_deg, lon_deg;
 		lat_deg = (y / 20037508.342789) * 180;
 		lon_deg = (x / 20037508.342789) * 180;
-		lat_deg = 180
-				/ Math.PI
-				* (2 * Math.atan(Math.exp(lat_deg * Math.PI / 180)) - Math.PI / 2);
+		lat_deg = 180 / Math.PI * (2 * Math.atan(Math.exp(lat_deg * Math.PI / 180)) - Math.PI / 2);
 		return new EarthPos(lon_deg, lat_deg);
 	}
 

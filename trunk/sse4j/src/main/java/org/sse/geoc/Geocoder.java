@@ -23,15 +23,12 @@ import com.vividsolutions.jts.operation.distance.DistanceOp;
  * geocoding depends on province district
  * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class Geocoder {
 	private double buf = 100; // meter
 
-	public org.sse.geo.Point geocoding(String key, String keyword)
-			throws Exception {
-		Storage storage = (Storage) StorageFactory.getInstance().getStorage(
-				key, StorageType.POI);
+	public org.sse.geo.Point geocoding(String key, String keyword) throws Exception {
+		Storage storage = (Storage) StorageFactory.getInstance().getStorage(key, StorageType.POI);
 		List<Property> pty = new ArrayList<Property>();
 		pty.add(new Property(PoiPtyName.ADDRESS, keyword));
 		List<Document> docs = Searcher.getInstance().search(storage.getKey(),
@@ -40,13 +37,11 @@ public class Geocoder {
 			throw new Exception("not found!");
 
 		System.out.println(docs.get(0).get(PoiPtyName.ADDRESS) + "-" + keyword);
-		return MercatorUtil.toPoint(MercatorUtil.toGeometry(
-				docs.get(0).get(PoiPtyName.GID), NaviConfig.WGS)
+		return MercatorUtil.toPoint(MercatorUtil.toGeometry(docs.get(0).get(PoiPtyName.GID), NaviConfig.WGS)
 				.getCoordinate(), false);
 	}
 
 	/**
-	 * 
 	 * @param key
 	 * @param point
 	 *            [WGS84]
@@ -54,21 +49,18 @@ public class Geocoder {
 	 * @throws Exception
 	 */
 	public String reverseGeocoding(String key, Point point) throws Exception {
-		Storage storage = (Storage) StorageFactory.getInstance().getStorage(
-				key, StorageType.POI);
+		Storage storage = (Storage) StorageFactory.getInstance().getStorage(key, StorageType.POI);
 		MercatorUtil.toMercator(point, true);
 		Filter filter = new Filter();
 		filter.setGeometry(point.buffer(buf));
-		List<Document> docs = Searcher.getInstance().search(storage.getKey(),
-				filter);
+		List<Document> docs = Searcher.getInstance().search(storage.getKey(), filter);
 		if (docs == null || docs.size() == 0)
 			throw new Exception("not found!");
 
 		double min = Double.MAX_VALUE;
 		Document doc = null;
 		for (Document i : docs) {
-			double dis = DistanceOp.distance(point, MercatorUtil.toGeometry(i
-					.get(PoiPtyName.GID), NaviConfig.WGS));
+			double dis = DistanceOp.distance(point, MercatorUtil.toGeometry(i.get(PoiPtyName.GID), NaviConfig.WGS));
 			if (dis < min) {
 				min = dis;
 				doc = i;

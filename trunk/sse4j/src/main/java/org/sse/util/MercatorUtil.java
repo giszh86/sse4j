@@ -9,9 +9,7 @@ import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class MercatorUtil {
 

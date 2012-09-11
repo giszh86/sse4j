@@ -3,9 +3,7 @@ package org.sse.squery;
 import org.sse.io.Enums.OccurType;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class Property {
 	private String field;

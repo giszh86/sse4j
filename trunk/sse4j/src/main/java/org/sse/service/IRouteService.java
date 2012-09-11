@@ -4,9 +4,7 @@ import org.sse.service.base.RouteDataSet;
 import org.sse.service.base.Router;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public interface IRouteService {
 	/**
@@ -21,7 +19,6 @@ public interface IRouteService {
 	public RouteDataSet plan(Router router, String key) throws Exception;
 
 	/**
-	 * 
 	 * @param buffer
 	 *            unit(meter)
 	 */

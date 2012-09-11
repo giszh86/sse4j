@@ -6,7 +6,6 @@ import org.sse.util.Maths;
  * Edge
  * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class Edge extends BaseEdge {
 	private static final long serialVersionUID = 1L;
@@ -21,7 +20,6 @@ public class Edge extends BaseEdge {
 	}
 
 	/**
-	 * 
 	 * @param kind
 	 *            道路等级
 	 *            <p>
@@ -49,7 +47,6 @@ public class Edge extends BaseEdge {
 	}
 
 	/**
-	 * 
 	 * @param type
 	 *            道路形态及特性
 	 *            <p>
@@ -84,7 +81,6 @@ public class Edge extends BaseEdge {
 	}
 
 	/**
-	 * 
 	 * @param toll
 	 *            收费 0:不收 1:收
 	 */
@@ -97,7 +93,6 @@ public class Edge extends BaseEdge {
 	}
 
 	/**
-	 * 
 	 * @param length
 	 *            路段长度[米]
 	 */

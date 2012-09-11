@@ -7,9 +7,7 @@ import org.sse.geo.IndexPoint;
 import org.sse.geo.Point;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public strictfp class Maths {
 
@@ -33,8 +31,7 @@ public strictfp class Maths {
 			return 0;
 		double dis = 0;
 		for (int i = 0; i < pts.size() - 1; i++) {
-			dis += getDistance(pts.get(i).x, pts.get(i).y, pts.get(i + 1).x,
-					pts.get(i + 1).y);
+			dis += getDistance(pts.get(i).x, pts.get(i).y, pts.get(i + 1).x, pts.get(i + 1).y);
 		}
 		return (int) dis;
 	}
@@ -82,8 +79,8 @@ public strictfp class Maths {
 				}
 			} else {
 				minPoint = getVertical(coords.get(j), coords.get(j + 1), point);
-				distance = (point.x - minPoint.x) * (point.x - minPoint.x)
-						+ (point.y - minPoint.y) * (point.y - minPoint.y);
+				distance = (point.x - minPoint.x) * (point.x - minPoint.x) + (point.y - minPoint.y)
+						* (point.y - minPoint.y);
 				idx = j;
 			}
 

@@ -7,9 +7,7 @@ import org.sse.io.Enums.QueryType;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class Filter {
 	private Geometry geometry;
@@ -32,7 +30,6 @@ public class Filter {
 	}
 
 	/**
-	 * 
 	 * @param geometry
 	 *            [WGS84]
 	 */

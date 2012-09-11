@@ -18,15 +18,12 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.NIOFSDirectory;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class IdxReader {
 	private IndexSearcher[] mis = null;
 
 	/**
-	 * 
 	 * @param idxPath
 	 *            support multi-paths separated by ','
 	 * @throws IOException
@@ -36,7 +33,6 @@ public class IdxReader {
 	}
 
 	/**
-	 * 
 	 * @param idxPaths
 	 *            lucene path
 	 * @param threads
@@ -51,8 +47,7 @@ public class IdxReader {
 		for (int j = 0; j < threads; j++) {
 			IndexReader[] readers = new IndexReader[idxPaths.length];
 			for (int i = 0; i < idxPaths.length; i++) {
-				readers[i] = IndexReader.open(NIOFSDirectory.open(new File(
-						idxPaths[i])));
+				readers[i] = IndexReader.open(NIOFSDirectory.open(new File(idxPaths[i])));
 			}
 			mis[j] = new IndexSearcher(new MultiReader(readers, false));
 		}
@@ -68,7 +63,6 @@ public class IdxReader {
 	// }
 
 	/**
-	 * 
 	 * @param index
 	 * @return MultiReader object
 	 */
@@ -90,8 +84,7 @@ public class IdxReader {
 	 * <p>
 	 * TermQuery:条件查询
 	 * <p>
-	 * MultiTermQuery:同一关键字多字段查询 MultiFieldQueryParser.parse("我",new String[]
-	 * {"title","content"},analyzer)
+	 * MultiTermQuery:同一关键字多字段查询 MultiFieldQueryParser.parse("我",new String[] {"title","content"},analyzer)
 	 * <p>
 	 * WildcardQuery:语义查询（通配符查询）new WildcardQuery(new Term("sender","*davy*"))
 	 * <p>

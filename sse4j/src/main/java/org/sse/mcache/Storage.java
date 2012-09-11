@@ -1,9 +1,7 @@
 package org.sse.mcache;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class Storage implements IStorage {
 	private String key;

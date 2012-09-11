@@ -1,9 +1,7 @@
 package org.sse.service.base;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class EdgeType {
 	public static final int RD_DUAL = 1; // 双线化道路

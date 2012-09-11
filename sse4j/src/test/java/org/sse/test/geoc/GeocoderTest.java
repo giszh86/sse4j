@@ -22,22 +22,17 @@ public class GeocoderTest {
 		Coordinate c1 = new Coordinate(116.32, 39.97);
 		String addr = "中关村大街20号";
 		Date date1 = new Date();
-		String addr1 = IdxParser.getInstance().tokenize(addr,
-				AnalyzerType.SmartCN);
-		System.out.println("tokenize:" + addr1
-				+ ((new Date()).getTime() - date1.getTime()));
+		String addr1 = IdxParser.getInstance().tokenize(addr, AnalyzerType.SmartCN);
+		System.out.println("tokenize:" + addr1 + ((new Date()).getTime() - date1.getTime()));
 
 		Geocoder matcher = new Geocoder();
 		date1 = new Date();
 		System.out.println(matcher.geocoding("110000", addr));
-		System.out.println("geocoding:"
-				+ ((new Date()).getTime() - date1.getTime()));
+		System.out.println("geocoding:" + ((new Date()).getTime() - date1.getTime()));
 
 		date1 = new Date();
-		System.out.println(matcher.reverseGeocoding("110000", gf
-				.createPoint(c1)));
-		System.out.println("reverse geocoding:"
-				+ ((new Date()).getTime() - date1.getTime()));
+		System.out.println(matcher.reverseGeocoding("110000", gf.createPoint(c1)));
+		System.out.println("reverse geocoding:" + ((new Date()).getTime() - date1.getTime()));
 
 		// while (true) {
 		// es.execute(new GeocoderRunner());
@@ -53,8 +48,7 @@ public class GeocoderTest {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			System.out.println("geocoding:"
-					+ ((new Date()).getTime() - date1.getTime()));
+			System.out.println("geocoding:" + ((new Date()).getTime() - date1.getTime()));
 		}
 	}
 }

@@ -26,7 +26,6 @@ import com.vividsolutions.jts.geom.Geometry;
  * POI depends on city district
  * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class Searching {
 	/**
@@ -40,17 +39,14 @@ public class Searching {
 		try {
 			if (wsFilter.getPreference().trim().isEmpty())
 				wsFilter.setPreference("POI");
-			StorageType type = Enum.valueOf(StorageType.class, wsFilter
-					.getPreference());
+			StorageType type = Enum.valueOf(StorageType.class, wsFilter.getPreference());
 			String key = wsFilter.getKey();
 			if (key == null || key.trim().isEmpty())
 				key = NaviConfig.BASE_KEY;
-			IStorage storage = StorageFactory.getInstance().getStorage(key,
-					type);
+			IStorage storage = StorageFactory.getInstance().getStorage(key, type);
 
 			Filter filter = WSBuilder.filter(wsFilter);
-			List<Document> docs = Searcher.getInstance().search(
-					storage.getKey(), filter);
+			List<Document> docs = Searcher.getInstance().search(storage.getKey(), filter);
 			if (docs == null || docs.size() == 0)
 				throw new Exception("not found!");
 
@@ -60,8 +56,7 @@ public class Searching {
 			sb.append("[");
 			for (Iterator<Document> i = docs.iterator(); i.hasNext();) {
 				Document doc = i.next();
-				Geometry g = MercatorUtil.toGeometry(doc.get(PtyName.GID),
-						NaviConfig.WGS);
+				Geometry g = MercatorUtil.toGeometry(doc.get(PtyName.GID), NaviConfig.WGS);
 				if ((geo != null && geo.intersects(g)) || (geo == null)) {
 					sb.append("{");
 					sb.append("\"id\":\"" + doc.get(PtyName.OID) + "\",");
@@ -100,8 +95,7 @@ public class Searching {
 		WSResult result = new WSResult();
 		try {
 			IPoiService ps = ServiceFactory.getPoiService();
-			result.setJsonString(ps.tipInfo(poi.getId(), poi.getKey())
-					.toString());
+			result.setJsonString(ps.tipInfo(poi.getId(), poi.getKey()).toString());
 			result.setResultCode(1);
 		} catch (Exception e) {
 			result.setResultCode(0);

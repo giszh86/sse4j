@@ -1,9 +1,7 @@
 package org.sse.service.base;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class LinkedNode {
 	public int id;

@@ -6,7 +6,6 @@ import java.io.Serializable;
  * BaseEdge
  * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class BaseEdge implements Serializable, Cloneable {
 	private static final long serialVersionUID = 1L;
@@ -22,7 +21,6 @@ public class BaseEdge implements Serializable, Cloneable {
 	}
 
 	/**
-	 * 
 	 * @param id
 	 *            索引编号，1开始连续
 	 */
@@ -51,7 +49,6 @@ public class BaseEdge implements Serializable, Cloneable {
 	}
 
 	/**
-	 * 
 	 * @param direction
 	 *            交通流方向 1:默认 2:与矢量化同向 3:与矢量化反向
 	 */
@@ -64,8 +61,6 @@ public class BaseEdge implements Serializable, Cloneable {
 	}
 
 	/**
-	 * 
-	 * 
 	 * @param gn
 	 *            权重
 	 */

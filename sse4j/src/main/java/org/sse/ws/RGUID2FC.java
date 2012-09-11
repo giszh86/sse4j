@@ -15,9 +15,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class RGUID2FC {
 	public FeatureCollection to(String dataset) {

@@ -3,9 +3,7 @@ package org.sse.ws.base;
 import java.io.Serializable;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class WSPointF implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -37,13 +35,12 @@ public class WSPointF implements Serializable {
 	public void setY(float y) {
 		this.y = y;
 	}
-	
+
 	public boolean isEmpty() {
 		return (this == null || (this.x == 0 && this.y == 0));
 	}
 
 	public String toString() {
-		return Math.round(x * 1.0e6) / 1.0e6 + "," + Math.round(y * 1.0e6)
-				/ 1.0e6;
+		return Math.round(x * 1.0e6) / 1.0e6 + "," + Math.round(y * 1.0e6) / 1.0e6;
 	}
 }

@@ -30,9 +30,7 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class IdxParser {
 	private Analyzer scAnalyzer;
@@ -74,8 +72,7 @@ public class IdxParser {
 	}
 
 	public String tokenize(String word, AnalyzerType type) throws IOException {
-		TokenStream ts = getAnalyzer(type).tokenStream("word",
-				new StringReader(word));
+		TokenStream ts = getAnalyzer(type).tokenStream("word", new StringReader(word));
 		CharTermAttribute termAtt = ts.getAttribute(CharTermAttribute.class);
 		StringBuffer sb = new StringBuffer();
 		while (ts.incrementToken()) {
@@ -85,15 +82,13 @@ public class IdxParser {
 		return sb.toString().trim();
 	}
 
-	public Query createQuery(QueryType qtype, Analyzer analyzer,
-			List<Property> terms) {
+	public Query createQuery(QueryType qtype, Analyzer analyzer, List<Property> terms) {
 		if (terms == null)
 			return null;
 
 		List<String> texts = new ArrayList<String>(terms.size());
 		List<String> fields = new ArrayList<String>(terms.size());
-		List<BooleanClause.Occur> flags = new ArrayList<BooleanClause.Occur>(
-				terms.size());
+		List<BooleanClause.Occur> flags = new ArrayList<BooleanClause.Occur>(terms.size());
 		for (Iterator<Property> i = terms.iterator(); i.hasNext();) {
 			Property term = i.next();
 			if (term != null) {
@@ -113,11 +108,9 @@ public class IdxParser {
 			return query;
 		} else {
 			try {
-				return QueryParserUtil.parse(
-						texts.toArray(new String[texts.size()]),
+				return QueryParserUtil.parse(texts.toArray(new String[texts.size()]),
 						fields.toArray(new String[fields.size()]),
-						flags.toArray(new BooleanClause.Occur[flags.size()]),
-						analyzer);
+						flags.toArray(new BooleanClause.Occur[flags.size()]), analyzer);
 			} catch (QueryNodeException e) {
 				return null;
 			}
@@ -133,12 +126,10 @@ public class IdxParser {
 	}
 
 	public static void spatialQuery(Envelope envelope, BooleanQuery bQuery) {
-		Query minxQ = new TermRangeQuery(PtyName.CENX,
-				String.valueOf((int) envelope.getMinX()),
-				String.valueOf((int) envelope.getMaxX()), true, true);
-		Query minyQ = new TermRangeQuery(PtyName.CENY,
-				String.valueOf((int) envelope.getMinY()),
-				String.valueOf((int) envelope.getMaxY()), true, true);
+		Query minxQ = new TermRangeQuery(PtyName.CENX, String.valueOf((int) envelope.getMinX()), String.valueOf((int) envelope
+				.getMaxX()), true, true);
+		Query minyQ = new TermRangeQuery(PtyName.CENY, String.valueOf((int) envelope.getMinY()), String.valueOf((int) envelope
+				.getMaxY()), true, true);
 		bQuery.add(minxQ, BooleanClause.Occur.MUST);
 		bQuery.add(minyQ, BooleanClause.Occur.MUST);
 	}

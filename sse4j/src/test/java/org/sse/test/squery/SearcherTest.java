@@ -33,12 +33,10 @@ public class SearcherTest {
 		if (Searcher.getInstance().check(path, path, false, false)) {
 			Date date1 = new Date();
 			docs = Searcher.getInstance().search(path, filter);
-			System.out.println("c:"
-					+ ((new Date()).getTime() - date1.getTime()) + " s:"
-					+ docs.size());
+			System.out.println("c:" + ((new Date()).getTime() - date1.getTime()) + " s:" + docs.size());
 			for (Document doc : docs) {
-				System.out.println(doc.get("ID") + doc.get("NAMEC") + "--"
-						+ doc.get("ADDRESS") + "--" + doc.get("KIND"));
+				System.out.println(doc.get("ID") + doc.get("NAMEC") + "--" + doc.get("ADDRESS") + "--"
+						+ doc.get("KIND"));
 			}
 		}
 

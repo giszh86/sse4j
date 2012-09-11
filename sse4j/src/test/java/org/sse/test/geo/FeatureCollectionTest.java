@@ -14,7 +14,7 @@ public class FeatureCollectionTest {
 		Feature f = new Feature(s);
 		f.setAttribute("Name", "aaaaaaaaaaaa");
 		f.setAttribute("Turn", "bbbbbbbbbbbb");
-		
+
 		fc.add(f);
 	}
 

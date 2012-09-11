@@ -6,9 +6,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class SECResult {
 	private List<Item> links = new LinkedList<Item>();

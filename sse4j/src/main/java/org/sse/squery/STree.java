@@ -6,9 +6,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.index.strtree.STRtree;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class STree {
 	private STRtree sidx = null;

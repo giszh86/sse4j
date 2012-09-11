@@ -7,13 +7,11 @@ import java.util.ListIterator;
 import org.sse.util.Maths;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class AStar {
 	int opensize = 1024;
-	
+
 	/**
 	 * plan shortest or fastest path by RouterPreference
 	 * 
@@ -29,8 +27,8 @@ public class AStar {
 	 *            Shortest or Fastest or Cheapest
 	 * @return LinkedNode
 	 */
-	public LinkedNode find(int startNodeId, int endNodeId, List<Node> nodes,
-			List<Edge> edges, float coef, RouterPreference pf) {
+	public LinkedNode find(int startNodeId, int endNodeId, List<Node> nodes, List<Edge> edges, float coef,
+			RouterPreference pf) {
 		LinkedNode result = null;
 		LinkedList<LinkedNode> open = new LinkedList<LinkedNode>();
 		LinkedNode[] close = new LinkedNode[nodes.size()];
@@ -48,13 +46,10 @@ public class AStar {
 			}
 
 			for (int i = 0; i < nodes.get(cur.id - 1).getEdgeIds().length; i++) {
-				LinkedNode next = getNextNode(cur, edges.get(nodes.get(
-						cur.id - 1).getEdgeIds()[i] - 1), pf);
+				LinkedNode next = getNextNode(cur, edges.get(nodes.get(cur.id - 1).getEdgeIds()[i] - 1), pf);
 				if (next == null)
 					continue;
-				next.fn = next.gn
-						+ hn(nodes.get(next.id - 1), nodes.get(endNodeId - 1),
-								coef);
+				next.fn = next.gn + hn(nodes.get(next.id - 1), nodes.get(endNodeId - 1), coef);
 
 				int idxo = open.indexOf(next);
 				if (idxo == -1 && close[next.id - 1] == null) {
@@ -83,8 +78,7 @@ public class AStar {
 	}
 
 	int hn(Node from, Node to, float coef) {
-		return (int) (Maths.getDistance(from.getX(), from.getY(), to.getX(), to
-				.getY()) * coef);
+		return (int) (Maths.getDistance(from.getX(), from.getY(), to.getX(), to.getY()) * coef);
 	}
 
 	LinkedNode getNextNode(LinkedNode cur, Edge edge, RouterPreference pf) {

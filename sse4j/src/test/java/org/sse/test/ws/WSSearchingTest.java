@@ -19,7 +19,7 @@ public class WSSearchingTest {
 		WSFilter wsFilter = new WSFilter();
 		wsFilter.setKey("110000");
 		wsFilter.setGeometryWKT("POINT (116.32f 39.97f)");
-		wsFilter.setDistance(5000);
+		wsFilter.setDistance(500);
 		wsFilter.setKeyword("中关村");
 		wsFilter.setPreference("NET");
 		WSResult result = new Searching().search(wsFilter);

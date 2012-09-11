@@ -11,12 +11,10 @@ public class WordSplitTest {
 		Date date1 = new Date();
 
 		String addr = IdxParser.getInstance().tokenize(info, AnalyzerType.IK);
-		System.out.println(addr + "----IK--"
-				+ ((new Date()).getTime() - date1.getTime()));
+		System.out.println(addr + "----IK--" + ((new Date()).getTime() - date1.getTime()));
 
 		addr = IdxParser.getInstance().tokenize(info, AnalyzerType.SmartCN);
-		System.out.println(addr + "----SmartCN---"
-				+ ((new Date()).getTime() - date1.getTime()));
+		System.out.println(addr + "----SmartCN---" + ((new Date()).getTime() - date1.getTime()));
 
 	}
 

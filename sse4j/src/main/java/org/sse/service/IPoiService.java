@@ -6,9 +6,7 @@ import org.sse.service.base.Poi;
 import org.sse.squery.Filter;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public interface IPoiService {
 	/**

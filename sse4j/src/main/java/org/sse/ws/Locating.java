@@ -13,7 +13,6 @@ import com.google.gson.Gson;
  * geocoding depends on province district
  * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class Locating {
 	/**
@@ -26,8 +25,7 @@ public class Locating {
 		WSResult result = new WSResult();
 		try {
 			result.setResultCode(1);
-			result.setJsonString(new Gson().toJson(new Geocoder().geocoding(
-					geoc.getKey(), geoc.getAddress())));
+			result.setJsonString(new Gson().toJson(new Geocoder().geocoding(geoc.getKey(), geoc.getAddress())));
 		} catch (Exception e) {
 			result.setResultCode(0);
 			result.setFaultString(e.getMessage());
@@ -45,12 +43,9 @@ public class Locating {
 	public WSResult reverseGeocoding(WSPointF point) {
 		WSResult result = new WSResult();
 		try {
-			String key = new Matcher().districtMatch(WSBuilder.toPt(point))
-					.getProvinceCode();
+			String key = new Matcher().districtMatch(WSBuilder.toPt(point)).getProvinceCode();
 			result.setResultCode(1);
-			result.setJsonString("{\"geoc\":\""
-					+ new Geocoder().reverseGeocoding(key, WSBuilder
-							.toPt(point)) + "\"}");
+			result.setJsonString("{\"geoc\":\"" + new Geocoder().reverseGeocoding(key, WSBuilder.toPt(point)) + "\"}");
 		} catch (Exception e) {
 			result.setResultCode(0);
 			result.setFaultString(e.getMessage());

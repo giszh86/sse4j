@@ -3,9 +3,7 @@ package org.sse.geo;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class Feature {
 	private Object[] attributes;

@@ -3,9 +3,7 @@ package org.sse.geoc;
 import java.io.Serializable;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class District implements Serializable {
 	private static final long serialVersionUID = 1L;

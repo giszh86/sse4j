@@ -4,7 +4,6 @@ package org.sse.service.base;
  * Traffic Control
  * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class TrafficCtl {
 	private int roadId = -1;
@@ -16,7 +15,6 @@ public class TrafficCtl {
 	}
 
 	/**
-	 * 
 	 * @param roadId
 	 *            路段ID,与Edge ID相同
 	 */
@@ -29,7 +27,6 @@ public class TrafficCtl {
 	}
 
 	/**
-	 * 
 	 * @param forbidDirect
 	 *            禁行方向 0:双向 1:顺向 2:反向
 	 */
@@ -42,7 +39,6 @@ public class TrafficCtl {
 	}
 
 	/**
-	 * 
 	 * @param speed
 	 *            路段车速[公里/小时]
 	 */

@@ -6,9 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 class Tip {
 	static class TipPoiBase implements Serializable, Cloneable {
@@ -50,10 +48,12 @@ class Tip {
 		private static transient int limitCount = 25;
 		private static transient int width = 4;
 		private static transient int height = 4;
-		public static void setLimitCount(int count){
+
+		public static void setLimitCount(int count) {
 			limitCount = count;
 		}
-		public static void setBufferSize(int w,int h){
+
+		public static void setBufferSize(int w, int h) {
 			width = w;
 			height = h;
 		}
@@ -89,8 +89,8 @@ class Tip {
 
 		public boolean equals(Object pt) {
 			if (pt instanceof TipPoi)
-				return (Math.abs(this.getX() - ((TipPoi) pt).getX()) <= width && Math
-						.abs(this.getY() - ((TipPoi) pt).getY()) <= height);
+				return (Math.abs(this.getX() - ((TipPoi) pt).getX()) <= width && Math.abs(this.getY()
+						- ((TipPoi) pt).getY()) <= height);
 			return false;
 		}
 	}

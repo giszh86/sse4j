@@ -10,9 +10,7 @@ import org.sse.mcache.IStorage;
 import org.sse.mcache.StorageBuilderer;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class StorageFactory {
 
@@ -69,15 +67,13 @@ public class StorageFactory {
 		return (new Thread(type.name()) {
 			public void run() {
 				Map<String, Map<String, String>> maps;
-				maps = NaviConfig.getMap(type.name().toLowerCase() + "es", type
-						.name().toLowerCase());
+				maps = NaviConfig.getMap(type.name().toLowerCase() + "es", type.name().toLowerCase());
 
 				for (Iterator<String> i = maps.keySet().iterator(); i.hasNext();) {
 					String key = i.next();
 					if (!storages.get(type).containsKey(key)) {
 						try {
-							IStorage stg = StorageBuilderer.Find(type).create(
-									maps.get(key));
+							IStorage stg = StorageBuilderer.Find(type).create(maps.get(key));
 							storages.get(type).put(key, stg);
 						} catch (Exception e) {
 							e.printStackTrace();

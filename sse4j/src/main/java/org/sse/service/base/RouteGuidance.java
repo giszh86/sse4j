@@ -9,7 +9,6 @@ import org.sse.geo.Point;
  * Route(Trip) Guidance
  * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class RouteGuidance {
 	private String icon;
@@ -38,7 +37,6 @@ public class RouteGuidance {
 	}
 
 	/**
-	 * 
 	 * @param icon
 	 *            转向图标
 	 */
@@ -67,7 +65,6 @@ public class RouteGuidance {
 	}
 
 	/**
-	 * 
 	 * @param turn
 	 *            转向描述
 	 */
@@ -80,7 +77,6 @@ public class RouteGuidance {
 	}
 
 	/**
-	 * 
 	 * @param length
 	 *            长度[米]
 	 */
@@ -93,7 +89,6 @@ public class RouteGuidance {
 	}
 
 	/**
-	 * 
 	 * @param cost
 	 *            时间[秒]
 	 */
@@ -120,7 +115,7 @@ public class RouteGuidance {
 	// public String getVertexes() {
 	// return vertexes;
 	// }
-	//	
+	//
 	// public void setVertexes(String vertexes) {
 	// this.vertexes = vertexes;
 	// }

@@ -5,9 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class FeatureCollection {
 	private Schema schema;

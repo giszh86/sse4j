@@ -1,9 +1,7 @@
 package org.sse.geo;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class IndexPoint {
 	public int idx;

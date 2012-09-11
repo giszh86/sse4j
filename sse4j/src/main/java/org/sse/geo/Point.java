@@ -3,9 +3,7 @@ package org.sse.geo;
 import java.io.Serializable;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class Point implements Serializable, Cloneable {
 	private static final long serialVersionUID = 1L;

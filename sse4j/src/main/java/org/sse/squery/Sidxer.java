@@ -17,9 +17,7 @@ import org.sse.util.MercatorUtil;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 class Sidxer {
 	STree tree;
@@ -42,14 +40,12 @@ class Sidxer {
 		while (docs.next()) {
 			Document doc = reader.getReader(0).document(docs.doc());
 			if (tree == null) {
-				boolean isPt = MercatorUtil
-						.toGeometry(doc.get(PtyName.GID), wgs)
-						.getGeometryType().equalsIgnoreCase("Point");
+				boolean isPt = MercatorUtil.toGeometry(doc.get(PtyName.GID), wgs).getGeometryType()
+						.equalsIgnoreCase("Point");
 				tree = new STree(isPt);
 			}
 			Sidx sidx = new Sidx();
-			Envelope env = MercatorUtil.toGeometry(doc.get(PtyName.GID), wgs)
-					.getEnvelopeInternal();
+			Envelope env = MercatorUtil.toGeometry(doc.get(PtyName.GID), wgs).getEnvelopeInternal();
 			sidx.setX1((float) env.getMinX());
 			sidx.setY1((float) env.getMinY());
 			sidx.setX2((float) env.getMaxX());
@@ -81,12 +77,10 @@ class Sidxer {
 		for (Iterator<Sidx> i = lsidx.iterator(); i.hasNext();) {
 			Sidx key = i.next();
 			if (tree == null) {
-				boolean isPt = ((key.getX1() == key.getX2()) && (key.getY1() == key
-						.getY2()));
+				boolean isPt = ((key.getX1() == key.getX2()) && (key.getY1() == key.getY2()));
 				tree = new STree(isPt);
 			}
-			Envelope env = new Envelope(key.getX1(), key.getX2(), key.getY1(),
-					key.getY2());
+			Envelope env = new Envelope(key.getX1(), key.getX2(), key.getY1(), key.getY2());
 			tree.insert(env, key.getKey());
 		}
 		lsidx = null;

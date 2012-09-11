@@ -4,7 +4,6 @@ package org.sse.service.base;
  * Router Preference
  * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public enum RouterPreference {
 	Fastest, /* 最快 */

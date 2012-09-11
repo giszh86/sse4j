@@ -16,9 +16,7 @@ import org.sse.io.IdxReader;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class Searcher {
 	private static Searcher instance;
@@ -69,8 +67,7 @@ public class Searcher {
 	 *            cache SpatialIndex
 	 * @return
 	 */
-	public boolean check(String key, String idxpath, boolean wgs,
-			boolean useCache) {
+	public boolean check(String key, String idxpath, boolean wgs, boolean useCache) {
 		try {
 			if (!queries.containsKey(key)) {
 				if (useCache) {
@@ -82,8 +79,7 @@ public class Searcher {
 					} else {
 						idxer.read(path + ".sidx");
 					}
-					queries.put(key, new SQuery(new IdxReader(idxpath),
-							idxer.tree));
+					queries.put(key, new SQuery(new IdxReader(idxpath), idxer.tree));
 				} else {
 					queries.put(key, new SQuery(new IdxReader(idxpath), null));
 				}

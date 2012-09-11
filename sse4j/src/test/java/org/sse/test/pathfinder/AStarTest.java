@@ -26,8 +26,7 @@ public class AStarTest {
 		Thread.sleep(10000);
 
 		String key = "110000";
-		IdxRouteStorage stg = (IdxRouteStorage) StorageFactory.getInstance()
-				.getStorage(key, StorageType.NET);
+		IdxRouteStorage stg = (IdxRouteStorage) StorageFactory.getInstance().getStorage(key, StorageType.NET);
 
 		Schema s = new Schema();
 		s.addAttribute("Id", "Integer");
@@ -39,16 +38,15 @@ public class AStarTest {
 		AStar star = new AStar();
 		float flag = 1.0f;// Fastest[0.04 0.06 0.12]
 		long t = System.currentTimeMillis();
-		LinkedNode rn = star.find(startNodeId, endNodeId, stg.getNodes(), stg
-				.getEdges(), flag, RouterPreference.Shortest);
+		LinkedNode rn = star.find(startNodeId, endNodeId, stg.getNodes(), stg.getEdges(), flag,
+				RouterPreference.Shortest);
 		System.out.println(System.currentTimeMillis() - t);
 		List<Integer> nodeIds = new LinkedList<Integer>();
 		if (rn != null) {
 			while (rn.preNode != null) {
 				Feature f = new Feature(s);
 				f.setAttribute("Id", rn.id);
-				EarthPos pos = Google.googToDegree(stg.getNodes()
-						.get(rn.id - 1).getX(), stg.getNodes().get(rn.id - 1)
+				EarthPos pos = Google.googToDegree(stg.getNodes().get(rn.id - 1).getX(), stg.getNodes().get(rn.id - 1)
 						.getY());
 				Coordinate coord = new Coordinate(pos.xLon, pos.yLat);
 				f.setGeometry(gf.createPoint(coord));
@@ -61,9 +59,8 @@ public class AStarTest {
 
 			Feature f = new Feature(s);
 			f.setAttribute("Id", startNodeId);
-			EarthPos pos = Google.googToDegree(stg.getNodes().get(
-					startNodeId - 1).getX(), stg.getNodes()
-					.get(startNodeId - 1).getY());
+			EarthPos pos = Google.googToDegree(stg.getNodes().get(startNodeId - 1).getX(),
+					stg.getNodes().get(startNodeId - 1).getY());
 			Coordinate coord = new Coordinate(pos.xLon, pos.yLat);
 			f.setGeometry(gf.createPoint(coord));
 			fc.add(f);

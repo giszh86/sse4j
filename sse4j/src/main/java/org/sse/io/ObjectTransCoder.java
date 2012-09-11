@@ -8,23 +8,19 @@ import java.io.ObjectStreamClass;
 import java.io.OutputStream;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class ObjectTransCoder {
 	class ContextObjectInputStream extends ObjectInputStream {
 		ClassLoader mLoader;
 
-		ContextObjectInputStream(InputStream in, ClassLoader loader)
-				throws IOException, SecurityException {
+		ContextObjectInputStream(InputStream in, ClassLoader loader) throws IOException, SecurityException {
 			super(in);
 			mLoader = loader;
 		}
 
 		@Override
-		protected Class<?> resolveClass(ObjectStreamClass v)
-				throws IOException, ClassNotFoundException {
+		protected Class<?> resolveClass(ObjectStreamClass v) throws IOException, ClassNotFoundException {
 			if (mLoader == null)
 				return super.resolveClass(v);
 			else
@@ -44,18 +40,15 @@ public class ObjectTransCoder {
 		return obj;
 	}
 
-	public void encode(final OutputStream output, final Object object)
-			throws IOException {
+	public void encode(final OutputStream output, final Object object) throws IOException {
 		ObjectOutputStream oos = new ObjectOutputStream(output);
 		oos.writeObject(object);
 		oos.close();
 	}
 
-	public Object decode(InputStream input, ClassLoader classLoader)
-			throws IOException {
+	public Object decode(InputStream input, ClassLoader classLoader) throws IOException {
 		Object obj = null;
-		ContextObjectInputStream ois = new ContextObjectInputStream(input,
-				classLoader);
+		ContextObjectInputStream ois = new ContextObjectInputStream(input, classLoader);
 		try {
 			obj = ois.readObject();
 		} catch (ClassNotFoundException e) {

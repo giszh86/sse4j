@@ -17,11 +17,8 @@ public class MatcherTest {
 		GeometryFactory gf = new GeometryFactory();
 		Matcher matcher = new Matcher();
 		Date date1 = new Date();
-		District dis = matcher.districtMatch(gf.createPoint(new Coordinate(
-				116.320271, 39.970319)));
-		System.out.println("district match:"
-				+ ((new Date()).getTime() - date1.getTime()));
-		System.out.println(dis.getCityCode() + "--" + dis.getProvinceCode()
-				+ "--" + dis.getProvince());
+		District dis = matcher.districtMatch(gf.createPoint(new Coordinate(116.320271, 39.970319)));
+		System.out.println("district match:" + ((new Date()).getTime() - date1.getTime()));
+		System.out.println(dis.getCityCode() + "--" + dis.getProvinceCode() + "--" + dis.getProvince());
 	}
 }

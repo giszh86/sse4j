@@ -5,9 +5,7 @@ import java.io.Serializable;
 import com.google.gson.Gson;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class WSRouteDataSet implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -26,7 +24,6 @@ public class WSRouteDataSet implements Serializable {
 	}
 
 	/**
-	 * 
 	 * @param dis
 	 *            总路程[米]
 	 */
@@ -39,7 +36,6 @@ public class WSRouteDataSet implements Serializable {
 	}
 
 	/**
-	 * 
 	 * @param cost
 	 *            总旅行时间[分钟]
 	 */

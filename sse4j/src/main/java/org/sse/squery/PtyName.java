@@ -1,9 +1,7 @@
 package org.sse.squery;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class PtyName {
 	public static final String OID = "ID";

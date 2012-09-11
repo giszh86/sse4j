@@ -3,9 +3,7 @@ package org.sse.mcache;
 import org.sse.StorageFactory.StorageType;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class StorageBuilderer {
 

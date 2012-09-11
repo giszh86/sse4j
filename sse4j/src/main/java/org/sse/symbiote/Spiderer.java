@@ -18,9 +18,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.sse.symbiote.SECResult.Item;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class Spiderer {
 	private static Spiderer instance;
@@ -42,7 +40,6 @@ public class Spiderer {
 	}
 
 	/**
-	 * 
 	 * @param keyword
 	 *            UTF-8 Encoding format
 	 * @return

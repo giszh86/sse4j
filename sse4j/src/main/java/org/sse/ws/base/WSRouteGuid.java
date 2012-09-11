@@ -3,9 +3,7 @@ package org.sse.ws.base;
 import java.io.Serializable;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class WSRouteGuid implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -39,7 +37,6 @@ public class WSRouteGuid implements Serializable {
 	}
 
 	/**
-	 * 
 	 * @param state
 	 *            交通状况[A/B/C]
 	 */
@@ -68,7 +65,6 @@ public class WSRouteGuid implements Serializable {
 	}
 
 	/**
-	 * 
 	 * @param len
 	 *            道路长度[米]
 	 */
@@ -81,7 +77,6 @@ public class WSRouteGuid implements Serializable {
 	}
 
 	/**
-	 * 
 	 * @param cost
 	 *            旅行时间[秒]
 	 */

@@ -9,6 +9,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.TieredMergePolicy;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 import org.sse.geo.Feature;
@@ -65,8 +66,11 @@ public class IdxWriter {
 	 */
 	public IndexWriter build(String idxPath) {
 		try {
+			TieredMergePolicy mergePolicy = new TieredMergePolicy();
+			mergePolicy.setNoCFSRatio(1.0);
 			IndexWriterConfig cfg = new IndexWriterConfig(Version.LUCENE_36, analyzer);
 			cfg.setRAMBufferSizeMB(64);
+			cfg.setMergePolicy(mergePolicy);
 			IndexWriter writer = new IndexWriter(FSDirectory.open(new File(idxPath)), cfg);
 			return writer;
 		} catch (Exception e) {

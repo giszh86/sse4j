@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.sse.io.IdxWriter;
+import org.sse.geo.AttributeType;
 import org.sse.geo.Feature;
 import org.sse.geo.FeatureCollection;
 import org.sse.geo.Schema;
@@ -15,9 +16,9 @@ public class IdxWriterTest {
 
 	public static void main(String[] args) throws Exception {
 		Schema s = new Schema();
-		s.addAttribute("NAME", "STRING");
-		s.addAttribute("CENX", "INTEGER");
-		s.addAttribute("CENY", "INTEGER");
+		s.addAttribute("NAME", AttributeType.STRING);
+		s.addAttribute("CENX", AttributeType.INTEGER);
+		s.addAttribute("CENY", AttributeType.INTEGER);
 		FeatureCollection fc = new FeatureCollection(s);
 		GeometryFactory gf = new GeometryFactory();
 		for (int i = 12954955; i < 12955955; i = i + 3) {

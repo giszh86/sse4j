@@ -7,12 +7,12 @@ import java.util.List;
  * @author dux(duxionggis@126.com)
  */
 public class Schema {
-	private List<String> attributeNames;
-	private List<String> attributeTypes;
+	protected List<String> attributeNames;
+	protected List<AttributeType> attributeTypes;
 
 	public Schema() {
 		attributeNames = new ArrayList<String>();
-		attributeTypes = new ArrayList<String>();
+		attributeTypes = new ArrayList<AttributeType>();
 	}
 
 	public int getAttributeCount() {
@@ -34,15 +34,15 @@ public class Schema {
 		return attributeNames.get(attributeIndex);
 	}
 
-	public String getAttributeType(int attributeIndex) {
+	public AttributeType getAttributeType(int attributeIndex) {
 		return attributeTypes.get(attributeIndex);
 	}
 
-	public String getAttributeType(String attributeName) {
+	public AttributeType getAttributeType(String attributeName) {
 		return this.getAttributeType(this.getAttributeIndex(attributeName));
 	}
 
-	public void addAttribute(String attributeName, String attributeType) {
+	public void addAttribute(String attributeName, AttributeType attributeType) {
 		attributeNames.add(attributeName);
 		attributeTypes.add(attributeType);
 	}

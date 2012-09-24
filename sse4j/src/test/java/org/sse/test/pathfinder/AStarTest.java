@@ -6,6 +6,7 @@ import java.util.List;
 import org.sse.NaviConfig;
 import org.sse.StorageFactory;
 import org.sse.StorageFactory.StorageType;
+import org.sse.geo.AttributeType;
 import org.sse.geo.Feature;
 import org.sse.geo.FeatureCollection;
 import org.sse.geo.Schema;
@@ -29,7 +30,7 @@ public class AStarTest {
 		IdxRouteStorage stg = (IdxRouteStorage) StorageFactory.getInstance().getStorage(key, StorageType.NET);
 
 		Schema s = new Schema();
-		s.addAttribute("Id", "Integer");
+		s.addAttribute("Id", AttributeType.INTEGER);
 		FeatureCollection fc = new FeatureCollection(s);
 		GeometryFactory gf = new GeometryFactory();
 

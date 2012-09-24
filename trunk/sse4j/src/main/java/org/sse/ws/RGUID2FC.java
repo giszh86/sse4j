@@ -1,5 +1,6 @@
 package org.sse.ws;
 
+import org.sse.geo.AttributeType;
 import org.sse.geo.Feature;
 import org.sse.geo.FeatureCollection;
 import org.sse.geo.Schema;
@@ -22,17 +23,17 @@ public class RGUID2FC {
 		WSRouteDataSet ds = new Gson().fromJson(dataset, WSRouteDataSet.class);
 
 		Schema s = new Schema();
-		s.addAttribute("Name", "String");
+		s.addAttribute("Name", AttributeType.STRING);
 		FeatureCollection fc = new FeatureCollection(s);
 		GeometryFactory gf = new GeometryFactory();
 		int cx = (ds.getMinx() + ds.getMaxx()) / 2;
 		int cy = (ds.getMiny() + ds.getMaxy()) / 2;
 		if (ds.getSegs() != null && ds.getSegs().length > 0) {
-			s.addAttribute("Attrib", "Integer");
-			s.addAttribute("Circle", "Integer");
-			s.addAttribute("Kind", "Integer");
-			s.addAttribute("Light", "Integer");
-			s.addAttribute("Roads", "String");
+			s.addAttribute("Attrib", AttributeType.INTEGER);
+			s.addAttribute("Circle", AttributeType.INTEGER);
+			s.addAttribute("Kind", AttributeType.INTEGER);
+			s.addAttribute("Light", AttributeType.INTEGER);
+			s.addAttribute("Roads", AttributeType.STRING);
 			for (WSRouteSeg g : ds.getSegs()) {
 				Feature f = new Feature(s);
 				f.setAttribute("Name", g.getName());
@@ -55,10 +56,10 @@ public class RGUID2FC {
 				fc.add(f);
 			}
 		} else if (ds.getGuids() != null && ds.getGuids().length > 0) {
-			s.addAttribute("Cost", "Integer");
-			s.addAttribute("Len", "Integer");
-			s.addAttribute("State", "String");
-			s.addAttribute("Turn", "String");
+			s.addAttribute("Cost", AttributeType.INTEGER);
+			s.addAttribute("Len", AttributeType.INTEGER);
+			s.addAttribute("State", AttributeType.STRING);
+			s.addAttribute("Turn", AttributeType.STRING);
 			for (WSRouteGuid g : ds.getGuids()) {
 				Feature f = new Feature(s);
 				f.setAttribute("Name", g.getName());

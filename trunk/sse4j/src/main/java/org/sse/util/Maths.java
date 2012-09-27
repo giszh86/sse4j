@@ -157,12 +157,12 @@ public strictfp class Maths {
 		return (int) angle;
 	}
 
-	public static int getCost(int len, int rc, int ra, int lf) {
-		return (int) (len * 3.6 / initSpeed(rc, ra) + lf * 10);
+	public static float getCost(int len, int rc, int ra, int lf) {
+		return (len * 3.6f / initSpeed(rc, ra) + lf * 10);
 	}
 
-	public static int getCost(int len, double sp, int lf) {
-		return (int) (len * 3.6 / sp + lf * 10);
+	public static float getCost(int len, float sp, int lf) {
+		return (len * 3.6f / sp + lf * 10);
 	}
 
 	public static int initSpeed(int rc, int ra) {

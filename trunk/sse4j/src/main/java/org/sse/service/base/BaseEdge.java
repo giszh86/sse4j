@@ -14,7 +14,7 @@ public class BaseEdge implements Serializable, Cloneable {
 	private int startNodeId;
 	private int endNodeId;
 	private byte direction;
-	private int gn;
+	private float gn;
 
 	public int getId() {
 		return id;
@@ -56,7 +56,7 @@ public class BaseEdge implements Serializable, Cloneable {
 		this.direction = (byte) direction;
 	}
 
-	public int getGn() {
+	public float getGn() {
 		return gn;
 	}
 
@@ -64,7 +64,7 @@ public class BaseEdge implements Serializable, Cloneable {
 	 * @param gn
 	 *            权重
 	 */
-	public void setGn(int gn) {
+	public void setGn(float gn) {
 		this.gn = gn;
 	}
 

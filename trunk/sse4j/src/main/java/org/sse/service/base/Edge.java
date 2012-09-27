@@ -101,7 +101,7 @@ public class Edge extends BaseEdge {
 		this.setGn(length);
 	}
 
-	public int getGn(RouterPreference pf, boolean isLightFlag) {
+	public float getGn(RouterPreference pf, int lightFlag) {
 		if (pf == RouterPreference.Shortest) {
 			return this.length;
 		} else if (pf == RouterPreference.OnFoot) {
@@ -110,9 +110,7 @@ public class Edge extends BaseEdge {
 			else
 				return this.length;
 		} else {
-			int k = Maths.getCost(this.length, this.kind, this.type, 0);
-			if (isLightFlag)
-				k = k + 10;
+			float k = Maths.getCost(this.length, this.kind, this.type, lightFlag);
 			if (this.toll == 1 && pf == RouterPreference.Cheapest)
 				k = k * 10;
 			return k;

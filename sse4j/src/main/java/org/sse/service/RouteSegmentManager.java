@@ -32,9 +32,9 @@ class RouteSegmentManager {
 		int xmin = Integer.MAX_VALUE, ymin = Integer.MAX_VALUE, xmax = Integer.MIN_VALUE, ymax = Integer.MIN_VALUE;
 		for (int i = 0; i < result.size(); i++) {
 			RouteSegment seg = result.get(i);
-			double speed = Maths.initSpeed(seg.getKind(), seg.getAttrib());
+			float speed = Maths.initSpeed(seg.getKind(), seg.getAttrib());
 			if (controls != null) {
-				double speeds = 0;
+				float speeds = 0;
 				for (int id : seg.getIds()) {
 					if (ctls.containsKey(id))
 						speeds += ctls.get(id);
@@ -44,7 +44,7 @@ class RouteSegmentManager {
 				speed = speeds / seg.getIds().size();// none weighted mean
 			}
 			seg.setSpeed((int) speed);
-			seg.setCost(Maths.getCost(seg.getLength(), speed, seg.getLightFlag()));
+			seg.setCost((int) Maths.getCost(seg.getLength(), speed, seg.getLightFlag()));
 			dis += seg.getLength();
 			cost += seg.getCost();
 			seg.setSAngle(Maths.getAngle(seg.getPoints(), 1));

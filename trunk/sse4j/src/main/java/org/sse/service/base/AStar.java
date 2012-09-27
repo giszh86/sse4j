@@ -1,16 +1,12 @@
 package org.sse.service.base;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
-
 import org.sse.util.Maths;
 
 /**
  * @author dux(duxionggis@126.com)
  */
 public class AStar {
-	int opensize = 1024;
 
 	/**
 	 * plan shortest or fastest path by RouterPreference
@@ -22,7 +18,7 @@ public class AStar {
 	 * @param nodes
 	 * @param edges
 	 * @param coef
-	 *            Shortest={1.0} or Fastest={0.04 0.06 0.12}
+	 *            Shortest={1.0 1.4} or Fastest={0.04 0.06 0.12}
 	 * @param pf
 	 *            Shortest or Fastest or Cheapest
 	 * @return LinkedNode
@@ -30,13 +26,13 @@ public class AStar {
 	public LinkedNode find(int startNodeId, int endNodeId, List<Node> nodes, List<Edge> edges, float coef,
 			RouterPreference pf) {
 		LinkedNode result = null;
-		LinkedList<LinkedNode> open = new LinkedList<LinkedNode>();
+		AStarTable open = new AStarArrayTable();		
 		LinkedNode[] close = new LinkedNode[nodes.size()];
 
 		LinkedNode start = new LinkedNode();
 		start.id = startNodeId;
 		start.fn = hn(nodes.get(start.id - 1), nodes.get(endNodeId - 1), coef);
-		open.addFirst(start);
+		open.put(start);
 
 		while (!open.isEmpty()) {
 			LinkedNode cur = open.pollFirst();
@@ -45,30 +41,31 @@ public class AStar {
 				break;
 			}
 
-			for (int i = 0; i < nodes.get(cur.id - 1).getEdgeIds().length; i++) {
-				LinkedNode next = getNextNode(cur, edges.get(nodes.get(cur.id - 1).getEdgeIds()[i] - 1), pf);
+			int[] eids = nodes.get(cur.id - 1).getEdgeIds();
+			for (int id : eids) {
+				LinkedNode next = getNextNode(cur, edges.get(id - 1), pf);
 				if (next == null)
 					continue;
 				next.fn = next.gn + hn(nodes.get(next.id - 1), nodes.get(endNodeId - 1), coef);
 
-				int idxo = open.indexOf(next);
-				if (idxo == -1 && close[next.id - 1] == null) {
-					insert(open, next);
-				} else if (idxo != -1) { // in open
-					if (next.fn < open.get(idxo).fn) {
-						open.remove(idxo);
-						insert(open, next);
+				LinkedNode tn = open.get(next);
+				if (tn == null && close[next.id - 1] == null) {
+					open.put(next);
+				} else if (tn != null) { // in open
+					if (next.fn < tn.fn) {
+						open.remove(tn);
+						open.put(next);
 					}
 				} else { // in close
 					if (next.fn < close[next.id - 1].fn) {
 						close[next.id - 1] = null;
-						insert(open, next);
+						open.put(next);
 					}
 				}
 			}
 			close[cur.id - 1] = cur;
 
-			while (open.size() > opensize) {// limit open size
+			while (open.size() > open.defaultSize()) {// limit open size
 				open.pollLast();
 			}
 		}
@@ -77,11 +74,11 @@ public class AStar {
 		return result;
 	}
 
-	int hn(Node from, Node to, float coef) {
-		return (int) (Maths.getDistance(from.getX(), from.getY(), to.getX(), to.getY()) * coef);
+	private float hn(Node from, Node to, float coef) {
+		return (float) (Maths.getDistance(from.getX(), from.getY(), to.getX(), to.getY()) * coef);
 	}
 
-	LinkedNode getNextNode(LinkedNode cur, Edge edge, RouterPreference pf) {
+	private LinkedNode getNextNode(LinkedNode cur, Edge edge, RouterPreference pf) {
 		LinkedNode next = null;
 		if (cur.id == edge.getStartNodeId()) {
 			if (edge.getDirection() != 3) {
@@ -101,23 +98,6 @@ public class AStar {
 			}
 		}
 		return next;
-	}
-
-	void insert(LinkedList<LinkedNode> open, LinkedNode cur) {
-		int index = -1;
-		if (open.size() > 0) {
-			for (ListIterator<LinkedNode> i = open.listIterator(); i.hasNext();) {
-				if (i.next().fn >= cur.fn) {
-					index = i.nextIndex();
-					break;
-				}
-			}
-		}
-		if (index == -1) {
-			open.addLast(cur);
-		} else {
-			open.add(index, cur);
-		}
 	}
 
 }

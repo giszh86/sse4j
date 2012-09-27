@@ -6,6 +6,9 @@ import java.util.List;
 import org.sse.geo.IndexPoint;
 import org.sse.geo.Point;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+
 /**
  * @author dux(duxionggis@126.com)
  */
@@ -22,11 +25,29 @@ public strictfp class Maths {
 		System.out.println(ip.idx + "  " + ip.pt);
 	}
 
+	public static double getLength(Coordinate from, Coordinate to) {
+		double R = 6371004;
+		double B = (to.x - from.x) * Math.PI / 180;
+		double c = Math.PI / 2 - to.y * Math.PI / 180;
+		double a = Math.PI / 2 - from.y * Math.PI / 180;
+		double b = Math.cos(a) * Math.cos(c) + Math.sin(a) * Math.sin(c) * Math.cos(B);
+		return R * Math.acos(b);
+	}
+
+	public static double getLength(Geometry g) {
+		double len = 0;
+		Coordinate[] coords = g.getCoordinates();
+		for (int i = 0; i < coords.length - 1; i++) {
+			len += getLength(coords[i], coords[i + 1]);
+		}
+		return len;
+	}
+
 	public static double getDistance(double x1, double y1, double x2, double y2) {
 		return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 	}
 
-	public static int getLength(List<Point> pts) {
+	public static int getDistance(List<Point> pts) {
 		if (pts == null || pts.size() < 2)
 			return 0;
 		double dis = 0;

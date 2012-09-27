@@ -5,8 +5,8 @@ package org.sse.service.base;
  */
 public class LinkedNode {
 	public int id;
-	public int gn;
-	public int fn;
+	public float gn;
+	public float fn;
 	public int preEdgeId;
 	public LinkedNode preNode;
 

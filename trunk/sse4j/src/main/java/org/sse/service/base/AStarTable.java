@@ -1,9 +1,7 @@
 package org.sse.service.base;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author dux(duxionggis@126.com)
@@ -31,14 +29,14 @@ abstract class AStarTable {
 		return null;
 	}
 
-	LinkedNode get(LinkedNode next) {
-		return null;
+	float getFn(int id) {
+		return 0f;
 	}
 
 	void put(LinkedNode next) {
 	}
 
-	void remove(LinkedNode tn) {
+	void remove(float fn, int id) {
 	}
 }
 
@@ -48,8 +46,13 @@ abstract class AStarTable {
  * @author dux(duxionggis@126.com)
  */
 class AStarArrayTable extends AStarTable {
-	List<LinkedNode> openAsc = new ArrayList<LinkedNode>(defaultSize());
-	private Map<Integer, Float> openIdx = new HashMap<Integer, Float>();// key(id) - value(fn)
+	private List<LinkedNode> openAsc = null;
+	private float[] openFn = null;
+
+	AStarArrayTable(int nodesize) {
+		openAsc = new ArrayList<LinkedNode>(defaultSize());
+		openFn = new float[nodesize];
+	}
 
 	boolean isEmpty() {
 		return openAsc.isEmpty();
@@ -61,23 +64,18 @@ class AStarArrayTable extends AStarTable {
 
 	LinkedNode pollFirst() {
 		LinkedNode first = openAsc.remove(0);
-		openIdx.remove(first.id);
+		openFn[first.id - 1] = 0f;
 		return first;
 	}
 
 	LinkedNode pollLast() {
 		LinkedNode last = openAsc.remove(size() - 1);
-		openIdx.remove(last.id);
+		openFn[last.id - 1] = 0f;
 		return last;
 	}
 
-	LinkedNode get(LinkedNode next) {
-		Float fn = openIdx.get(next.id);
-		if (fn == null) {
-			return null;
-		} else {
-			return binarySearch(0, (size() - 1) / 2, (size() - 1), fn, next.id);
-		}
+	float getFn(int id) {
+		return openFn[id - 1];
 	}
 
 	void put(LinkedNode next) {
@@ -90,12 +88,15 @@ class AStarArrayTable extends AStarTable {
 		} else {
 			binaryInsert(0, (size() - 1) / 2, (size() - 1), next);
 		}
-		openIdx.put(next.id, next.fn);
+		openFn[next.id - 1] = next.fn;
 	}
 
-	void remove(LinkedNode tn) {
-		openAsc.remove(tn);
-		openIdx.remove(tn.id);
+	void remove(float fn, int id) {
+		int idx = binarySearch(0, (size() - 1) / 2, (size() - 1), fn, id);
+		if (idx >= 0) {
+			openAsc.remove(idx);
+		}
+		openFn[id - 1] = 0f;
 	}
 
 	private void binaryInsert(int sidx, int midx, int eidx, LinkedNode next) {
@@ -117,20 +118,20 @@ class AStarArrayTable extends AStarTable {
 		}
 	}
 
-	private LinkedNode binarySearch(int sidx, int midx, int eidx, float fn, int id) {
+	private int binarySearch(int sidx, int midx, int eidx, float fn, int id) {
 		if ((eidx - sidx) <= 1) {
 			LinkedNode mid = openAsc.get(sidx);
 			if (mid.id == id)
-				return mid;
+				return sidx;
 			mid = openAsc.get(eidx);
 			if (mid.id == id)
-				return mid;
-			return null;
+				return eidx;
+			return -1;
 		}
 
 		LinkedNode mid = openAsc.get(midx);
-		if (mid.fn == fn && mid.id == id) {
-			return mid;
+		if (Math.abs(mid.fn - fn) <= 1.0e-5 && mid.id == id) {
+			return midx;
 		} else if (mid.fn > fn) {
 			return binarySearch(sidx, (sidx + midx) / 2, midx, fn, id);
 		} else {

@@ -18,7 +18,7 @@ public class AStar {
 	 * @param nodes
 	 * @param edges
 	 * @param coef
-	 *            Shortest={1.0 1.4} or Fastest={0.04 0.06 0.12}
+	 *            Shortest={1.0 1.2} or Fastest={0.04 0.06 0.12}
 	 * @param pf
 	 *            Shortest or Fastest or Cheapest
 	 * @return LinkedNode
@@ -26,8 +26,8 @@ public class AStar {
 	public LinkedNode find(int startNodeId, int endNodeId, List<Node> nodes, List<Edge> edges, float coef,
 			RouterPreference pf) {
 		LinkedNode result = null;
-		AStarTable open = new AStarArrayTable();
-		LinkedNode[] close = new LinkedNode[nodes.size()];
+		AStarTable open = new AStarArrayTable(nodes.size());
+		float[] closeFn = new float[nodes.size()];
 
 		LinkedNode start = new LinkedNode();
 		start.id = startNodeId;
@@ -40,6 +40,7 @@ public class AStar {
 				result = cur;
 				break;
 			}
+			closeFn[cur.id - 1] = cur.fn;
 
 			int[] eids = nodes.get(cur.id - 1).getEdgeIds();
 			for (int id : eids) {
@@ -48,29 +49,30 @@ public class AStar {
 					continue;
 				next.fn = next.gn + hn(nodes.get(next.id - 1), nodes.get(endNodeId - 1), coef);
 
-				LinkedNode tn = open.get(next);
-				if (tn == null && close[next.id - 1] == null) {
-					open.put(next);
-				} else if (tn != null) { // in open
-					if (next.fn < tn.fn) {
-						open.remove(tn);
+				if (closeFn[next.id - 1] == 0f) {// in open
+					float openFn = open.getFn(next.id);
+					if (openFn == 0f) {// open not exist
 						open.put(next);
+					} else {
+						if (next.fn < openFn) {// open exist
+							open.remove(openFn, next.id);
+							open.put(next);
+						}
 					}
 				} else { // in close
-					if (next.fn < close[next.id - 1].fn) {
-						close[next.id - 1] = null;
+					if (next.fn < closeFn[next.id - 1]) {
+						closeFn[next.id - 1] = 0f;
 						open.put(next);
 					}
 				}
 			}
-			close[cur.id - 1] = cur;
 
 			while (open.size() > open.defaultSize()) {// limit open size
 				open.pollLast();
 			}
 		}
 		open = null;
-		close = null;
+		closeFn = null;
 		return result;
 	}
 

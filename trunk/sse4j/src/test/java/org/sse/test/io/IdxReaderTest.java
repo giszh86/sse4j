@@ -38,18 +38,18 @@ public class IdxReaderTest {
 		List<Property> terms = new ArrayList<Property>();
 
 		Date date1 = new Date();
-		String addr = IdxParser.getInstance().tokenize("香山南路40号", AnalyzerType.SmartCN);
+		String addr = IdxParser.getInstance().tokenize("香山南路40号", AnalyzerType.SMARTCN);
 		System.out.println(addr + "----1---" + ((new Date()).getTime() - date1.getTime()));
 
 		addr = IdxParser.getInstance().tokenize("香山南路 40号", AnalyzerType.IK);
 		System.out.println(addr + "----2--" + ((new Date()).getTime() - date1.getTime()));
 
-		terms.add(new Property("ADDRESS", "XS", OccurType.And));
-		terms.add(new Property("NAMEC", "XS", OccurType.And));
-		terms.add(new Property("NAMEP", "XS", OccurType.And));
+		terms.add(new Property("ADDRESS", "XS", OccurType.AND));
+		terms.add(new Property("NAMEC", "XS", OccurType.AND));
+		terms.add(new Property("NAMEP", "XS", OccurType.AND));
 
-		Query query1 = IdxParser.getInstance().createQuery(QueryType.Standard,
-				IdxParser.getInstance().getAnalyzer(AnalyzerType.SmartCN), terms);
+		Query query1 = IdxParser.getInstance().createQuery(QueryType.STANDARD,
+				IdxParser.getInstance().getAnalyzer(AnalyzerType.SMARTCN), terms);
 		docs = idx.query(query1, null, 20);
 		for (Document doc : docs) {
 			System.out.println(doc.get("NAMEC") + "--" + doc.get("ADDRESS") + "--" + doc.get("GEOMETRY"));
@@ -58,10 +58,10 @@ public class IdxReaderTest {
 
 		date1 = new Date();
 		for (int i = 0; i < terms.size(); i++) {
-			terms.get(i).setOtype(OccurType.Or);
+			terms.get(i).setOtype(OccurType.OR);
 		}
-		query1 = IdxParser.getInstance().createQuery(QueryType.Standard,
-				IdxParser.getInstance().getAnalyzer(AnalyzerType.SmartCN), terms);
+		query1 = IdxParser.getInstance().createQuery(QueryType.STANDARD,
+				IdxParser.getInstance().getAnalyzer(AnalyzerType.SMARTCN), terms);
 		docs = idx.query(query1, null, 20);
 		for (Document doc : docs) {
 			System.out.println(doc.get("NAMEC") + "--" + doc.get("ADDRESS") + "--" + doc.get("GEOMETRY"));
@@ -70,10 +70,10 @@ public class IdxReaderTest {
 
 		date1 = new Date();
 		for (int i = 0; i < terms.size(); i++) {
-			terms.get(i).setOtype(OccurType.Or);
+			terms.get(i).setOtype(OccurType.OR);
 		}
-		query1 = IdxParser.getInstance().createQuery(QueryType.Fuzzy,
-				IdxParser.getInstance().getAnalyzer(AnalyzerType.SmartCN), terms);
+		query1 = IdxParser.getInstance().createQuery(QueryType.FUZZY,
+				IdxParser.getInstance().getAnalyzer(AnalyzerType.SMARTCN), terms);
 		docs = idx.query(query1, null, 20);
 		for (Document doc : docs) {
 			System.out.println(doc.get("NAMEC") + "--" + doc.get("ADDRESS") + "--" + doc.get("GEOMETRY"));

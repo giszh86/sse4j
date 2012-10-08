@@ -32,7 +32,7 @@ public class Geocoder {
 		List<Property> pty = new ArrayList<Property>();
 		pty.add(new Property(PoiPtyName.ADDRESS, keyword));
 		List<Document> docs = Searcher.getInstance().search(storage.getKey(),
-				IdxParser.getInstance().createQuery(QueryType.Fuzzy, pty), 2);
+				IdxParser.getInstance().createQuery(QueryType.IK, pty), 2);
 		if (docs == null || docs.size() == 0)
 			throw new Exception("not found!");
 

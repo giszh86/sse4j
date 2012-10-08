@@ -13,7 +13,7 @@ public class Filter {
 	private Geometry geometry;
 	private List<Property> properties;
 	private int count = 50;
-	private QueryType qtype = QueryType.Fuzzy;
+	private QueryType qtype = QueryType.FUZZY;
 
 	public int getCount() {
 		return count;

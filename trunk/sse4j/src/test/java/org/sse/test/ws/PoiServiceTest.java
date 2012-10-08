@@ -24,10 +24,10 @@ public class PoiServiceTest {
 		GeometryFactory gf = new GeometryFactory();
 		filter.setGeometry(gf.createPoint(new Coordinate(116.32, 39.97)).buffer(0.01));
 		List<Property> terms = new ArrayList<Property>();
-		terms.add(new Property("ADDRESS", "中关村大街50", OccurType.And));
-		terms.add(new Property("NAMEC", "当代", OccurType.And));
+		terms.add(new Property("ADDRESS", "中关村大街50", OccurType.AND));
+		terms.add(new Property("NAMEC", "当代", OccurType.AND));
 		filter.setProperties(terms);
-		filter.setQtype(QueryType.Fuzzy);
+		filter.setQtype(QueryType.IK);
 		// filter.setCount(5);
 		List<Poi> pois = ps.search(filter, "110000");
 		if (pois != null) {

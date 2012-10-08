@@ -23,7 +23,7 @@ public class IdxWriter {
 	private Analyzer analyzer;
 
 	public IdxWriter() {
-		analyzer = IdxParser.getInstance().getAnalyzer(AnalyzerType.SmartCN);
+		analyzer = IdxParser.getInstance().getAnalyzer(AnalyzerType.SMARTCN);
 	}
 
 	public void setAnalyzer(Analyzer analyzer) {

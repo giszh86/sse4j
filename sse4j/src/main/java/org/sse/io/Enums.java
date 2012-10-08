@@ -5,14 +5,14 @@ package org.sse.io;
  */
 public class Enums {
 	public enum QueryType {
-		Standard, Fuzzy, IK
+		STANDARD, FUZZY, IK
 	}
 
 	public enum OccurType {
-		And, Or, Not
+		AND, OR, NOT
 	}
 
 	public enum AnalyzerType {
-		Standard, SmartCN, IK
+		STANDARD, SMARTCN, IK
 	}
 }

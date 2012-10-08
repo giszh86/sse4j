@@ -22,7 +22,7 @@ public class GeocoderTest {
 		Coordinate c1 = new Coordinate(116.32, 39.97);
 		String addr = "中关村大街20号";
 		Date date1 = new Date();
-		String addr1 = IdxParser.getInstance().tokenize(addr, AnalyzerType.SmartCN);
+		String addr1 = IdxParser.getInstance().tokenize(addr, AnalyzerType.SMARTCN);
 		System.out.println("tokenize:" + addr1 + ((new Date()).getTime() - date1.getTime()));
 
 		Geocoder matcher = new Geocoder();

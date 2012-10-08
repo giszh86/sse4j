@@ -13,7 +13,7 @@ public class WordSplitTest {
 		String addr = IdxParser.getInstance().tokenize(info, AnalyzerType.IK);
 		System.out.println(addr + "----IK--" + ((new Date()).getTime() - date1.getTime()));
 
-		addr = IdxParser.getInstance().tokenize(info, AnalyzerType.SmartCN);
+		addr = IdxParser.getInstance().tokenize(info, AnalyzerType.SMARTCN);
 		System.out.println(addr + "----SmartCN---" + ((new Date()).getTime() - date1.getTime()));
 
 	}

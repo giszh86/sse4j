@@ -8,7 +8,7 @@ import org.sse.io.Enums.OccurType;
 public class Property {
 	private String field;
 	private String text;
-	private OccurType otype = OccurType.Or;
+	private OccurType otype = OccurType.OR;
 
 	public Property() {
 		this("", "");

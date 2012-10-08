@@ -62,7 +62,7 @@ public class IdxParser {
 	 * @return
 	 */
 	public Analyzer getAnalyzer(AnalyzerType type) {
-		if (type == AnalyzerType.SmartCN) {
+		if (type == AnalyzerType.SMARTCN) {
 			return scAnalyzer;
 		} else if (type == AnalyzerType.IK) {
 			return ikAnalyzer;
@@ -100,7 +100,7 @@ public class IdxParser {
 		if (fields.size() == 0)
 			return null;
 
-		if (qtype == QueryType.Fuzzy) {
+		if (qtype == QueryType.FUZZY) {
 			FuzzyLikeThisQuery query = new FuzzyLikeThisQuery(5, analyzer);
 			for (int i = 0; i < fields.size(); i++) {
 				query.addTerms(texts.get(i), fields.get(i), 0.6f, 0);
@@ -121,7 +121,7 @@ public class IdxParser {
 		if (qtype == QueryType.IK) {
 			return createQuery(qtype, getAnalyzer(AnalyzerType.IK), terms);
 		} else {
-			return createQuery(qtype, getAnalyzer(AnalyzerType.SmartCN), terms);
+			return createQuery(qtype, getAnalyzer(AnalyzerType.SMARTCN), terms);
 		}
 	}
 
@@ -136,9 +136,9 @@ public class IdxParser {
 
 	private BooleanClause.Occur toOccurType(OccurType otype) {
 		BooleanClause.Occur occur;
-		if (otype == OccurType.And) {
+		if (otype == OccurType.AND) {
 			occur = BooleanClause.Occur.MUST;
-		} else if (otype == OccurType.Or) {
+		} else if (otype == OccurType.OR) {
 			occur = BooleanClause.Occur.SHOULD;
 		} else {
 			occur = BooleanClause.Occur.MUST_NOT;

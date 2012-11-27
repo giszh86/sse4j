@@ -74,3 +74,9 @@ change org.sse.io.IdxReader to support multi searcher
 delete kdtree in org.sse.squery.STree
 
 --------------------------------------------------------------
+
+2012-11-27
+delete lucene-query jar
+optimize IdxParser and SQuery class
+
+--------------------------------------------------------------

@@ -6,7 +6,6 @@ import java.util.List;
 import org.sse.NaviConfig;
 import org.sse.ServiceFactory;
 import org.sse.io.Enums.OccurType;
-import org.sse.io.Enums.QueryType;
 import org.sse.service.IPoiService;
 import org.sse.service.base.Poi;
 import org.sse.squery.Filter;
@@ -27,7 +26,6 @@ public class PoiServiceTest {
 		terms.add(new Property("ADDRESS", "中关村大街50", OccurType.AND));
 		terms.add(new Property("NAMEC", "当代", OccurType.AND));
 		filter.setProperties(terms);
-		filter.setQtype(QueryType.IK);
 		// filter.setCount(5);
 		List<Poi> pois = ps.search(filter, "110000");
 		if (pois != null) {

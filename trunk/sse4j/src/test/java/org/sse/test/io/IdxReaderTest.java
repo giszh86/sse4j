@@ -22,7 +22,6 @@ import org.sse.io.IdxParser;
 import org.sse.io.IdxReader;
 import org.sse.io.Enums.AnalyzerType;
 import org.sse.io.Enums.OccurType;
-import org.sse.io.Enums.QueryType;
 
 public class IdxReaderTest {
 	public static void main(String[] args) throws Exception {
@@ -48,8 +47,7 @@ public class IdxReaderTest {
 		terms.add(new Property("NAMEC", "XS", OccurType.AND));
 		terms.add(new Property("NAMEP", "XS", OccurType.AND));
 
-		Query query1 = IdxParser.getInstance().createQuery(QueryType.STANDARD,
-				IdxParser.getInstance().getAnalyzer(AnalyzerType.SMARTCN), terms);
+		Query query1 = IdxParser.getInstance().createQuery(AnalyzerType.SMARTCN, terms);
 		docs = idx.query(query1, null, 20);
 		for (Document doc : docs) {
 			System.out.println(doc.get("NAMEC") + "--" + doc.get("ADDRESS") + "--" + doc.get("GEOMETRY"));
@@ -60,25 +58,12 @@ public class IdxReaderTest {
 		for (int i = 0; i < terms.size(); i++) {
 			terms.get(i).setOtype(OccurType.OR);
 		}
-		query1 = IdxParser.getInstance().createQuery(QueryType.STANDARD,
-				IdxParser.getInstance().getAnalyzer(AnalyzerType.SMARTCN), terms);
+		query1 = IdxParser.getInstance().createQuery(AnalyzerType.SMARTCN, terms);
 		docs = idx.query(query1, null, 20);
 		for (Document doc : docs) {
 			System.out.println(doc.get("NAMEC") + "--" + doc.get("ADDRESS") + "--" + doc.get("GEOMETRY"));
 		}
 		System.out.println("-----------------Or:" + ((new Date()).getTime() - date1.getTime()));
-
-		date1 = new Date();
-		for (int i = 0; i < terms.size(); i++) {
-			terms.get(i).setOtype(OccurType.OR);
-		}
-		query1 = IdxParser.getInstance().createQuery(QueryType.FUZZY,
-				IdxParser.getInstance().getAnalyzer(AnalyzerType.SMARTCN), terms);
-		docs = idx.query(query1, null, 20);
-		for (Document doc : docs) {
-			System.out.println(doc.get("NAMEC") + "--" + doc.get("ADDRESS") + "--" + doc.get("GEOMETRY"));
-		}
-		System.out.println("-----------------FuzzyLike:" + ((new Date()).getTime() - date1.getTime()));
 	}
 
 	static void terms(IdxReader idx) {

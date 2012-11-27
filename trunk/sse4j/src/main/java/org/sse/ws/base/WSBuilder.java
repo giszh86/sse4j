@@ -3,6 +3,7 @@ package org.sse.ws.base;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.sse.io.Enums.OccurType;
 import org.sse.service.base.PoiPtyName;
 import org.sse.service.base.RouteDataSet;
 import org.sse.service.base.RouteGuidance;
@@ -44,12 +45,12 @@ public class WSBuilder {
 		String keyword = wsFilter.getKeyword();
 		if (keyword != null && !keyword.trim().isEmpty()) {
 			List<Property> ptyes = new ArrayList<Property>();
-			ptyes.add(new Property(PtyName.TITLE, keyword));
+			ptyes.add(new Property(PtyName.TITLE, keyword, OccurType.AND));
 			// TODO
 			if (wsFilter.getPreference().equalsIgnoreCase("POI")) {
-				// ptyes.add(new Property(PoiPtyName.ADDRESS, keyword));
-				ptyes.add(new Property(PoiPtyName.NAMEP, keyword));
-				// ptyes.add(new Property(PoiPtyName.KIND, keyword));
+				ptyes.add(new Property(PoiPtyName.ADDRESS, keyword, OccurType.OR));
+				// ptyes.add(new Property(PoiPtyName.NAMEP, keyword, OccurType.OR));
+				// ptyes.add(new Property(PoiPtyName.KIND, keyword, OccurType.OR));
 			}
 			filter.setProperties(ptyes);
 		}
@@ -57,7 +58,6 @@ public class WSBuilder {
 			Geometry g = MercatorUtil.toGeometry(wsFilter.getGeometryWKT(), true);
 			filter.setGeometry(g);
 		}
-		// filter.setQtype(QueryType.Standard);
 		filter.setCount(wsFilter.getCount());
 		if (wsFilter.getDistance() > 0) {
 			filter.setGeometry(filter.getGeometry().buffer(wsFilter.getDistance()));

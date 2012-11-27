@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.lucene.document.Document;
 import org.sse.util.MercatorUtil;
+import org.sse.io.Enums.OccurType;
 import org.sse.squery.Filter;
 import org.sse.squery.Property;
 import org.sse.squery.Searcher;
@@ -24,7 +25,7 @@ public class SearcherTest {
 		MercatorUtil.toMercator(g, true);
 		filter.setGeometry(g);
 		List<Property> terms = new ArrayList<Property>();
-		terms.add(new Property("NAMEC", "宾馆"));
+		terms.add(new Property("NAMEC", "宾馆", OccurType.AND));
 		// terms.add(new Property("NAMEP", "BJ"));
 		// terms.add(new Property("ADDRESS", "BJ"));
 		filter.setProperties(terms);

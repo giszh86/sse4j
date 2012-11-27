@@ -2,8 +2,7 @@ package org.sse.squery;
 
 import java.util.List;
 
-import org.sse.io.Enums.QueryType;
-
+import org.sse.io.Enums.AnalyzerType;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
@@ -13,7 +12,7 @@ public class Filter {
 	private Geometry geometry;
 	private List<Property> properties;
 	private int count = 50;
-	private QueryType qtype = QueryType.FUZZY;
+	private AnalyzerType type = AnalyzerType.SMARTCN;
 
 	public int getCount() {
 		return count;
@@ -45,12 +44,12 @@ public class Filter {
 		this.properties = properties;
 	}
 
-	public QueryType getQtype() {
-		return qtype;
+	public AnalyzerType getType() {
+		return type;
 	}
 
-	public void setQtype(QueryType qtype) {
-		this.qtype = qtype;
+	public void setType(AnalyzerType type) {
+		this.type = type;
 	}
 
 }

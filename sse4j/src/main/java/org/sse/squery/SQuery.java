@@ -8,8 +8,8 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.FieldCacheTermsFilter;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TermsFilter;
 import org.sse.io.IdxParser;
 import org.sse.io.IdxReader;
 
@@ -34,7 +34,7 @@ class SQuery {
 			return null;
 
 		BooleanQuery bQuery = new BooleanQuery();
-		Query tQuery = IdxParser.getInstance().createQuery(filter.getQtype(), filter.getProperties());
+		Query tQuery = IdxParser.getInstance().createQuery(filter.getType(), filter.getProperties());
 		if (tQuery != null) {
 			if (tQuery instanceof BooleanQuery) {
 				bQuery = (BooleanQuery) tQuery;
@@ -43,7 +43,7 @@ class SQuery {
 			}
 		}
 
-		TermsFilter tfilter = null;
+		FieldCacheTermsFilter tfilter = null;
 		if (filter.getGeometry() != null) {
 			Envelope extent = filter.getGeometry().getEnvelopeInternal();
 			if (tree != null) {
@@ -56,10 +56,11 @@ class SQuery {
 						}
 						return reader.query(tterms);
 					} else {
-						tfilter = new TermsFilter();
-						for (Iterator i = ids.iterator(); i.hasNext();) {
-							tfilter.addTerm(new Term(PtyName.OID, i.next().toString()));
+						String[] terms = new String[ids.size()];
+						for (int i = 0; i < terms.length; i++) {
+							terms[i] = ids.get(i).toString();
 						}
+						tfilter = new FieldCacheTermsFilter(PtyName.OID, terms);
 					}
 				}
 			} else {
@@ -95,7 +96,7 @@ class SQuery {
 		} else {
 			BooleanQuery bQuery = new BooleanQuery();
 			IdxParser.spatialQuery(envelope, bQuery);
-			List<Document> docs = this.query(bQuery, 500);// TODO
+			List<Document> docs = this.query(bQuery, 1000);// TODO
 			List<Integer> ids = new ArrayList<Integer>(docs.size());
 			for (Document doc : docs) {
 				ids.add(Integer.valueOf(doc.get(PtyName.OID)));

@@ -9,8 +9,8 @@ import org.sse.squery.Property;
 import org.sse.NaviConfig;
 import org.sse.StorageFactory;
 import org.sse.StorageFactory.StorageType;
+import org.sse.io.Enums.AnalyzerType;
 import org.sse.io.IdxParser;
-import org.sse.io.Enums.QueryType;
 import org.sse.mcache.Storage;
 import org.sse.service.base.PoiPtyName;
 import org.sse.squery.Searcher;
@@ -32,7 +32,7 @@ public class Geocoder {
 		List<Property> pty = new ArrayList<Property>();
 		pty.add(new Property(PoiPtyName.ADDRESS, keyword));
 		List<Document> docs = Searcher.getInstance().search(storage.getKey(),
-				IdxParser.getInstance().createQuery(QueryType.IK, pty), 2);
+				IdxParser.getInstance().createQuery(AnalyzerType.IK, pty), 2);
 		if (docs == null || docs.size() == 0)
 			throw new Exception("not found!");
 

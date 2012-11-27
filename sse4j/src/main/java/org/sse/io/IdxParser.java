@@ -13,11 +13,10 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
-import org.apache.lucene.queryParser.core.QueryNodeException;
-import org.apache.lucene.queryParser.standard.QueryParserUtil;
+import org.apache.lucene.queryParser.MultiFieldQueryParser;
+import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.FuzzyLikeThisQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermRangeQuery;
 import org.apache.lucene.util.Version;
@@ -25,7 +24,6 @@ import org.sse.squery.PtyName;
 import org.sse.squery.Property;
 import org.sse.io.Enums.AnalyzerType;
 import org.sse.io.Enums.OccurType;
-import org.sse.io.Enums.QueryType;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 import com.vividsolutions.jts.geom.Envelope;
 
@@ -82,7 +80,7 @@ public class IdxParser {
 		return sb.toString().trim();
 	}
 
-	public Query createQuery(QueryType qtype, Analyzer analyzer, List<Property> terms) {
+	public Query createQuery(AnalyzerType type, List<Property> terms) {
 		if (terms == null)
 			return null;
 
@@ -100,28 +98,12 @@ public class IdxParser {
 		if (fields.size() == 0)
 			return null;
 
-		if (qtype == QueryType.FUZZY) {
-			FuzzyLikeThisQuery query = new FuzzyLikeThisQuery(5, analyzer);
-			for (int i = 0; i < fields.size(); i++) {
-				query.addTerms(texts.get(i), fields.get(i), 0.6f, 0);
-			}
-			return query;
-		} else {
-			try {
-				return QueryParserUtil.parse(texts.toArray(new String[texts.size()]),
-						fields.toArray(new String[fields.size()]),
-						flags.toArray(new BooleanClause.Occur[flags.size()]), analyzer);
-			} catch (QueryNodeException e) {
-				return null;
-			}
-		}
-	}
-
-	public Query createQuery(QueryType qtype, List<Property> terms) {
-		if (qtype == QueryType.IK) {
-			return createQuery(qtype, getAnalyzer(AnalyzerType.IK), terms);
-		} else {
-			return createQuery(qtype, getAnalyzer(AnalyzerType.SMARTCN), terms);
+		try {
+			return MultiFieldQueryParser.parse(Version.LUCENE_36, texts.toArray(new String[texts.size()]),
+					fields.toArray(new String[fields.size()]), flags.toArray(new BooleanClause.Occur[flags.size()]),
+					getAnalyzer(type));
+		} catch (ParseException e) {
+			return null;
 		}
 	}
 

@@ -27,6 +27,10 @@ public class WSSearchingTest {
 		r = json.fromJson(result.getJsonString(), r.getClass());
 		System.out.println("size:" + r.length);
 
+		wsFilter = new WSFilter();
+		wsFilter.setKey("110000");
+		wsFilter.setGeometryWKT("POINT (116.32f 39.97f)");
+		wsFilter.setDistance(500);
 		wsFilter.setKeyword("大学");
 		wsFilter.setPreference("POI");
 		result = new Searching().search(wsFilter);
@@ -34,8 +38,9 @@ public class WSSearchingTest {
 		r = json.fromJson(result.getJsonString(), r.getClass());
 		System.out.println("size:" + r.length);
 
-		wsFilter.setKey(" ");
-		wsFilter.setKeyword(" ");
+		wsFilter = new WSFilter();
+		wsFilter.setGeometryWKT("POINT (116.32f 39.97f)");
+		wsFilter.setDistance(500);
 		wsFilter.setPreference("DIST");
 		result = new Searching().search(wsFilter);
 		System.out.println(result.getJsonString());

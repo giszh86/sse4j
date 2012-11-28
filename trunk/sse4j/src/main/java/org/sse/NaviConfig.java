@@ -1,9 +1,7 @@
 package org.sse;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.net.URLDecoder;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +14,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
 import org.sse.StorageFactory.StorageType;
-import org.sse.util.URLUtil;
 
 /**
  * read navi.xml,then init network(cnotians spatial index)
@@ -47,7 +44,7 @@ public class NaviConfig {
 	static void setWGS() {
 		XMLEventReader reader = null;
 		try {
-			reader = XMLInputFactory.newInstance().createXMLEventReader(new BufferedReader(new FileReader(path())));
+			reader = XMLInputFactory.newInstance().createXMLEventReader(getDefault());
 			while (reader.hasNext()) {
 				XMLEvent e = reader.nextEvent();
 				if (e.isStartElement()) {
@@ -73,7 +70,7 @@ public class NaviConfig {
 		Map<String, Map<String, String>> maps = new HashMap<String, Map<String, String>>();
 		XMLEventReader reader = null;
 		try {
-			reader = XMLInputFactory.newInstance().createXMLEventReader(new BufferedReader(new FileReader(path())));
+			reader = XMLInputFactory.newInstance().createXMLEventReader(getDefault());
 			while (reader.hasNext()) {
 				XMLEvent e = reader.nextEvent();
 				if (e.isStartElement()) {
@@ -129,17 +126,7 @@ public class NaviConfig {
 		}
 	}
 
-	static String path() {
-		File file = URLUtil.getClassPathFile(NaviConfig.class);
-		file = new File(file.getParentFile(), "/cfg/navi.xml");
-		String path = file.getPath();
-		if (path.startsWith("file:"))
-			path = path.substring(5);
-
-		try {
-			return URLDecoder.decode(path, "UTF-8");
-		} catch (Exception e) {
-			return path;
-		}
+	private static Reader getDefault() {
+		return new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream("navi.xml"));
 	}
 }

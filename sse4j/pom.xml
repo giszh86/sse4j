@@ -19,9 +19,11 @@
 	                <exclude>**/*.java</exclude>
 	            </excludes>  
 	        </resource>
+	        <!-- 
 	        <resource>  
 	            <directory>src/main/resources</directory>
 	        </resource>
+	        -->
 	        <resource>  
 	            <directory>src/third</directory>  
 	            <excludes>  

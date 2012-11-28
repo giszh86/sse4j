@@ -1,0 +1,18 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>sse4j</groupId>
+	<artifactId>sse4j.engine</artifactId>
+	<version>2.0.0</version>
+	<packaging>pom</packaging>
+
+	<name>sse4j.engine</name>
+	<url>http://maven.apache.org</url>
+
+	<modules>
+		<module>sse4j</module>
+		<module>sse4j.exe</module>
+		<module>sse4j.http</module>
+		<module>sse4j.ws</module>
+	</modules>
+</project>

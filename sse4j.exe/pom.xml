@@ -25,7 +25,14 @@
 		<dependency>
     		<groupId>com.google.code.gson</groupId>
     		<artifactId>gson</artifactId>
-    		<version>2.2.1</version>
+    		<version>2.2.2</version>
 		</dependency>	
+		<dependency>
+			<groupId>com.vividsolutions</groupId>
+			<artifactId>openjump</artifactId>
+			<version>1.4.2</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/openjump-1.4.2.jar</systemPath>
+		</dependency>
 	</dependencies>
 </project>

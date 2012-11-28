@@ -23,6 +23,7 @@ import org.sse.StorageFactory;
 import org.sse.StorageFactory.StorageType;
 import org.sse.geoc.District;
 import org.sse.geoc.Matcher;
+import org.sse.io.Enums.OccurType;
 import org.sse.map.Tip.TipPoi;
 import org.sse.map.Tip.TipTile;
 import org.sse.squery.Filter;
@@ -136,7 +137,7 @@ public class HotMapper {
 		}
 		Filter filter = new Filter();
 		List<Property> ptyes = new ArrayList<Property>(1);
-		ptyes.add(new Property(PtyName.TITLE, keyword));
+		ptyes.add(new Property(PtyName.TITLE, keyword, OccurType.AND));
 		filter.setProperties(ptyes);
 		filter.setCount(count);
 		filter.setGeometry(extent);
@@ -235,7 +236,7 @@ public class HotMapper {
 		}
 		Filter filter = new Filter();
 		List<Property> ptyes = new ArrayList<Property>(1);
-		ptyes.add(new Property(PtyName.TITLE, keyword));
+		ptyes.add(new Property(PtyName.TITLE, keyword, OccurType.AND));
 		filter.setProperties(ptyes);
 		filter.setCount(count);
 		filter.setGeometry(extent);
@@ -299,7 +300,7 @@ public class HotMapper {
 		}
 		Filter filter = new Filter();
 		List<Property> ptyes = new ArrayList<Property>(1);
-		ptyes.add(new Property(PtyName.TITLE, keyword));
+		ptyes.add(new Property(PtyName.TITLE, keyword, OccurType.AND));
 		filter.setProperties(ptyes);
 		filter.setCount(count);
 		filter.setGeometry(extent);

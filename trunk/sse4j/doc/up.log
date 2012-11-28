@@ -80,3 +80,10 @@ delete lucene-query jar
 optimize IdxParser and SQuery class
 
 --------------------------------------------------------------
+
+2012-11-28
+update third package and optimize AStar and Query function
+many bugfixes and optimizations
+deploy v2.0.0
+
+--------------------------------------------------------------

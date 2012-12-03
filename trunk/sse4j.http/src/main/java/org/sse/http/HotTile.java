@@ -11,12 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.sse.map.HotMapper;
 
 /**
- * Desc:
- * http://<server>:<port>/sse4j/servlet/HotTile?zoom=&x=&y=&type=&keyword=[
- * &key=]
+ * Desc: http://<server>:<port>/sse4j/servlet/HotTile?zoom=&x=&y=&type=&keyword=[ &key=]
  * 
  * @author dux(duxionggis@126.com)
- * 
  */
 public class HotTile extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -26,8 +23,7 @@ public class HotTile extends HttpServlet {
 		super();
 	}
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String type = request.getParameter("type"); // "img" or "js"
 		String x = request.getParameter("x");
 		String y = request.getParameter("y");
@@ -35,22 +31,17 @@ public class HotTile extends HttpServlet {
 		// notice: using encodeURI(keyword) when building http url
 		// tomcat conf/server.xml contains <Connector URIEncoding="UTF-8">
 		String keyword = request.getParameter("keyword");
-		if (x != null && y != null && zoom != null && type != null
-				&& keyword != null) {
+		if (x != null && y != null && zoom != null && type != null && keyword != null) {
 			try {
 				// TODO old method
-				String path = HotMapper.getInstance().createHotmap(
-						Integer.valueOf(zoom), Integer.valueOf(y),
-						Integer.valueOf(x), keyword,
-						request.getParameter("key"));
+				String path = HotMapper.getInstance().createHotmap(Integer.valueOf(zoom), Integer.valueOf(y),
+						Integer.valueOf(x), keyword, request.getParameter("key"));
 				if (type.equalsIgnoreCase("img")) {
 					response.setContentType("image/png");
-					request.getRequestDispatcher(path + ".png").forward(
-							request, response);
+					request.getRequestDispatcher(path + ".png").forward(request, response);
 				} else {
 					response.setContentType("application/javascript;charset=UTF-8");
-					request.getRequestDispatcher(path + ".js").forward(request,
-							response);
+					request.getRequestDispatcher(path + ".js").forward(request, response);
 				}
 
 				// TODO new method
@@ -72,17 +63,14 @@ public class HotTile extends HttpServlet {
 				// out.close();
 				// }
 			} catch (Exception e) {
-				logger.severe("error in x=" + x + "&y=" + y + "&zoom=" + zoom
-						+ "&keyword=" + keyword + "&type=" + type);
+				logger.severe("error in x=" + x + "&y=" + y + "&zoom=" + zoom + "&keyword=" + keyword + "&type=" + type);
 			}
 		} else {
-			logger.warning("x=" + x + "&y=" + y + "&zoom=" + zoom + "&keyword="
-					+ keyword + "&type=" + type);
+			logger.warning("x=" + x + "&y=" + y + "&zoom=" + zoom + "&keyword=" + keyword + "&type=" + type);
 		}
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
 

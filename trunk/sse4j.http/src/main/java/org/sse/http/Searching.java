@@ -43,13 +43,18 @@ public class Searching extends HttpServlet {
 	// 		<preference></preference>
 	// 	</arg0>
 	// </ws:search>
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 1 get parameters
 		String xml = request.getParameter("xml");
 		// System.out.println(xml);
+		String callback = request.getParameter("callback");
+		if (callback != null && !callback.isEmpty()) {
+			JSONPWriter.write(this.excute(XmlParser.getDocument(xml)), response, callback);
+			return;
+		}
+		
 		String gzip = request.getParameter("gzip");
-		boolean zip = (gzip == null ? true : gzip.equalsIgnoreCase("true"));		
+		boolean zip = (gzip == null ? true : gzip.equalsIgnoreCase("true"));
 		try {
 			// 2 write
 			GZipWriter.write(this.excute(XmlParser.getDocument(xml)), response, zip);
@@ -60,13 +65,16 @@ public class Searching extends HttpServlet {
 			GZipWriter.write(result, response, zip);
 		}
 	}
+	
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doPost(request, response);
+	}
 
 	private WSResult excute(Document doc) {
 		if (doc == null)
 			return null;
 		String firstTag = doc.getDocumentElement().getTagName();
-		NodeList list = doc.getDocumentElement().getFirstChild()
-				.getChildNodes();
+		NodeList list = doc.getDocumentElement().getFirstChild().getChildNodes();
 		if (firstTag == null || list == null || list.getLength() == 0)
 			return null;
 		if (firstTag.equalsIgnoreCase("ws:poiInfo")) {

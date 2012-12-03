@@ -45,11 +45,16 @@ public class Matching extends HttpServlet {
 	//	    </startPoint>            
 	//	  </arg0>
 	//	</ws:roadMatch>
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 1 get parameters
 		String xml = request.getParameter("xml");
 		// System.out.println(xml);
+		String callback = request.getParameter("callback");
+		if (callback != null && !callback.isEmpty()) {
+			JSONPWriter.write(this.excute(XmlParser.getDocument(xml)), response, callback);
+			return;
+		}
+		
 		String gzip = request.getParameter("gzip");
 		boolean zip = (gzip == null ? true : gzip.equalsIgnoreCase("true"));
 		try {
@@ -63,12 +68,15 @@ public class Matching extends HttpServlet {
 		}
 	}
 	
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doPost(request, response);
+	}
+
 	private WSResult excute(Document doc) {
-		if(doc==null)
+		if (doc == null)
 			return null;
 		String firstTag = doc.getDocumentElement().getTagName();
-		NodeList list = doc.getDocumentElement().getFirstChild()
-				.getChildNodes();
+		NodeList list = doc.getDocumentElement().getFirstChild().getChildNodes();
 		if (firstTag == null || list == null || list.getLength() == 0)
 			return null;
 		if (firstTag.equalsIgnoreCase("ws:districtMatch")) {
@@ -91,7 +99,7 @@ public class Matching extends HttpServlet {
 			String val = null;
 			for (int i = 0; i < list.getLength(); i++) {
 				name = list.item(i).getNodeName();
-				if (name.equalsIgnoreCase("endPoint")) {					
+				if (name.equalsIgnoreCase("endPoint")) {
 					NodeList ends = list.item(i).getChildNodes();
 					if (ends != null && ends.getLength() > 0) {
 						WSPointF end = new WSPointF();
@@ -106,7 +114,7 @@ public class Matching extends HttpServlet {
 						}
 						filter.setEndPoint(end);
 					}
-				} else if (name.equalsIgnoreCase("startPoint")) {				
+				} else if (name.equalsIgnoreCase("startPoint")) {
 					NodeList starts = list.item(i).getChildNodes();
 					if (starts != null && starts.getLength() > 0) {
 						WSPointF start = new WSPointF();

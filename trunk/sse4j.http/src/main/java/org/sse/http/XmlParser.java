@@ -8,19 +8,15 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 
 /**
- * 
  * @author dux(duxionggis@126.com)
- * 
  */
 class XmlParser {
-	private static DocumentBuilderFactory factory = DocumentBuilderFactory
-			.newInstance();
+	private static DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
 	public static Document getDocument(String xml) {
 		try {
 			return factory.newDocumentBuilder().parse(
-					new BufferedInputStream(new ByteArrayInputStream(xml
-							.getBytes(GZipWriter.charset))));
+					new BufferedInputStream(new ByteArrayInputStream(xml.getBytes(GZipWriter.charset))));
 		} catch (Exception ex) {
 			return null;
 		}

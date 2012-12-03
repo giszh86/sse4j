@@ -25,9 +25,8 @@ class GZipWriter {
 	// 	 <jsonString></jsonString>
 	// 	 <resultCode></resultCode>
 	// </return>
-	public static void write(WSResult result, HttpServletResponse response, boolean zip)
-			throws IOException {
-		StringBuffer sb = new StringBuffer();	
+	public static void write(WSResult result, HttpServletResponse response, boolean zip) throws IOException {
+		StringBuffer sb = new StringBuffer();
 		sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		if (result == null) {
 			sb.append("<return><faultString>null</faultString>");
@@ -35,17 +34,14 @@ class GZipWriter {
 			sb.append("<resultCode>0</resultCode></return>");
 		} else {
 			sb.append("<return><faultString>").append(result.getFaultString());
-			sb.append("</faultString><jsonString>").append(
-					result.getJsonString());
-			sb.append("</jsonString><resultCode>").append(
-					result.getResultCode());
+			sb.append("</faultString><jsonString>").append(result.getJsonString());
+			sb.append("</jsonString><resultCode>").append(result.getResultCode());
 			sb.append("</resultCode></return>");
 		}
 
 		response.setCharacterEncoding(charset);
 		if (zip) {
-			response.setHeader("Content-disposition", "attachment;filename="
-					+ System.currentTimeMillis() + ".zip");
+			response.setHeader("Content-disposition", "attachment;filename=" + System.currentTimeMillis() + ".zip");
 			response.setContentType(contentTypeZip);
 			OutputStream ops = response.getOutputStream();
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -67,4 +63,5 @@ class GZipWriter {
 			out.close();
 		}
 	}
+
 }

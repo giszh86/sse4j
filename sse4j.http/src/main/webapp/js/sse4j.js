@@ -1,9 +1,9 @@
 var BaseUrl = 'http://localhost:8080/sse4j/';
-var LocatingUrl = BaseUrl+'servlet/Locating?gzip=false';
-var SearchingUrl = BaseUrl+'servlet/Searching?gzip=false';
-var RoutingUrl = BaseUrl+'servlet/Routing?gzip=false';
-var MatchingUrl = BaseUrl+'servlet/Matching?gzip=false';
-var HotMapUrl = BaseUrl+'servlet/HotTile?';
+var LocatingUrl = BaseUrl+'sse/Locating?gzip=false';
+var SearchingUrl = BaseUrl+'sse/Searching?gzip=false';
+var RoutingUrl = BaseUrl+'sse/Routing?gzip=false';
+var MatchingUrl = BaseUrl+'sse/Matching?gzip=false';
+var HotMapUrl = BaseUrl+'sse/HotTile?';
 var UrlStart = '<?xml version="1.0" encoding="UTF-8"?>';
 var UrlEnd = '';
 

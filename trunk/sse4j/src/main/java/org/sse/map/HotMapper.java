@@ -170,7 +170,7 @@ public class HotMapper {
 				int py = tp.getY() - icon.getHeight() / 2;
 				graph.drawImage(icon, null, px, py);
 
-				if (px >= 0 && py >= 0 && px <= Google.getSize() && py <= Google.getSize()) {
+				if (tp.getX() >= 0 && tp.getY() >= 0 && tp.getX() < Google.getSize() && tp.getY() < Google.getSize()) {
 					int index = tips.indexOf(tp);
 					if (index >= 0) {
 						tips.get(index).addSub(tp.clone());
@@ -278,7 +278,7 @@ public class HotMapper {
 	 * @return js string
 	 * @throws Exception
 	 */
-	public String getTileJS(int zoom, int x, int y, String keyword, String key) throws Exception {
+	public String getTileJS(int zoom, int x, int y, String keyword, String key, String callback) throws Exception {
 		// tile extent
 		EarthPos min = Google.pixelToDegree(x * Google.getSize(), (y + 1) * Google.getSize(), zoom);
 		EarthPos max = Google.pixelToDegree((x + 1) * Google.getSize(), y * Google.getSize(), zoom);
@@ -343,6 +343,7 @@ public class HotMapper {
 		tt.setY(y);
 		tt.setTips(tips);
 
-		return ("hotMapTip(" + new Gson().toJson(tt) + ");");
+		callback = ((callback == null || callback.isEmpty()) ? "hotMapTip" : callback);
+		return (callback + "(" + new Gson().toJson(tt) + ");");
 	}
 }

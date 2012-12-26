@@ -12,22 +12,20 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.TieredMergePolicy;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
+import org.sse.geo.AttributeType;
 import org.sse.geo.Feature;
 import org.sse.geo.FeatureCollection;
 import org.sse.io.Enums.AnalyzerType;
+import org.sse.squery.PtyName;
 
 /**
  * @author dux(duxionggis@126.com)
  */
 public class IdxWriter {
-	private Analyzer analyzer;
+	private IndexWriter writer;
 
-	public IdxWriter() {
-		analyzer = IdxParser.getInstance().getAnalyzer(AnalyzerType.SMARTCN);
-	}
-
-	public void setAnalyzer(Analyzer analyzer) {
-		this.analyzer = analyzer;
+	public IdxWriter(String idxPath, AnalyzerType type) {
+		writer = this.build(idxPath, IdxParser.getInstance().getAnalyzer(AnalyzerType.IK));
 	}
 
 	/**
@@ -35,16 +33,14 @@ public class IdxWriter {
 	 *            FeatureCollection
 	 * @param analyzedFields
 	 *            list of attributename
-	 * @param idxPath
 	 */
-	public void create(FeatureCollection fc, List<String> analyzedFields, String idxPath) {
-		IndexWriter writer = this.build(idxPath);
+	public void create(FeatureCollection fc, List<String> analyzedFields) {
 		if (writer == null)
 			return;
 		for (Iterator<Feature> i = fc.iterator(); i.hasNext();) {
-			this.write(i.next(), writer, analyzedFields);
+			this.write(i.next(), analyzedFields);
 		}
-		this.close(writer);
+		this.close();
 	}
 
 	/**
@@ -64,7 +60,7 @@ public class IdxWriter {
 	 * @param idxPath
 	 * @return
 	 */
-	public IndexWriter build(String idxPath) {
+	private IndexWriter build(String idxPath, Analyzer analyzer) {
 		try {
 			TieredMergePolicy mergePolicy = new TieredMergePolicy();
 			mergePolicy.setNoCFSRatio(1.0);
@@ -82,35 +78,40 @@ public class IdxWriter {
 	/**
 	 * @param f
 	 *            Feature
-	 * @param writer
-	 *            IndexWriter
 	 * @param analyzedFields
 	 *            list of attributename
 	 */
-	public void write(Feature f, IndexWriter writer, List<String> analyzedFields) {
-		if (analyzedFields == null || analyzedFields.size() == 0) {
+	public void write(Feature f, List<String> analyzedFields) {
+		if (writer == null)
 			return;
-		}
 		try {
+			boolean afNull = (analyzedFields == null || analyzedFields.size() == 0);
 			Document doc = new Document();
 			for (int i = 0; i < f.getSchema().getAttributeCount(); i++) {
 				String name = f.getSchema().getAttributeName(i);
-				if (analyzedFields.contains(name)) {
+				if (!afNull && analyzedFields.contains(name)) {
 					doc.add(new Field(name, f.getString(i), Field.Store.YES, Field.Index.ANALYZED_NO_NORMS));
 				} else {
-					doc.add(new Field(name, f.getString(i), Field.Store.YES, Field.Index.NOT_ANALYZED_NO_NORMS));
+					AttributeType attrib = f.getSchema().getAttributeType(i);
+					if (attrib == AttributeType.STRING && afNull) {
+						doc.add(new Field(name, f.getString(i), Field.Store.YES, Field.Index.ANALYZED_NO_NORMS));
+					} else {
+						doc.add(new Field(name, f.getString(i), Field.Store.YES, Field.Index.NOT_ANALYZED_NO_NORMS));
+					}
 				}
 			}
 			// geometry
 			String str = f.getGeometry().toString();
-			doc.add(new Field("GEOMETRY", str, Field.Store.YES, Field.Index.NOT_ANALYZED_NO_NORMS));
+			doc.add(new Field(PtyName.GID, str, Field.Store.YES, Field.Index.NOT_ANALYZED_NO_NORMS));
 			writer.addDocument(doc);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("write index error:" + e);
 		}
 	}
 
-	public void close(IndexWriter writer) {
+	public void close() {
+		if (writer == null)
+			return;
 		try {
 			writer.forceMerge(1);// TODO
 			writer.close();

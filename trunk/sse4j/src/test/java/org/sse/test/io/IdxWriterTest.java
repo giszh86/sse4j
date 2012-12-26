@@ -3,6 +3,7 @@ package org.sse.test.io;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.sse.io.Enums.AnalyzerType;
 import org.sse.io.IdxWriter;
 import org.sse.geo.AttributeType;
 import org.sse.geo.Feature;
@@ -34,11 +35,11 @@ public class IdxWriterTest {
 		}
 
 		String idxpath = "D:/temp/parking";
-		IdxWriter iw = new IdxWriter();
+		IdxWriter iw = new IdxWriter(idxpath, AnalyzerType.SMARTCN);
 		List<String> fields = new LinkedList<String>();
 		fields.add("NAME");
 
-		iw.create(fc, fields, idxpath);
+		iw.create(fc, fields);
 
 	}
 }

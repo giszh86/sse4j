@@ -51,9 +51,9 @@ public class Spiderer {
 		ConcurrentLinkedQueue<Callable<SECResult>> tasks = new ConcurrentLinkedQueue<Callable<SECResult>>();
 		// TODO
 		List<Future<SECResult>> fr = es.invokeAll(tasks, 30, TimeUnit.SECONDS);
-		for (Iterator<Future<SECResult>> i = fr.iterator(); i.hasNext();) {
+		for (Iterator<Future<SECResult>> it = fr.iterator(); it.hasNext();) {
 			try {
-				SECResult r = i.next().get();
+				SECResult r = it.next().get();
 				for (Iterator<Item> ii = r.getLinks().iterator(); ii.hasNext();) {
 					Item item = ii.next();
 					if (!result.contains(item)) {

@@ -51,8 +51,8 @@ class SQuery {
 				if (ids != null && ids.size() > 0) {
 					if (tQuery == null) {
 						List<Term> tterms = new ArrayList<Term>(ids.size());
-						for (Iterator i = ids.iterator(); i.hasNext();) {
-							tterms.add(new Term(PtyName.OID, i.next().toString()));
+						for (Iterator it = ids.iterator(); it.hasNext();) {
+							tterms.add(new Term(PtyName.OID, it.next().toString()));
 						}
 						return reader.query(tterms);
 					} else {

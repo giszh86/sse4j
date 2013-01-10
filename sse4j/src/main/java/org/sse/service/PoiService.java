@@ -39,8 +39,8 @@ public class PoiService implements IPoiService {
 			List<Poi> pois = new ArrayList<Poi>();
 
 			// geometry intersection
-			for (Iterator<Document> i = docs.iterator(); i.hasNext();) {
-				this.add(pois, i.next(), geo);
+			for (Iterator<Document> it = docs.iterator(); it.hasNext();) {
+				this.add(pois, it.next(), geo);
 				if (pois.size() == filter.getCount())
 					break;
 			}
@@ -73,49 +73,6 @@ public class PoiService implements IPoiService {
 		} else {
 			throw new Exception("not found!");
 		}
-	}
-
-	public String jsonSearch(Filter filter, String key) throws Exception {
-		Storage storage = (Storage) StorageFactory.getInstance().getStorage(key, StorageType.POI);
-		if (storage == null)
-			throw new Exception("not found poi data!");
-		if (filter == null)
-			throw new Exception("not found!");
-		if (filter.getProperties() == null && filter.getGeometry() == null)
-			throw new Exception("not found!");
-		Geometry geo = filter.getGeometry();
-		MercatorUtil.toMercator(geo, true);
-		List<Document> docs = Searcher.getInstance().search(storage.getKey(), filter);
-		if (docs != null && docs.size() > 0) {
-			// geometry intersection
-			int count = 1;
-			StringBuffer sb = new StringBuffer();
-			Poi poi = new Poi();
-			sb.append("[");
-			for (Iterator<Document> i = docs.iterator(); i.hasNext();) {
-				Document doc = i.next();
-				Geometry g = MercatorUtil.toGeometry(doc.get(PoiPtyName.GID), NaviConfig.WGS);
-				if ((geo != null && geo.intersects(g)) || (geo == null)) {
-					poi.setId(doc.get(PoiPtyName.OID));
-					poi.setName(doc.get(PoiPtyName.NAMEC));
-					poi.setKind(doc.get(PoiPtyName.KIND));
-					poi.setPhone(doc.get(PoiPtyName.TEL));
-					poi.setRemark(doc.get(PoiPtyName.NAMEP));
-					poi.setAddress(doc.get(PoiPtyName.ADDRESS));
-					poi.setVertex(MercatorUtil.toPoint(g.getCoordinate(), false).toString());
-
-					sb.append(poi.toString());
-					sb.append(",");
-					if (count == filter.getCount())
-						break;
-					count += 1;
-				}
-			}
-			sb.delete(sb.length() - 1, sb.length());
-			sb.append("]");
-			return sb.toString();
-		}
-		throw new Exception("not found!");
 	}
 
 	private void add(List<Poi> pois, Document doc, Geometry geo) {

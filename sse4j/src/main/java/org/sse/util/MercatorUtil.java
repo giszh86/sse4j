@@ -17,8 +17,8 @@ public class MercatorUtil {
 		if (wgs && g != null) {
 			for (Coordinate coord : g.getCoordinates()) {
 				EarthPos pos = Google.degreeToGoog(coord.x, coord.y);
-				coord.x = (int) pos.xLon;
-				coord.y = (int) pos.yLat;
+				coord.x = Math.round(pos.xLon * 100) / 100;
+				coord.y = Math.round(pos.yLat * 100) / 100;
 			}
 		}
 	}
@@ -55,9 +55,9 @@ public class MercatorUtil {
 	public static org.sse.geo.Point toPoint(Coordinate coord, boolean wgs) {
 		if (wgs) {
 			EarthPos pos = Google.degreeToGoog(coord.x, coord.y);
-			return new org.sse.geo.Point((int) pos.xLon, (int) pos.yLat);
+			return new org.sse.geo.Point((int) Math.round(pos.xLon), (int) Math.round(pos.yLat));
 		} else {
-			return new org.sse.geo.Point((int) coord.x, (int) coord.y);
+			return new org.sse.geo.Point((int) Math.round(coord.x), (int) Math.round(coord.y));
 		}
 	}
 

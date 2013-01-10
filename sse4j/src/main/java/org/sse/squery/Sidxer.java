@@ -74,8 +74,8 @@ class Sidxer {
 		fis.close();
 
 		tree = null;
-		for (Iterator<Sidx> i = lsidx.iterator(); i.hasNext();) {
-			Sidx key = i.next();
+		for (Iterator<Sidx> it = lsidx.iterator(); it.hasNext();) {
+			Sidx key = it.next();
 			if (tree == null) {
 				boolean isPt = ((key.getX1() == key.getX2()) && (key.getY1() == key.getY2()));
 				tree = new STree(isPt);

@@ -18,16 +18,16 @@ class NaviThreadPool {
 	}
 
 	static boolean check(String key) {
-		for (Iterator<Thread> i = threads.iterator(); i.hasNext();) {
-			if (i.next().getName().equalsIgnoreCase(key))
+		for (Iterator<Thread> it = threads.iterator(); it.hasNext();) {
+			if (it.next().getName().equalsIgnoreCase(key))
 				return true;
 		}
 		return false;
 	}
 
 	static Thread get(String key) {
-		for (Iterator<Thread> i = threads.iterator(); i.hasNext();) {
-			Thread e = i.next();
+		for (Iterator<Thread> it = threads.iterator(); it.hasNext();) {
+			Thread e = it.next();
 			if (e.getName().equalsIgnoreCase(key)) {
 				return e;
 			}
@@ -36,8 +36,8 @@ class NaviThreadPool {
 	}
 
 	static boolean runnable(String key) {
-		for (Iterator<Thread> i = threads.iterator(); i.hasNext();) {
-			Thread e = i.next();
+		for (Iterator<Thread> it = threads.iterator(); it.hasNext();) {
+			Thread e = it.next();
 			if (e.getName().equalsIgnoreCase(key) && e.getState() == Thread.State.RUNNABLE) {
 				return true;
 			}

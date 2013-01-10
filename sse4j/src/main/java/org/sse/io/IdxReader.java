@@ -53,15 +53,6 @@ public class IdxReader {
 		}
 	}
 
-	// /**
-	// *
-	// * @return MultiReader object
-	// */
-	// public IndexReader getReader() {
-	// int idx = (int) (System.currentTimeMillis() % mis.length);
-	// return mis[idx].getIndexReader();
-	// }
-
 	/**
 	 * @param index
 	 * @return MultiReader object
@@ -149,8 +140,8 @@ public class IdxReader {
 			int idx = (int) (System.currentTimeMillis() % mis.length);
 			IndexReader mReader = getReader(idx);
 			List<Document> docs = new ArrayList<Document>();
-			for (Iterator<Term> i = terms.iterator(); i.hasNext();) {
-				Term term = i.next();
+			for (Iterator<Term> it = terms.iterator(); it.hasNext();) {
+				Term term = it.next();
 				if (term != null) {
 					TermDocs td = mReader.termDocs(term);
 					while (td.next())

@@ -149,8 +149,8 @@ public class HotMapper {
 		if (result != null && result.size() > 0) {
 			Graphics2D graph = (Graphics2D) image.getGraphics();
 			WKTReader reader = new WKTReader();
-			for (Iterator<Document> i = result.iterator(); i.hasNext();) {
-				Document doc = i.next();
+			for (Iterator<Document> it = result.iterator(); it.hasNext();) {
+				Document doc = it.next();
 
 				TipPoi tp = new TipPoi();
 				tp.setId(doc.get(PtyName.OID));
@@ -164,8 +164,8 @@ public class HotMapper {
 				gp = Google.degreeToPixel(gp.xLon, gp.yLat, zoom);
 				gp.xLon = gp.xLon - x * Google.getSize();
 				gp.yLat = gp.yLat - y * Google.getSize();
-				tp.setX((int) gp.xLon);
-				tp.setY((int) gp.yLat);
+				tp.setX((int) Math.round(gp.xLon));
+				tp.setY((int) Math.round(gp.yLat));
 				int px = tp.getX() - icon.getWidth() / 2;
 				int py = tp.getY() - icon.getHeight() / 2;
 				graph.drawImage(icon, null, px, py);
@@ -246,8 +246,8 @@ public class HotMapper {
 		if (result != null && result.size() > 0) {
 			Graphics2D graph = (Graphics2D) image.getGraphics();
 			WKTReader reader = new WKTReader();
-			for (Iterator<Document> i = result.iterator(); i.hasNext();) {
-				Document doc = i.next();
+			for (Iterator<Document> it = result.iterator(); it.hasNext();) {
+				Document doc = it.next();
 
 				Geometry g = reader.read(doc.get(PtyName.GID));
 				EarthPos gp = new EarthPos(g.getCoordinate().x, g.getCoordinate().y);
@@ -257,8 +257,8 @@ public class HotMapper {
 				gp = Google.degreeToPixel(gp.xLon, gp.yLat, zoom);
 				gp.xLon = gp.xLon - x * Google.getSize();
 				gp.yLat = gp.yLat - y * Google.getSize();
-				int px = (int) gp.xLon - icon.getWidth() / 2;
-				int py = (int) gp.yLat - icon.getHeight() / 2;
+				int px = (int) Math.round(gp.xLon) - icon.getWidth() / 2;
+				int py = (int) Math.round(gp.yLat) - icon.getHeight() / 2;
 				graph.drawImage(icon, null, px, py);
 			}
 		}
@@ -310,8 +310,8 @@ public class HotMapper {
 		// create js
 		if (result != null && result.size() > 0) {
 			WKTReader reader = new WKTReader();
-			for (Iterator<Document> i = result.iterator(); i.hasNext();) {
-				Document doc = i.next();
+			for (Iterator<Document> it = result.iterator(); it.hasNext();) {
+				Document doc = it.next();
 
 				TipPoi tp = new TipPoi();
 				tp.setId(doc.get(PtyName.OID));
@@ -325,8 +325,8 @@ public class HotMapper {
 				gp = Google.degreeToPixel(gp.xLon, gp.yLat, zoom);
 				gp.xLon = gp.xLon - x * Google.getSize();
 				gp.yLat = gp.yLat - y * Google.getSize();
-				tp.setX((int) gp.xLon);
-				tp.setY((int) gp.yLat);
+				tp.setX((int) Math.round(gp.xLon));
+				tp.setY((int) Math.round(gp.yLat));
 
 				int index = tips.indexOf(tp);
 				if (index >= 0) {

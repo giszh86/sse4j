@@ -54,8 +54,8 @@ public class Searching {
 			int count = 1;
 			StringBuffer sb = new StringBuffer();
 			sb.append("[");
-			for (Iterator<Document> i = docs.iterator(); i.hasNext();) {
-				Document doc = i.next();
+			for (Iterator<Document> it = docs.iterator(); it.hasNext();) {
+				Document doc = it.next();
 				Geometry g = MercatorUtil.toGeometry(doc.get(PtyName.GID), NaviConfig.WGS);
 				if ((geo != null && geo.intersects(g)) || (geo == null)) {
 					sb.append("{");
@@ -63,8 +63,8 @@ public class Searching {
 					sb.append("\"title\":\"" + doc.get(PtyName.TITLE) + "\",");
 
 					for (Coordinate c : g.getCoordinates()) {
-						c.x = (int) c.x;
-						c.y = (int) c.y;
+						c.x = (int) Math.round(c.x);
+						c.y = (int) Math.round(c.y);
 					}
 					sb.append("\"wkt\":\"" + g.toString() + "\"");
 					sb.append("}");

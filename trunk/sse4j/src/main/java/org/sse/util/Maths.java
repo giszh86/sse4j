@@ -54,7 +54,7 @@ public strictfp class Maths {
 		for (int i = 0; i < pts.size() - 1; i++) {
 			dis += getDistance(pts.get(i).x, pts.get(i).y, pts.get(i + 1).x, pts.get(i + 1).y);
 		}
-		return (int) dis;
+		return (int) Math.round(dis);
 	}
 
 	public static Point getVertical(Point a, Point b, Point c) {
@@ -65,7 +65,7 @@ public strictfp class Maths {
 		float f = (abx * acx + aby * acy) / (abx * abx + aby * aby);
 		float x = a.x + f * abx;
 		float y = a.y + f * aby;
-		return new Point((int) x, (int) y);
+		return new Point((int) Math.round(x), (int) Math.round(y));
 	}
 
 	public static IndexPoint getVerticalIndex(List<Point> coords, Point point) {
@@ -154,7 +154,7 @@ public strictfp class Maths {
 			angle += 180;
 		if (angle < 0)
 			angle += 360;
-		return (int) angle;
+		return (int) Math.round(angle);
 	}
 
 	public static float getCost(int len, int rc, int ra, int lf) {

@@ -69,8 +69,8 @@ public class StorageFactory {
 				Map<String, Map<String, String>> maps;
 				maps = NaviConfig.getMap(type.name().toLowerCase() + "es", type.name().toLowerCase());
 
-				for (Iterator<String> i = maps.keySet().iterator(); i.hasNext();) {
-					String key = i.next();
+				for (Iterator<String> it = maps.keySet().iterator(); it.hasNext();) {
+					String key = it.next();
 					if (!storages.get(type).containsKey(key)) {
 						try {
 							IStorage stg = StorageBuilderer.Find(type).create(maps.get(key));

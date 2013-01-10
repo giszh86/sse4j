@@ -87,8 +87,8 @@ public class IdxParser {
 		List<String> texts = new ArrayList<String>(terms.size());
 		List<String> fields = new ArrayList<String>(terms.size());
 		List<BooleanClause.Occur> flags = new ArrayList<BooleanClause.Occur>(terms.size());
-		for (Iterator<Property> i = terms.iterator(); i.hasNext();) {
-			Property term = i.next();
+		for (Iterator<Property> it = terms.iterator(); it.hasNext();) {
+			Property term = it.next();
 			if (term != null) {
 				texts.add(term.getText());
 				fields.add(term.getField());
@@ -108,10 +108,10 @@ public class IdxParser {
 	}
 
 	public static void spatialQuery(Envelope envelope, BooleanQuery bQuery) {
-		Query minxQ = new TermRangeQuery(PtyName.CENX, String.valueOf((int) envelope.getMinX()), String.valueOf((int) envelope
-				.getMaxX()), true, true);
-		Query minyQ = new TermRangeQuery(PtyName.CENY, String.valueOf((int) envelope.getMinY()), String.valueOf((int) envelope
-				.getMaxY()), true, true);
+		Query minxQ = new TermRangeQuery(PtyName.CENX, String.valueOf((int) Math.floor(envelope.getMinX())), String.valueOf((int) Math
+				.round(envelope.getMaxX())), true, true);
+		Query minyQ = new TermRangeQuery(PtyName.CENY, String.valueOf((int) Math.floor(envelope.getMinY())), String.valueOf((int) Math
+				.round(envelope.getMaxY())), true, true);
 		bQuery.add(minxQ, BooleanClause.Occur.MUST);
 		bQuery.add(minyQ, BooleanClause.Occur.MUST);
 	}

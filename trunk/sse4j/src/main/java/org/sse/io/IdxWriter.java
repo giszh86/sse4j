@@ -37,8 +37,8 @@ public class IdxWriter {
 	public void create(FeatureCollection fc, List<String> analyzedFields) {
 		if (writer == null)
 			return;
-		for (Iterator<Feature> i = fc.iterator(); i.hasNext();) {
-			this.write(i.next(), analyzedFields);
+		for (Iterator<Feature> it = fc.iterator(); it.hasNext();) {
+			this.write(it.next(), analyzedFields);
 		}
 		this.close();
 	}

@@ -20,8 +20,8 @@ class RouteSegmentManager {
 			return dataset;
 		Map<Integer, Float> ctls = new HashMap<Integer, Float>();
 		if (controls != null) {
-			for (Iterator<TrafficCtl> i = controls.iterator(); i.hasNext();) {
-				TrafficCtl ctl = i.next();
+			for (Iterator<TrafficCtl> it = controls.iterator(); it.hasNext();) {
+				TrafficCtl ctl = it.next();
 				if (ctl.getSpeed() > 0)
 					ctls.put(ctl.getRoadId(), ctl.getSpeed());
 			}
@@ -43,8 +43,8 @@ class RouteSegmentManager {
 				}
 				speed = speeds / seg.getIds().size();// none weighted mean
 			}
-			seg.setSpeed((int) speed);
-			seg.setCost((int) Maths.getCost(seg.getLength(), speed, seg.getLightFlag()));
+			seg.setSpeed((int) Math.round(speed));
+			seg.setCost((int) Math.round(Maths.getCost(seg.getLength(), speed, seg.getLightFlag())));
 			dis += seg.getLength();
 			cost += seg.getCost();
 			seg.setSAngle(Maths.getAngle(seg.getPoints(), 1));
@@ -234,8 +234,8 @@ class RouteSegmentManager {
 
 	private static List<Point> toArrayPts(List<Point> temp) {
 		List<Point> result = new ArrayList<Point>(temp.size());
-		for (Iterator<Point> i = temp.iterator(); i.hasNext();)
-			result.add(i.next().clone()); // Seg and Guid maybe minus or plus pt
+		for (Iterator<Point> it = temp.iterator(); it.hasNext();)
+			result.add(it.next().clone()); // Seg and Guid maybe minus or plus pt
 		temp.clear();
 		temp = null;
 		return result;

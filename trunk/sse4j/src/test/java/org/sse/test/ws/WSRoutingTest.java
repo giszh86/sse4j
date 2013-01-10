@@ -34,8 +34,8 @@ public class WSRoutingTest {
 		WSResult result = new Routing().webPlan(router);
 		System.out.println(result.getJsonString());
 		FeatureCollection fc = new RGUID2FC().to(result.getJsonString());
-		for (Iterator<Feature> i = fc.iterator(); i.hasNext();) {
-			Feature f = i.next();
+		for (Iterator<Feature> it = fc.iterator(); it.hasNext();) {
+			Feature f = it.next();
 			System.out.println(f.getAttribute(0) + "_" + f.getGeometry());
 		}
 	}

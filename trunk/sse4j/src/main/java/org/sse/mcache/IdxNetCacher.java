@@ -87,7 +87,7 @@ public class IdxNetCacher {
 			Document doc = edgeReader.getReader(0).document(edgedocs.doc());
 			Geometry g = MercatorUtil.toGeometry(doc.get(EdgePtyName.GID), NaviConfig.WGS);
 			Edge edge = this.createEdge(doc);
-			edge.setLength((int) g.getLength());
+			edge.setLength((int) Math.round(g.getLength()));
 			edges.add(edge);
 			if (edgecache) {
 				edgeTree.insert(g.getEnvelopeInternal(), edge.getId());

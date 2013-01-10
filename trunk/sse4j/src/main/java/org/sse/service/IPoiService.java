@@ -30,13 +30,4 @@ public interface IPoiService {
 	 */
 	public Poi tipInfo(String id, String key) throws Exception;
 
-	/**
-	 * same as search(...),but save memory
-	 * 
-	 * @param filter
-	 * @param key
-	 * @return json format poi List
-	 * @throws Exception
-	 */
-	public String jsonSearch(Filter filter, String key) throws Exception;
 }

@@ -17,8 +17,8 @@ public class MercatorUtil {
 		if (wgs && g != null) {
 			for (Coordinate coord : g.getCoordinates()) {
 				EarthPos pos = Google.degreeToGoog(coord.x, coord.y);
-				coord.x = Math.round(pos.xLon * 100) / 100;
-				coord.y = Math.round(pos.yLat * 100) / 100;
+				coord.x = Math.round(pos.xLon * 1.0e2) / 1.0e2;
+				coord.y = Math.round(pos.yLat * 1.0e2) / 1.0e2;
 			}
 		}
 	}

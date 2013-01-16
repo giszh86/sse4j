@@ -19,12 +19,10 @@
 	                <exclude>**/*.java</exclude>
 	            </excludes>  
 	        </resource>
-	        <!-- 
 	        <resource>  
 	            <directory>src/main/resources</directory>
 	        </resource>
-	        -->
-	        <resource>  
+	        <resource>
 	            <directory>src/third</directory>  
 	            <excludes>  
 	                <exclude>**/*.java</exclude>
@@ -33,6 +31,7 @@
 	    </resources>
 		<plugins>
 	    	<plugin>
+	    		<groupId>org.apache.maven.plugins</groupId>
 	    		<artifactId>maven-compiler-plugin</artifactId>
 	    		<configuration>
 	    			<encoding>UTF-8</encoding>
@@ -41,7 +40,6 @@
 	    	<plugin>
 		    	<groupId>org.codehaus.mojo</groupId>
 		    	<artifactId>build-helper-maven-plugin</artifactId>
-		    	<version>1.7</version>
 		    	<executions>
 			    	<execution>
 				    	<id>add-source</id>

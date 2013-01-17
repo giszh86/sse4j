@@ -330,7 +330,7 @@ public class HotMapper {
 
 				int index = tips.indexOf(tp);
 				if (index >= 0) {
-					tips.get(index).addSub(tp);
+					tips.get(index).addSub(tp.clone());
 				} else {
 					tips.add(tp);
 				}

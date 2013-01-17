@@ -31,11 +31,10 @@ class Tip {
 		}
 
 		public TipPoiBase clone() {
-			try {
-				return (TipPoiBase) super.clone();
-			} catch (CloneNotSupportedException e1) {
-				return null;
-			}
+			TipPoiBase base = new TipPoiBase();
+			base.setId(this.id);
+			base.setTitle(this.title);
+			return base;
 		}
 	}
 

@@ -68,13 +68,13 @@
 	</build>
 	
 	<dependencies>
-		<dependency>
+		<!--dependency>
 			<groupId>ikanalyzer</groupId>
 			<artifactId>ikanalyzer</artifactId>
 			<version>2012u6</version>
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/ikanalyzer-2012u6.jar</systemPath>
-		</dependency>
+		</dependency-->
 		<dependency>
 			<groupId>com.vividsolutions</groupId>
 			<artifactId>jts</artifactId>
@@ -93,12 +93,7 @@
 		<dependency>
     		<groupId>org.apache.lucene</groupId>
     		<artifactId>lucene-core</artifactId>
-    		<version>3.6.1</version>
-		</dependency>
-		<dependency>
-    		<groupId>org.apache.lucene</groupId>
-    		<artifactId>lucene-smartcn</artifactId>
-    		<version>3.6.1</version>
+    		<version>3.6.2</version>
 		</dependency>
 	</dependencies>
 		

@@ -3,8 +3,8 @@ package org.sse.test.geoc;
 import java.util.Date;
 
 import org.sse.NaviConfig;
-import org.sse.geoc.District;
-import org.sse.geoc.Matcher;
+import org.sse.service.gc.District;
+import org.sse.service.gc.Matcher;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;

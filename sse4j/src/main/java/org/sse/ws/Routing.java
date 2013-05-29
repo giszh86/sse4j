@@ -2,9 +2,9 @@ package org.sse.ws;
 
 import org.sse.NaviConfig;
 import org.sse.ServiceFactory;
-import org.sse.geoc.District;
-import org.sse.geoc.Matcher;
-import org.sse.service.IRouteService;
+import org.sse.service.gc.District;
+import org.sse.service.gc.Matcher;
+import org.sse.service.rp.IRouteService;
 import org.sse.ws.base.WSBuilder;
 import org.sse.ws.base.WSResult;
 import org.sse.ws.base.WSRouteDataSet;

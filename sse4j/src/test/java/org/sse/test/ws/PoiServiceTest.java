@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.sse.NaviConfig;
 import org.sse.ServiceFactory;
-import org.sse.io.Enums.AnalyzerType;
-import org.sse.io.Enums.OccurType;
-import org.sse.service.IPoiService;
+import org.sse.idx.base.Enums.AnalyzerType;
+import org.sse.idx.base.Enums.OccurType;
 import org.sse.service.base.Poi;
+import org.sse.service.ls.IPoiService;
 import org.sse.squery.Filter;
 import org.sse.squery.Property;
 
@@ -24,7 +24,7 @@ public class PoiServiceTest {
 		GeometryFactory gf = new GeometryFactory();
 		filter.setGeometry(gf.createPoint(new Coordinate(116.32, 39.97)).buffer(0.01));
 		List<Property> terms = new ArrayList<Property>();
-		terms.add(new Property("ADDRESS", "中关村大街50", OccurType.AND));
+		terms.add(new Property("ADDRESS", "中关村大街", OccurType.AND));
 		terms.add(new Property("NAMEC", "当代", OccurType.AND));
 		filter.setProperties(terms);
 		filter.setType(AnalyzerType.IK);

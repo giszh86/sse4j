@@ -2,12 +2,12 @@ package org.sse.test.ws;
 
 import org.sse.NaviConfig;
 import org.sse.ServiceFactory;
-import org.sse.service.IRouteService;
 import org.sse.service.base.RouteDataSet;
 import org.sse.service.base.RouteGuidance;
 import org.sse.service.base.Router;
 import org.sse.service.base.RouterPreference;
 import org.sse.service.base.TrafficCtl;
+import org.sse.service.rp.IRouteService;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;

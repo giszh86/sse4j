@@ -10,8 +10,8 @@ import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.FieldCacheTermsFilter;
 import org.apache.lucene.search.Query;
-import org.sse.io.IdxParser;
-import org.sse.io.IdxReader;
+import org.sse.idx.IdxParser;
+import org.sse.idx.IdxReader;
 
 import com.vividsolutions.jts.geom.Envelope;
 

@@ -1,6 +1,6 @@
 package org.sse.squery;
 
-import org.sse.io.Enums.OccurType;
+import org.sse.idx.base.Enums.OccurType;
 
 /**
  * @author dux(duxionggis@126.com)

@@ -9,7 +9,7 @@ import org.sse.ServiceFactory;
 import org.sse.StorageFactory;
 import org.sse.StorageFactory.StorageType;
 import org.sse.mcache.IStorage;
-import org.sse.service.IPoiService;
+import org.sse.service.ls.IPoiService;
 import org.sse.squery.Filter;
 import org.sse.squery.PtyName;
 import org.sse.squery.Searcher;

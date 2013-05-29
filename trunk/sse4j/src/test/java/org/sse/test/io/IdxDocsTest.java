@@ -3,7 +3,7 @@ package org.sse.test.io;
 import java.io.IOException;
 
 import org.apache.lucene.index.TermDocs;
-import org.sse.io.IdxReader;
+import org.sse.idx.IdxReader;
 
 public class IdxDocsTest {
 

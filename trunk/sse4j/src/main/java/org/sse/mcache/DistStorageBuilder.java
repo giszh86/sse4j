@@ -5,10 +5,10 @@ import java.util.Map;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.TermDocs;
+import org.sse.service.gc.DistPtyName;
 import org.sse.squery.STree;
 import org.sse.NaviConfig;
-import org.sse.geoc.DistPtyName;
-import org.sse.io.IdxReader;
+import org.sse.idx.IdxReader;
 import org.sse.squery.Searcher;
 import org.sse.util.MercatorUtil;
 

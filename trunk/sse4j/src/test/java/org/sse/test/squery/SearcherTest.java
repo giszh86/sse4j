@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.lucene.document.Document;
 import org.sse.util.MercatorUtil;
-import org.sse.io.Enums.OccurType;
+import org.sse.idx.base.Enums.OccurType;
 import org.sse.squery.Filter;
 import org.sse.squery.Property;
 import org.sse.squery.Searcher;

@@ -11,7 +11,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.Query;
-import org.sse.io.IdxReader;
+import org.sse.idx.IdxReader;
+import org.sse.idx.Sidxer;
 
 import com.vividsolutions.jts.geom.Envelope;
 
@@ -79,7 +80,7 @@ public class Searcher {
 					} else {
 						idxer.read(path + ".sidx");
 					}
-					queries.put(key, new SQuery(new IdxReader(idxpath), idxer.tree));
+					queries.put(key, new SQuery(new IdxReader(idxpath), idxer.getTree()));
 				} else {
 					queries.put(key, new SQuery(new IdxReader(idxpath), null));
 				}

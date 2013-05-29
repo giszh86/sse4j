@@ -2,7 +2,8 @@ package org.sse.squery;
 
 import java.util.List;
 
-import org.sse.io.Enums.AnalyzerType;
+import org.sse.idx.base.Enums.AnalyzerType;
+
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
@@ -12,7 +13,7 @@ public class Filter {
 	private Geometry geometry;
 	private List<Property> properties;
 	private int count = 50;
-	private AnalyzerType type = AnalyzerType.SMARTCN;
+	private AnalyzerType type = AnalyzerType.IK;
 
 	public int getCount() {
 		return count;

@@ -1,6 +1,6 @@
 package org.sse.ws;
 
-import org.sse.geoc.Matcher;
+import org.sse.service.gc.Matcher;
 import org.sse.ws.base.WSBuilder;
 import org.sse.ws.base.WSFilterRM;
 import org.sse.ws.base.WSPointF;

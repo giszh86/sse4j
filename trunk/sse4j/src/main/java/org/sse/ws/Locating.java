@@ -1,7 +1,8 @@
 package org.sse.ws;
 
-import org.sse.geoc.Geocoder;
-import org.sse.geoc.Matcher;
+import org.sse.service.gc.Geocoder;
+import org.sse.service.gc.Matcher;
+import org.sse.service.gc.RGeocoder;
 import org.sse.ws.base.WSBuilder;
 import org.sse.ws.base.WSFilterGeoc;
 import org.sse.ws.base.WSPointF;
@@ -45,7 +46,7 @@ public class Locating {
 		try {
 			String key = new Matcher().districtMatch(WSBuilder.toPt(point)).getProvinceCode();
 			result.setResultCode(1);
-			result.setJsonString("{\"geoc\":\"" + new Geocoder().reverseGeocoding(key, WSBuilder.toPt(point)) + "\"}");
+			result.setJsonString("{\"geoc\":\"" + new RGeocoder().reverseGeocoding(key, WSBuilder.toPt(point)) + "\"}");
 		} catch (Exception e) {
 			result.setResultCode(0);
 			result.setFaultString(e.getMessage());

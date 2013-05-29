@@ -3,7 +3,7 @@ package org.sse.ws.base;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.sse.io.Enums.OccurType;
+import org.sse.idx.base.Enums.OccurType;
 import org.sse.service.base.PoiPtyName;
 import org.sse.service.base.RouteDataSet;
 import org.sse.service.base.RouteGuidance;

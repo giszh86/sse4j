@@ -17,7 +17,7 @@ public class WSLocatingTest {
 
 		WSFilterGeoc geoc = new WSFilterGeoc();
 		geoc.setKey("110000");
-		geoc.setAddress("学院路25号");
+		geoc.setAddress("学院路38号");
 		result = new Locating().geocoding(geoc);
 		System.out.println(result.getJsonString());
 

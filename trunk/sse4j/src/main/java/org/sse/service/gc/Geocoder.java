@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.Query;
+import org.sse.service.base.PoiPtyName;
 import org.sse.squery.PtyName;
 import org.sse.StorageFactory;
 import org.sse.StorageFactory.StorageType;
@@ -26,12 +27,12 @@ public class Geocoder {
 
 		List<String> tokens = IdxParser.getInstance().tokenize(keyword, AnalyzerType.IK);
 		// address operate 'and' by tokens[length]
-		Query query = IdxParser.getInstance().createQuery(PtyName.TITLE, tokens, OccurType.AND);
-		List<Document> docs = Searcher.getInstance().search(storage.getKey(), query, 100);
+		Query query = IdxParser.getInstance().createQuery(PoiPtyName.ADDRESS, tokens, OccurType.AND);
+		List<Document> docs = Searcher.getInstance().search(storage.getKey(), query, 10);
 
 		// address operate 'or' by tokens[length]
 		if (docs == null || docs.size() == 0) {
-			query = IdxParser.getInstance().createQuery(PtyName.TITLE, tokens, OccurType.OR);
+			query = IdxParser.getInstance().createQuery(PoiPtyName.ADDRESS, tokens, OccurType.OR);
 			docs = Searcher.getInstance().search(storage.getKey(), query, 100);
 		}
 
@@ -40,7 +41,7 @@ public class Geocoder {
 		}
 
 		for (Document d : docs) {
-			String addr = d.get(PtyName.TITLE);
+			String addr = d.get(PoiPtyName.ADDRESS);
 			boolean ismatch = true;
 			int idxT = -1;
 
@@ -54,7 +55,7 @@ public class Geocoder {
 			}
 			if (ismatch) {
 				Point pt = new Point(Integer.valueOf(d.get(PtyName.CENX)), Integer.valueOf(d.get(PtyName.CENY)));
-				return new ResultGC(d.get(PtyName.TITLE), pt);
+				return new ResultGC(d.get(PoiPtyName.ADDRESS) + "--" + d.get(PoiPtyName.TITLE), pt);
 				// break;
 			}
 			// match 80% tokens

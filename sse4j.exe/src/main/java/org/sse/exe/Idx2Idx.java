@@ -11,6 +11,9 @@ import org.apache.lucene.store.FSDirectory;
 import org.sse.idx.IdxWriter;
 import org.sse.idx.base.Enums.AnalyzerType;
 
+/**
+ * @author dux(duxionggis@126.com)
+ */
 public class Idx2Idx {
 
 	public static void main(String[] args) throws IOException {
@@ -18,7 +21,7 @@ public class Idx2Idx {
 			System.out.println("Idx2Idx [source lucene path] [target lucene path]");
 			return;
 		}
-		
+
 		File source = new File(args[0]);
 		if (!source.exists()) {
 			System.out.println("input path is invalid!");
@@ -45,4 +48,5 @@ public class Idx2Idx {
 
 		writer.close();
 	}
+
 }

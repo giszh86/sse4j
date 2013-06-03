@@ -63,9 +63,9 @@ public class IdxWriter {
 	private IndexWriter build(String idxPath, Analyzer analyzer) {
 		try {
 			TieredMergePolicy mergePolicy = new TieredMergePolicy();
-			mergePolicy.setNoCFSRatio(1.0);
+			// mergePolicy.setNoCFSRatio(1.0);
 			IndexWriterConfig cfg = new IndexWriterConfig(Version.LUCENE_36, analyzer);
-			cfg.setRAMBufferSizeMB(64);
+			cfg.setRAMBufferSizeMB(128);
 			cfg.setMergePolicy(mergePolicy);
 			IndexWriter writer = new IndexWriter(FSDirectory.open(new File(idxPath)), cfg);
 			return writer;
@@ -107,6 +107,10 @@ public class IdxWriter {
 		} catch (Exception e) {
 			System.out.println("write index error:" + e);
 		}
+	}
+
+	public IndexWriter getWriter() {
+		return this.writer;
 	}
 
 	public void close() {

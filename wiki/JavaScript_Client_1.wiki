@@ -1,3 +1,0 @@
-#labels JavaScript
-javascript client api to invoke sse4j webservice interface.
-visit sse4j.ws project(js/sse4j.js and sse4j.html).
